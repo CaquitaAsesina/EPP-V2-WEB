@@ -52,7 +52,7 @@ DB_PASSWORD=tu_contraseña_mysql
 DB_NAME=epp_inventory
 JWT_SECRET=generar_con_openssl_rand_hex_32
 JWT_EXPIRES_IN=24h
-DNI_ENCRYPTION_KEY=0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+DNI_ENCRYPTION_KEY=generar_con_openssl_rand_hex_32
 BCRYPT_ROUNDS=10
 ```
 

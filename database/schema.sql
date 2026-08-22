@@ -385,9 +385,7 @@ INSERT INTO sizes (name, description) VALUES
     ('XL', 'Extra Grande'),
     ('XXL', 'Doble Extra Grande');
 
--- Preferencias del admin
-INSERT INTO user_preferences (user_id, primary_color, secondary_color, background_color, card_color, text_color, theme_mode, sidebar_style, density) VALUES
-    (1, '#DC2626', '#FFFFFF', '#F3F4F6', '#FFFFFF', '#1F2937', 'light', 'dark', 'normal');
+-- Preferencias del admin (se crean automáticamente al registrar el usuario)
 
 -- Relación EPP-Todas las tallas
 INSERT INTO epp_type_sizes (epp_type_id, size_id) VALUES
