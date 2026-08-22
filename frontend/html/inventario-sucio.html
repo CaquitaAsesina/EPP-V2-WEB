@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario EPP Sucio - EPP Control</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="../css/variables.css" rel="stylesheet">
+    <link href="../css/layout.css" rel="stylesheet">
+    <link href="../css/components.css" rel="stylesheet">
+    <link href="../css/responsive.css" rel="stylesheet">
+    <style>
+        .classify-btn.active.btn-outline-success {
+            background-color: #198754;
+            color: #fff;
+            border-color: #198754;
+        }
+        .classify-btn.active.btn-outline-warning {
+            background-color: #ffc107;
+            color: #000;
+            border-color: #ffc107;
+        }
+        .classify-btn.active.btn-outline-secondary {
+            background-color: #6c757d;
+            color: #fff;
+            border-color: #6c757d;
+        }
+        .btn-group .classify-btn {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+    <div id="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo"><i class="bi bi-shield-check"></i></div>
+                <span>EPP Control</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-link"><i class="bi bi-speedometer2"></i><span>Dashboard</span></a>
+                <a href="periodos.html" class="nav-link"><i class="bi bi-calendar3"></i><span>Períodos</span></a>
+                <a href="inventario-limpio.html" class="nav-link"><i class="bi bi-check-circle"></i><span>EPP Limpio</span></a>
+                <a href="inventario-sucio.html" class="nav-link active"><i class="bi bi-arrow-repeat"></i><span>EPP Sucio</span></a>
+                <a href="entregas.html" class="nav-link"><i class="bi bi-box-arrow-up"></i><span>Entregas</span></a>
+                <a href="ingresos.html" class="nav-link"><i class="bi bi-box-arrow-down"></i><span>Ingresos</span></a>
+                <a href="devoluciones.html" class="nav-link"><i class="bi bi-arrow-return-left"></i><span>Devoluciones</span></a>
+                <a href="trabajadores.html" class="nav-link"><i class="bi bi-people"></i><span>Trabajadores</span></a>
+                <a href="consultas.html" class="nav-link"><i class="bi bi-search"></i><span>Consultas</span></a>
+                <a href="perfil.html" class="nav-link admin-only"><i class="bi bi-person-gear"></i><span>Perfil</span></a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <button class="btn-icon sidebar-toggle" id="sidebarToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+                <div class="header-title">
+                    <h1>Inventario EPP Sucio y Lavado</h1>
+                    <p class="text-muted mb-0">Control de inventario sucio, lavado y transferencia</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-icon theme-toggle" id="themeToggle">
+                        <i class="bi bi-moon"></i>
+                    </button>
+                    <div class="dropdown">
+                        <button class="btn-icon" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="perfil.html"><i class="bi bi-person me-2"></i>Perfil</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>Salir</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content-wrapper">
+                <!-- Period Selector -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-4">
+                                <label class="form-label">Período Activo</label>
+                                <select class="form-select" id="periodSelect">
+                                    <option value="">Seleccionar período...</option>
+                                </select>
+                            </div>
+                            <div class="col-md-8 text-end">
+                                <button class="btn btn-primary" id="btnRefresh">
+                                    <i class="bi bi-arrow-clockwise me-2"></i>Actualizar
+                                </button>
+                                <button class="btn btn-success ms-2" id="btnAddLaundry">
+                                    <i class="bi bi-plus-lg me-2"></i>Nuevo Envío a Lavado
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card stat-card">
+                            <div class="stat-icon bg-warning text-dark">
+                                <i class="bi bi-arrow-left-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h6>Devuelto por Trabajadores</h6>
+                                <h3 id="totalReturns">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card">
+                            <div class="stat-icon bg-info text-white">
+                                <i class="bi bi-clock-history"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h6>Para Lavado</h6>
+                                <h3 id="pendingLaundry">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card">
+                            <div class="stat-icon bg-primary text-white">
+                                <i class="bi bi-hourglass-split"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h6>En Proceso de Lavado</h6>
+                                <h3 id="inProcess">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card">
+                            <div class="stat-icon bg-success text-white">
+                                <i class="bi bi-check-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h6>Lavados y Transferidos</h6>
+                                <h3 id="completedLaundry">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Tipo EPP</label>
+                                <select class="form-select" id="filterEppType">
+                                    <option value="">Todos</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Talla</label>
+                                <select class="form-select" id="filterSize">
+                                    <option value="">Todas</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Estado</label>
+                                <select class="form-select" id="filterStatus">
+                                    <option value="">Todos</option>
+                                    <option value="Para lavar">Para lavar</option>
+                                    <option value="Mandado a lavar">En proceso</option>
+                                    <option value="Lavado">Lavado</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Fecha Inicio</label>
+                                <input type="date" class="form-control" id="filterDateFrom">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Fecha Fin</label>
+                                <input type="date" class="form-control" id="filterDateTo">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Inventario EPP Sucio</h5>
+                        <button class="btn btn-sm btn-outline-success" id="btnExportExcel">
+                            <i class="bi bi-file-earmark-excel me-2"></i>Exportar Excel
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>EPP</th>
+                                        <th>Talla</th>
+                                        <th>Devuelto</th>
+                                        <th>Para Lavado</th>
+                                        <th>En Proceso</th>
+                                        <th>Lavados</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dirtyInventoryTable">
+                                    <tr>
+                                        <td colspan="7" class="text-center py-4">
+                                            <div class="empty-state">
+                                                <i class="bi bi-inbox"></i>
+                                                <p>Seleccione un período para ver el inventario</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Laundry Modal -->
+    <div class="modal fade" id="laundryModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="laundryModalTitle">Nuevo Envío a Lavado</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="laundryForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="laundryId">
+                        <div class="mb-3">
+                            <label class="form-label">Tipo EPP *</label>
+                            <select class="form-select" id="laundryEppType" required></select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Talla *</label>
+                            <select class="form-select" id="laundrySize" required></select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Cantidad a Enviar *</label>
+                            <input type="number" class="form-control" id="laundryQty" min="1" required>
+                            <div class="form-text">Disponible: <span id="availableQty">0</span></div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Observación</label>
+                            <textarea class="form-control" id="laundryNotes" rows="2"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mark as Washed Modal -->
+    <div class="modal fade" id="washedModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Marcar como Lavado</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="washedForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="washedId">
+                        <div class="mb-3">
+                            <label class="form-label">Tipo EPP</label>
+                            <input type="text" class="form-control" id="washedEppType" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Talla</label>
+                            <input type="text" class="form-control" id="washedSize" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Cantidad a Marcar *</label>
+                            <input type="number" class="form-control" id="washedQty" min="1" required>
+                            <div class="form-text">En proceso: <span id="inProcessQty">0</span></div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Observación</label>
+                            <textarea class="form-control" id="washedNotes" rows="2"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success">Marcar como Lavado</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/layout.js"></script>
+    <script>
+        let currentPeriod = null;
+        let laundryData = [];
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            Layout.init();
+            await loadPeriods();
+            loadEppTypes();
+            loadSizes();
+            setupEventListeners();
+            if (currentPeriod) loadDirtyInventory();
+        });
+
+        function setupEventListeners() {
+            document.getElementById('periodSelect').addEventListener('change', (e) => {
+                currentPeriod = e.target.value;
+                if (currentPeriod) loadDirtyInventory();
+            });
+
+            document.getElementById('btnRefresh').addEventListener('click', () => {
+                if (currentPeriod) loadDirtyInventory();
+            });
+
+            document.getElementById('btnAddLaundry').addEventListener('click', () => {
+                if (!currentPeriod) {
+                    Utils.toast('Seleccione un período primero', 'warning');
+                    return;
+                }
+                document.getElementById('laundryForm').reset();
+                document.getElementById('laundryId').value = '';
+                document.getElementById('laundryModalTitle').textContent = 'Nuevo Envío a Lavado';
+                new bootstrap.Modal(document.getElementById('laundryModal')).show();
+            });
+
+            document.getElementById('laundryForm').addEventListener('submit', handleLaundrySubmit);
+            document.getElementById('washedForm').addEventListener('submit', handleWashedSubmit);
+
+            document.getElementById('btnExportExcel').addEventListener('click', exportToExcel);
+
+            document.getElementById('filterEppType').addEventListener('change', applyFilters);
+            document.getElementById('filterSize').addEventListener('change', applyFilters);
+            document.getElementById('filterStatus').addEventListener('change', applyFilters);
+            document.getElementById('filterDateFrom').addEventListener('change', applyFilters);
+            document.getElementById('filterDateTo').addEventListener('change', applyFilters);
+        }
+
+        async function loadPeriods() {
+            try {
+                const res = await Api.get('/api/periods');
+                const select = document.getElementById('periodSelect');
+                select.innerHTML = '<option value="">Seleccionar período...</option>';
+                if (res.data && res.data.length) {
+                    res.data.forEach(p => {
+                        select.innerHTML += `<option value="${p.id}" ${p.is_active ? 'selected' : ''}>${p.name} ${p.is_active ? '(Activo)' : ''}</option>`;
+                    });
+                    if (res.data.find(p => p.is_active)) {
+                        currentPeriod = res.data.find(p => p.is_active).id;
+                    }
+                }
+            } catch (e) {
+                Utils.toast('Error cargando períodos', 'error');
+            }
+        }
+
+        async function loadEppTypes() {
+            try {
+                const res = await Api.get('/api/epp-types');
+                const select = document.getElementById('filterEppType');
+                const laundrySelect = document.getElementById('laundryEppType');
+                if (res.data) {
+                    res.data.filter(t => t.is_active).forEach(t => {
+                        select.innerHTML += `<option value="${t.id}">${t.name}</option>`;
+                        laundrySelect.innerHTML += `<option value="${t.id}">${t.name}</option>`;
+                    });
+                }
+            } catch (e) {
+                console.error('Error loading EPP types:', e);
+            }
+        }
+
+        async function loadSizes() {
+            try {
+                const res = await Api.get('/api/sizes');
+                const filterSelect = document.getElementById('filterSize');
+                const laundrySelect = document.getElementById('laundrySize');
+                if (res.data) {
+                    res.data.filter(s => s.is_active).forEach(s => {
+                        filterSelect.innerHTML += `<option value="${s.id}">${s.name}</option>`;
+                        laundrySelect.innerHTML += `<option value="${s.id}">${s.name}</option>`;
+                    });
+                }
+            } catch (e) {
+                console.error('Error loading sizes:', e);
+            }
+        }
+
+        async function loadDirtyInventory() {
+            if (!currentPeriod) return;
+            try {
+                const res = await Api.get(`/api/dirty-inventory?period_id=${currentPeriod}`);
+                laundryData = res.data || [];
+                updateStats();
+                renderTable(laundryData);
+            } catch (e) {
+                Utils.toast('Error cargando inventario', 'error');
+            }
+        }
+
+        function updateStats() {
+            let returned = 0, pending = 0, inProcess = 0, washed = 0;
+            laundryData.forEach(item => {
+                returned += Number(item.returned || 0);
+                pending += Number(item.pending_laundry || 0);
+                inProcess += Number(item.in_process || 0);
+                washed += Number(item.washed || 0);
+            });
+            document.getElementById('totalReturns').textContent = returned;
+            document.getElementById('pendingLaundry').textContent = pending;
+            document.getElementById('inProcess').textContent = inProcess;
+            document.getElementById('completedLaundry').textContent = washed;
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('dirtyInventoryTable');
+            if (!data || data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4">
+                    <div class="empty-state"><i class="bi bi-inbox"></i><p>No hay datos para este período</p></div>
+                </td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = data.map(item => {
+                const classification = item.classification || 'sucio';
+                const unclassified = item.unclassified || 0;
+                return `
+                <tr>
+                    <td><span class="badge bg-secondary">${item.epp_type_name}</span></td>
+                    <td>${item.size_name}</td>
+                    <td>${item.returned || 0}</td>
+                    <td>${item.pending_laundry || 0}</td>
+                    <td>${item.in_process || 0}</td>
+                    <td>${item.washed || 0}</td>
+                    <td>
+                        <div class="btn-group btn-group-sm" role="group" data-epp="${item.epp_type_id}" data-size="${item.size_id}" data-unclassified="${unclassified}">
+                            <button type="button" class="btn btn-outline-success classify-btn ${classification === 'lavado' ? 'active' : ''}" 
+                                onclick="classifyItem(${item.epp_type_id}, ${item.size_id}, 'lavado', this)" 
+                                title="Lavado - Suma a EPP Limpio"
+                                ${unclassified <= 0 && classification !== 'lavado' ? 'disabled' : ''}>
+                                <i class="bi bi-check-circle"></i> Lavado
+                            </button>
+                            <button type="button" class="btn btn-outline-warning classify-btn ${classification === 'pendiente' ? 'active' : ''}" 
+                                onclick="classifyItem(${item.epp_type_id}, ${item.size_id}, 'pendiente', this)" 
+                                title="Pendiente - Para lavar"
+                                ${unclassified <= 0 && classification !== 'pendiente' ? 'disabled' : ''}>
+                                <i class="bi bi-hourglass-split"></i> Pendiente
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary classify-btn ${classification === 'sucio' ? 'active' : ''}" 
+                                onclick="classifyItem(${item.epp_type_id}, ${item.size_id}, 'sucio', this)" 
+                                title="Sucio - Sin procesar"
+                                ${unclassified <= 0 && classification !== 'sucio' ? 'disabled' : ''}>
+                                <i class="bi bi-trash"></i> Sucio
+                            </button>
+                        </div>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+
+        function sendToLaundry(id, eppType, size, available) {
+            document.getElementById('laundryId').value = id;
+            document.getElementById('laundryModalTitle').textContent = `Enviar a Lavado - ${eppType} ${size}`;
+            document.getElementById('laundryQty').max = available;
+            document.getElementById('availableQty').textContent = available;
+            document.getElementById('laundryEppType').value = '';
+            document.getElementById('laundrySize').value = '';
+            new bootstrap.Modal(document.getElementById('laundryModal')).show();
+        }
+
+        function markAsWashed(id, eppType, size, inProcess) {
+            document.getElementById('washedId').value = id;
+            document.getElementById('washedEppType').value = eppType;
+            document.getElementById('washedSize').value = size;
+            document.getElementById('washedQty').max = inProcess;
+            document.getElementById('washedQty').value = inProcess;
+            document.getElementById('inProcessQty').textContent = inProcess;
+            new bootstrap.Modal(document.getElementById('washedModal')).show();
+        }
+
+        async function handleLaundrySubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('laundryId').value;
+            const data = {
+                period_id: currentPeriod,
+                epp_type_id: document.getElementById('laundryEppType').value,
+                size_id: document.getElementById('laundrySize').value,
+                quantity: parseInt(document.getElementById('laundryQty').value),
+                observation: document.getElementById('laundryNotes').value
+            };
+
+            try {
+                await Api.post('/api/laundry-movements', data);
+                Utils.toast('Envío a lavado registrado correctamente');
+                bootstrap.Modal.getInstance(document.getElementById('laundryModal')).hide();
+                loadDirtyInventory();
+            } catch (e) {
+                Utils.toast(e.message || 'Error al registrar envío', 'error');
+            }
+        }
+
+        async function handleWashedSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('washedId').value;
+            const data = {
+                quantity: parseInt(document.getElementById('washedQty').value),
+                observation: document.getElementById('washedNotes').value
+            };
+
+            try {
+                await Api.put(`/api/laundry-movements/${id}/wash`, data);
+                Utils.toast('Lavado registrado y transferido a limpio');
+                bootstrap.Modal.getInstance(document.getElementById('washedModal')).hide();
+                loadDirtyInventory();
+            } catch (e) {
+                Utils.toast(e.message || 'Error al registrar lavado', 'error');
+            }
+        }
+
+        function viewHistory(id) {
+            Utils.toast('Historial de movimientos - Función en desarrollo', 'info');
+        }
+
+        async function classifyItem(eppTypeId, sizeId, status, btn) {
+            if (!currentPeriod) {
+                Utils.toast('Seleccione un período primero', 'warning');
+                return;
+            }
+
+            // Find unclassified count from the button group data attribute
+            const group = btn.closest('.btn-group');
+            const unclassified = parseInt(group.dataset.unclassified) || 0;
+
+            if (unclassified <= 0 && !group.querySelector('.active')) {
+                Utils.toast('No hay elementos sin clasificar', 'warning');
+                return;
+            }
+
+            // Radio button behavior: remove active from siblings
+            group.querySelectorAll('.classify-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            if (unclassified <= 0) {
+                Utils.toast('Ya clasificado anteriormente', 'info');
+                return;
+            }
+
+            try {
+                const res = await Api.put('/api/dirty-inventory/classify', {
+                    period_id: currentPeriod,
+                    epp_type_id: eppTypeId,
+                    size_id: sizeId,
+                    status: status
+                });
+                const statusMsg = status === 'lavado' 
+                    ? `${unclassified} unidades transferidas a EPP Limpio` 
+                    : status === 'pendiente' 
+                        ? `${unclassified} unidades marcadas como pendientes` 
+                        : `${unclassified} unidades marcadas como sucias`;
+                Utils.toast(statusMsg);
+                loadDirtyInventory();
+            } catch (e) {
+                Utils.toast(e.message || 'Error al clasificar', 'error');
+            }
+        }
+
+        function applyFilters() {
+            let filtered = [...laundryData];
+            const eppType = document.getElementById('filterEppType').value;
+            const size = document.getElementById('filterSize').value;
+            const status = document.getElementById('filterStatus').value;
+
+            if (eppType) filtered = filtered.filter(i => i.epp_type_id == eppType);
+            if (size) filtered = filtered.filter(i => i.size_id == size);
+            if (status) filtered = filtered.filter(i => i.status === status);
+
+            renderTable(filtered);
+        }
+
+        async function exportToExcel() {
+            Utils.toast('Exportando a Excel...', 'info');
+            try {
+                const res = await Api.get(`/api/dirty-inventory/export?period_id=${currentPeriod}`);
+                if (res.data) {
+                    const blob = Utils.base64ToBlob(res.data.content, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                    Utils.downloadBlob(blob, `inventario-sucio-${currentPeriod}.xlsx`);
+                    Utils.toast('Exportación completada');
+                }
+            } catch (e) {
+                Utils.toast('Error al exportar', 'error');
+            }
+        }
+    </script>
+</body>
+</html>

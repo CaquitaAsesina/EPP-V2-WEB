@@ -1,0 +1,183 @@
+/* ============================================
+   Responsive Breakpoints
+   ============================================ */
+
+/* Tablet - 1024px and below */
+@media (max-width: 1024px) {
+  .sidebar {
+    transform: translateX(-100%) !important;
+    transition: transform var(--duration-normal) var(--ease-out) !important;
+  }
+  
+  .sidebar.open {
+    transform: translateX(0) !important;
+  }
+  
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity var(--duration-normal) var(--ease-out);
+  }
+  
+  .sidebar-overlay.show {
+    opacity: 1;
+  }
+  
+  .main-content {
+    margin-left: 0 !important;
+  }
+  
+  .sidebar-toggle,
+  .menu-toggle {
+    display: flex;
+  }
+  
+  .grid-charts {
+    grid-template-columns: 1fr;
+  }
+  
+  .main-header {
+    padding: 0 16px;
+  }
+  
+  .content-wrapper {
+    padding: 16px;
+  }
+}
+
+/* Mobile - 768px and below */
+@media (max-width: 768px) {
+  .header-title h1 {
+    font-size: 17px !important;
+  }
+  
+  .header-title .text-muted {
+    display: none;
+  }
+  
+  .grid-kpi {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+  }
+  
+  .stat-card {
+    padding: 14px !important;
+    gap: 12px;
+  }
+  
+  .stat-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+  
+  .stat-info h3 {
+    font-size: 22px !important;
+  }
+  
+  .row.g-3 > [class*="col-md-"] {
+    margin-bottom: 12px;
+  }
+  
+  .main-header {
+    height: 56px;
+  }
+  
+  .content-wrapper {
+    padding: 12px;
+  }
+  
+  .table {
+    font-size: 13px;
+  }
+  
+  .modal-content {
+    margin: 12px;
+    border-radius: var(--radius-lg) !important;
+  }
+  
+  .login-card {
+    padding: 32px 24px;
+  }
+  
+  .active-period-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .nav-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .nav-tabs .nav-link {
+    padding: 10px 14px !important;
+    font-size: 13px !important;
+    white-space: nowrap;
+  }
+  
+  /* Hide secondary info on mobile */
+  .hide-mobile {
+    display: none;
+  }
+}
+
+/* Small Mobile - 480px and below */
+@media (max-width: 480px) {
+  .main-header {
+    height: 48px;
+    padding: 0 12px;
+  }
+  
+  .header-title h1 {
+    font-size: 15px !important;
+  }
+  
+  .content-wrapper {
+    padding: 10px;
+  }
+  
+  .grid-kpi {
+    grid-template-columns: 1fr;
+  }
+  
+  .stat-card {
+    padding: 12px !important;
+  }
+  
+  .login-card {
+    padding: 24px 16px;
+    border-radius: var(--radius-lg);
+  }
+  
+  .login-card h1 {
+    font-size: 22px;
+  }
+  
+  .btn {
+    padding: 6px 12px !important;
+    font-size: 13px !important;
+  }
+  
+  .toast-apple {
+    min-width: auto;
+    max-width: calc(100vw - 40px);
+  }
+  
+  .toast-container {
+    left: 20px;
+    right: 20px;
+  }
+  
+  .card-body {
+    padding: 12px !important;
+  }
+}

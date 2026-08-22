@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entregas de EPP - EPP Control</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="../css/variables.css" rel="stylesheet">
+    <link href="../css/layout.css" rel="stylesheet">
+    <link href="../css/components.css" rel="stylesheet">
+    <link href="../css/responsive.css" rel="stylesheet">
+</head>
+<body>
+    <div id="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo"><i class="bi bi-shield-check"></i></div>
+                <span>EPP Control</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-link"><i class="bi bi-speedometer2"></i><span>Dashboard</span></a>
+                <a href="periodos.html" class="nav-link"><i class="bi bi-calendar3"></i><span>Períodos</span></a>
+                <a href="inventario-limpio.html" class="nav-link"><i class="bi bi-check-circle"></i><span>EPP Limpio</span></a>
+                <a href="inventario-sucio.html" class="nav-link"><i class="bi bi-arrow-repeat"></i><span>EPP Sucio</span></a>
+                <a href="entregas.html" class="nav-link active"><i class="bi bi-box-arrow-up"></i><span>Entregas</span></a>
+                <a href="ingresos.html" class="nav-link"><i class="bi bi-box-arrow-down"></i><span>Ingresos</span></a>
+                <a href="devoluciones.html" class="nav-link"><i class="bi bi-arrow-return-left"></i><span>Devoluciones</span></a>
+                <a href="trabajadores.html" class="nav-link"><i class="bi bi-people"></i><span>Trabajadores</span></a>
+                <a href="consultas.html" class="nav-link"><i class="bi bi-search"></i><span>Consultas</span></a>
+                <a href="perfil.html" class="nav-link admin-only"><i class="bi bi-person-gear"></i><span>Perfil</span></a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <button class="btn-icon sidebar-toggle" id="sidebarToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+                <div class="header-title">
+                    <h1>Entregas de EPP</h1>
+                    <p class="text-muted mb-0">Registro y control de entregas a trabajadores</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-icon theme-toggle" id="themeToggle">
+                        <i class="bi bi-moon"></i>
+                    </button>
+                    <div class="dropdown">
+                        <button class="btn-icon" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="perfil.html"><i class="bi bi-person me-2"></i>Perfil</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>Salir</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content-wrapper">
+                <!-- Period Selector -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-4">
+                                <label class="form-label">Período Activo</label>
+                                <select class="form-select" id="periodSelect">
+                                    <option value="">Seleccionar período...</option>
+                                </select>
+                            </div>
+                            <div class="col-md-8 text-end">
+                                <button class="btn btn-primary" id="btnAddDelivery">
+                                    <i class="bi bi-plus-lg me-2"></i>Nueva Entrega
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card stat-card">
+                            <div class="stat-icon bg-primary text-white">
+                                <i class="bi bi-box-arrow-up"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h6>Total Entregas</h6>
+                                <h3 id="totalDeliveries">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card">
+                            <div class="stat-icon bg-success text-white">
+                                <i class="bi bi-people"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h6>Trabajadores</h6>
+                                <h3 id="totalWorkers">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card">
+                            <div class="stat-icon bg-info text-white">
+                                <i class="bi bi-calendar-check"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h6>Hoy</h6>
+                                <h3 id="todayDeliveries">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card">
+                            <div class="stat-icon bg-warning text-dark">
+                                <i class="bi bi-box-seam"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h6>Unidades Entregadas</h6>
+                                <h3 id="totalUnits">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Buscar</label>
+                                <input type="text" class="form-control" id="searchInput" placeholder="Buscar por trabajador, DNI...">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Tipo EPP</label>
+                                <select class="form-select" id="filterEppType">
+                                    <option value="">Todos</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Fecha Inicio</label>
+                                <input type="date" class="form-control" id="filterDateFrom">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Fecha Fin</label>
+                                <input type="date" class="form-control" id="filterDateTo">
+                            </div>
+                            <div class="col-md-3 text-end">
+                                <button class="btn btn-outline-secondary" id="btnExportExcel">
+                                    <i class="bi bi-file-earmark-excel me-2"></i>Exportar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Trabajador</th>
+                                        <th>DNI</th>
+                                        <th>EPP</th>
+                                        <th>Talla</th>
+                                        <th>Cantidad</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="deliveriesTable">
+                                    <tr>
+                                        <td colspan="7" class="text-center py-4">
+                                            <div class="empty-state">
+                                                <i class="bi bi-inbox"></i>
+                                                <p>No hay entregas registradas</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Delivery Modal -->
+    <div class="modal fade" id="deliveryModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deliveryModalTitle">Nueva Entrega</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="deliveryForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="deliveryId">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Trabajador *</label>
+                                <select class="form-select" id="deliveryWorker" required>
+                                    <option value="">Seleccionar trabajador...</option>
+                                </select>
+                                <div class="form-text">¿No existe? <a href="#" id="btnQuickWorker">Crear rápidamente</a></div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Tipo EPP *</label>
+                                <select class="form-select" id="deliveryEppType" required></select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Talla *</label>
+                                <select class="form-select" id="deliverySize" required></select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Cantidad *</label>
+                                <input type="number" class="form-control" id="deliveryQty" min="1" required>
+                                <div class="form-text">Stock disponible: <span id="availableStock">0</span></div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Fecha</label>
+                                <input type="date" class="form-control" id="deliveryDate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Worker Modal -->
+    <div class="modal fade" id="quickWorkerModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Crear Trabajador Rápido</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="quickWorkerForm">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre Completo *</label>
+                            <input type="text" class="form-control" id="workerName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">DNI *</label>
+                            <input type="text" class="form-control" id="workerDni" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Crear</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/layout.js"></script>
+    <script>
+        let currentPeriod = null;
+        let deliveriesData = [];
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            Layout.init();
+            await loadPeriods();
+            loadWorkers();
+            loadEppTypes();
+            setupEventListeners();
+            if (currentPeriod) loadDeliveries();
+        });
+
+        function setupEventListeners() {
+            document.getElementById('periodSelect').addEventListener('change', (e) => {
+                currentPeriod = e.target.value;
+                if (currentPeriod) loadDeliveries();
+            });
+
+            document.getElementById('btnAddDelivery').addEventListener('click', () => {
+                if (!currentPeriod) {
+                    Utils.toast('Seleccione un período primero', 'warning');
+                    return;
+                }
+                document.getElementById('deliveryForm').reset();
+                document.getElementById('deliveryId').value = '';
+                document.getElementById('deliveryDate').value = new Date().toISOString().split('T')[0];
+                document.getElementById('deliveryModalTitle').textContent = 'Nueva Entrega';
+                new bootstrap.Modal(document.getElementById('deliveryModal')).show();
+            });
+
+            document.getElementById('deliveryForm').addEventListener('submit', handleDeliverySubmit);
+            document.getElementById('quickWorkerForm').addEventListener('submit', handleQuickWorker);
+
+            document.getElementById('btnQuickWorker').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('quickWorkerForm').reset();
+                new bootstrap.Modal(document.getElementById('quickWorkerModal')).show();
+            });
+
+            document.getElementById('deliveryEppType').addEventListener('change', loadSizesForDelivery);
+            document.getElementById('deliverySize').addEventListener('change', checkAvailableStock);
+
+            document.getElementById('searchInput').addEventListener('input', applyFilters);
+            document.getElementById('filterEppType').addEventListener('change', applyFilters);
+            document.getElementById('filterDateFrom').addEventListener('change', applyFilters);
+            document.getElementById('filterDateTo').addEventListener('change', applyFilters);
+            document.getElementById('btnExportExcel').addEventListener('click', exportToExcel);
+        }
+
+        async function loadPeriods() {
+            try {
+                const res = await Api.get('/api/periods');
+                const select = document.getElementById('periodSelect');
+                select.innerHTML = '<option value="">Seleccionar período...</option>';
+                if (res.data && res.data.length) {
+                    res.data.forEach(p => {
+                        select.innerHTML += `<option value="${p.id}" ${p.is_active ? 'selected' : ''}>${p.name} ${p.is_active ? '(Activo)' : ''}</option>`;
+                    });
+                    if (res.data.find(p => p.is_active)) {
+                        currentPeriod = res.data.find(p => p.is_active).id;
+                    }
+                }
+            } catch (e) {
+                Utils.toast('Error cargando períodos', 'error');
+            }
+        }
+
+        async function loadWorkers() {
+            try {
+                const res = await Api.get('/api/workers');
+                const select = document.getElementById('deliveryWorker');
+                if (res.data) {
+                    res.data.forEach(w => {
+                        select.innerHTML += `<option value="${w.id}">${w.full_name}</option>`;
+                    });
+                }
+            } catch (e) {
+                console.error('Error loading workers:', e);
+            }
+        }
+
+        async function loadEppTypes() {
+            try {
+                const res = await Api.get('/api/epp-types');
+                const deliverySelect = document.getElementById('deliveryEppType');
+                const filterSelect = document.getElementById('filterEppType');
+                if (res.data) {
+                    res.data.filter(t => t.is_active).forEach(t => {
+                        deliverySelect.innerHTML += `<option value="${t.id}">${t.name}</option>`;
+                        filterSelect.innerHTML += `<option value="${t.id}">${t.name}</option>`;
+                    });
+                }
+            } catch (e) {
+                console.error('Error loading EPP types:', e);
+            }
+        }
+
+        async function loadSizesForDelivery() {
+            const eppTypeId = document.getElementById('deliveryEppType').value;
+            const sizeSelect = document.getElementById('deliverySize');
+            sizeSelect.innerHTML = '<option value="">Seleccionar talla...</option>';
+            
+            if (!eppTypeId) return;
+            
+            try {
+                const res = await Api.get(`/api/epp-types/${eppTypeId}/sizes`);
+                if (res.data) {
+                    res.data.forEach(s => {
+                        sizeSelect.innerHTML += `<option value="${s.id}">${s.name}</option>`;
+                    });
+                }
+            } catch (e) {
+                console.error('Error loading sizes:', e);
+            }
+        }
+
+        async function checkAvailableStock() {
+            const eppTypeId = document.getElementById('deliveryEppType').value;
+            const sizeId = document.getElementById('deliverySize').value;
+            
+            if (!eppTypeId || !sizeId || !currentPeriod) {
+                document.getElementById('availableStock').textContent = '0';
+                return;
+            }
+            
+            try {
+                const res = await Api.get(`/api/clean-inventory/stock?period_id=${currentPeriod}&epp_type_id=${eppTypeId}&size_id=${sizeId}`);
+                document.getElementById('availableStock').textContent = res.data?.stock || 0;
+                document.getElementById('deliveryQty').max = res.data?.stock || 0;
+            } catch (e) {
+                document.getElementById('availableStock').textContent = '0';
+            }
+        }
+
+        async function loadDeliveries() {
+            if (!currentPeriod) return;
+            try {
+                const res = await Api.get(`/api/deliveries?period_id=${currentPeriod}`);
+                deliveriesData = res.data || [];
+                updateStats();
+                renderTable(deliveriesData);
+            } catch (e) {
+                Utils.toast('Error cargando entregas', 'error');
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('totalDeliveries').textContent = deliveriesData.length;
+            const uniqueWorkers = new Set(deliveriesData.map(d => d.worker_id));
+            document.getElementById('totalWorkers').textContent = uniqueWorkers.size;
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('todayDeliveries').textContent = deliveriesData.filter(d => d.delivery_date === today).length;
+            document.getElementById('totalUnits').textContent = deliveriesData.reduce((sum, d) => sum + (d.quantity || 0), 0);
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('deliveriesTable');
+            if (!data || data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" class="text-center py-4">
+                    <div class="empty-state"><i class="bi bi-inbox"></i><p>No hay entregas registradas</p></div>
+                </td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = data.map(d => `
+                <tr>
+                    <td>${Utils.formatDate(d.delivery_date)}</td>
+                    <td>${d.worker_name}</td>
+                    <td>***</td>
+                    <td><span class="badge bg-secondary">${d.epp_type_name}</span></td>
+                    <td>${d.size_name}</td>
+                    <td><span class="badge bg-primary">${d.quantity}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary me-1" onclick="editDelivery(${d.id})" title="Editar">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteDelivery(${d.id})" title="Eliminar">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function handleDeliverySubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('deliveryId').value;
+            const data = {
+                period_id: currentPeriod,
+                worker_id: document.getElementById('deliveryWorker').value,
+                epp_type_id: document.getElementById('deliveryEppType').value,
+                size_id: document.getElementById('deliverySize').value,
+                quantity: parseInt(document.getElementById('deliveryQty').value),
+                delivery_date: document.getElementById('deliveryDate').value
+            };
+
+            try {
+                if (id) {
+                    await Api.put(`/api/deliveries/${id}`, data);
+                    Utils.toast('Entrega actualizada correctamente');
+                } else {
+                    await Api.post('/api/deliveries', data);
+                    Utils.toast('Entrega registrada correctamente');
+                }
+                bootstrap.Modal.getInstance(document.getElementById('deliveryModal')).hide();
+                loadDeliveries();
+            } catch (e) {
+                Utils.toast(e.message || 'Error al guardar entrega', 'error');
+            }
+        }
+
+        async function handleQuickWorker(e) {
+            e.preventDefault();
+            const data = {
+                full_name: document.getElementById('workerName').value,
+                dni: document.getElementById('workerDni').value
+            };
+
+            try {
+                const res = await Api.post('/api/workers', data);
+                if (res.data) {
+                    const select = document.getElementById('deliveryWorker');
+                    select.innerHTML += `<option value="${res.data.id}" selected>${res.data.full_name}</option>`;
+                    Utils.toast('Trabajador creado correctamente');
+                    bootstrap.Modal.getInstance(document.getElementById('quickWorkerModal')).hide();
+                }
+            } catch (e) {
+                Utils.toast(e.message || 'Error al crear trabajador', 'error');
+            }
+        }
+
+        async function editDelivery(id) {
+            const delivery = deliveriesData.find(d => d.id === id);
+            if (!delivery) return;
+
+            document.getElementById('deliveryId').value = delivery.id;
+            document.getElementById('deliveryWorker').value = delivery.worker_id;
+            document.getElementById('deliveryEppType').value = delivery.epp_type_id;
+            document.getElementById('deliveryDate').value = delivery.delivery_date;
+            document.getElementById('deliveryModalTitle').textContent = 'Editar Entrega';
+
+            await loadSizesForDelivery();
+            document.getElementById('deliverySize').value = delivery.size_id;
+            document.getElementById('deliveryQty').value = delivery.quantity;
+
+            new bootstrap.Modal(document.getElementById('deliveryModal')).show();
+        }
+
+        async function deleteDelivery(id) {
+            if (!await Utils.confirm('Eliminar entrega', '¿Está seguro de eliminar esta entrega?')) return;
+            
+            try {
+                await Api.delete(`/api/deliveries/${id}`);
+                Utils.toast('Entrega eliminada correctamente');
+                loadDeliveries();
+            } catch (e) {
+                Utils.toast(e.message || 'Error al eliminar entrega', 'error');
+            }
+        }
+
+        function applyFilters() {
+            let filtered = [...deliveriesData];
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const eppType = document.getElementById('filterEppType').value;
+            const dateFrom = document.getElementById('filterDateFrom').value;
+            const dateTo = document.getElementById('filterDateTo').value;
+
+            if (search) {
+                filtered = filtered.filter(d => 
+                    d.worker_name.toLowerCase().includes(search) ||
+                    (d.worker_dni && d.worker_dni.includes(search))
+                );
+            }
+            if (eppType) filtered = filtered.filter(d => d.epp_type_id == eppType);
+            if (dateFrom) filtered = filtered.filter(d => d.delivery_date >= dateFrom);
+            if (dateTo) filtered = filtered.filter(d => d.delivery_date <= dateTo);
+
+            renderTable(filtered);
+        }
+
+        async function exportToExcel() {
+            Utils.toast('Exportando a Excel...', 'info');
+            try {
+                const res = await Api.get(`/api/deliveries/export?period_id=${currentPeriod}`);
+                if (res.data) {
+                    const blob = Utils.base64ToBlob(res.data.content, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                    Utils.downloadBlob(blob, `entregas-${currentPeriod}.xlsx`);
+                    Utils.toast('Exportación completada');
+                }
+            } catch (e) {
+                Utils.toast('Error al exportar', 'error');
+            }
+        }
+    </script>
+</body>
+</html>

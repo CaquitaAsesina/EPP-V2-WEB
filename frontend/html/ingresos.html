@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingresos de EPP - EPP Control</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="../css/variables.css" rel="stylesheet">
+    <link href="../css/layout.css" rel="stylesheet">
+    <link href="../css/components.css" rel="stylesheet">
+    <link href="../css/responsive.css" rel="stylesheet">
+</head>
+<body>
+    <div id="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo"><i class="bi bi-shield-check"></i></div>
+                <span>EPP Control</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-link"><i class="bi bi-speedometer2"></i><span>Dashboard</span></a>
+                <a href="periodos.html" class="nav-link"><i class="bi bi-calendar3"></i><span>Períodos</span></a>
+                <a href="inventario-limpio.html" class="nav-link"><i class="bi bi-check-circle"></i><span>EPP Limpio</span></a>
+                <a href="inventario-sucio.html" class="nav-link"><i class="bi bi-arrow-repeat"></i><span>EPP Sucio</span></a>
+                <a href="entregas.html" class="nav-link"><i class="bi bi-box-arrow-up"></i><span>Entregas</span></a>
+                <a href="ingresos.html" class="nav-link active"><i class="bi bi-box-arrow-down"></i><span>Ingresos</span></a>
+                <a href="devoluciones.html" class="nav-link"><i class="bi bi-arrow-return-left"></i><span>Devoluciones</span></a>
+                <a href="trabajadores.html" class="nav-link"><i class="bi bi-people"></i><span>Trabajadores</span></a>
+                <a href="consultas.html" class="nav-link"><i class="bi bi-search"></i><span>Consultas</span></a>
+                <a href="perfil.html" class="nav-link admin-only"><i class="bi bi-person-gear"></i><span>Perfil</span></a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <button class="btn-icon sidebar-toggle" id="sidebarToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+                <div class="header-title">
+                    <h1>Ingresos de EPP</h1>
+                    <p class="text-muted mb-0">Registro de ingresos de equipos de protección personal</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-icon theme-toggle" id="themeToggle">
+                        <i class="bi bi-moon"></i>
+                    </button>
+                    <div class="dropdown">
+                        <button class="btn-icon" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="perfil.html"><i class="bi bi-person me-2"></i>Perfil</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>Salir</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content-wrapper">
+                <!-- Period Selector -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-4">
+                                <label class="form-label">Período Activo</label>
+                                <select class="form-select" id="periodSelect">
+                                    <option value="">Seleccionar período...</option>
+                                </select>
+                            </div>
+                            <div class="col-md-8 text-end">
+                                <button class="btn btn-primary" id="btnAddIncome">
+                                    <i class="bi bi-plus-lg me-2"></i>Nuevo Ingreso
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card stat-card">
+                            <div class="stat-icon bg-success text-white">
+                                <i class="bi bi-box-arrow-down"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h6>Total Ingresos</h6>
+                                <h3 id="totalIncomes">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card">
+                            <div class="stat-icon bg-primary text-white">
+                                <i class="bi bi-box-seam"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h6>Unidades Ingresadas</h6>
+                                <h3 id="totalUnits">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card">
+                            <div class="stat-icon bg-info text-white">
+                                <i class="bi bi-calendar-check"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h6>Hoy</h6>
+                                <h3 id="todayIncomes">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card">
+                            <div class="stat-icon bg-warning text-dark">
+                                <i class="bi bi-building"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h6>Proveedores</h6>
+                                <h3 id="totalSuppliers">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Buscar</label>
+                                <input type="text" class="form-control" id="searchInput" placeholder="Buscar por proveedor, documento...">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Tipo EPP</label>
+                                <select class="form-select" id="filterEppType">
+                                    <option value="">Todos</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Fecha Inicio</label>
+                                <input type="date" class="form-control" id="filterDateFrom">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Fecha Fin</label>
+                                <input type="date" class="form-control" id="filterDateTo">
+                            </div>
+                            <div class="col-md-3 text-end">
+                                <button class="btn btn-outline-secondary" id="btnExportExcel">
+                                    <i class="bi bi-file-earmark-excel me-2"></i>Exportar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>EPP</th>
+                                        <th>Talla</th>
+                                        <th>Cantidad</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="incomesTable">
+                                    <tr>
+                                        <td colspan="5" class="text-center py-4">
+                                            <div class="empty-state">
+                                                <i class="bi bi-inbox"></i>
+                                                <p>No hay ingresos registrados</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Income Modal -->
+    <div class="modal fade" id="incomeModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="incomeModalTitle">Nuevo Ingreso</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="incomeForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="incomeId">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Tipo EPP *</label>
+                                <select class="form-select" id="incomeEppType" required></select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Talla *</label>
+                                <select class="form-select" id="incomeSize" required></select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Cantidad *</label>
+                                <input type="number" class="form-control" id="incomeQty" min="1" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Fecha de Recepción</label>
+                                <input type="date" class="form-control" id="incomeDate">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/layout.js"></script>
+    <script>
+        let currentPeriod = null;
+        let incomesData = [];
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            Layout.init();
+            await loadPeriods();
+            loadEppTypes();
+            setupEventListeners();
+            if (currentPeriod) loadIncomes();
+        });
+
+        function setupEventListeners() {
+            document.getElementById('periodSelect').addEventListener('change', (e) => {
+                currentPeriod = e.target.value;
+                if (currentPeriod) loadIncomes();
+            });
+
+            document.getElementById('btnAddIncome').addEventListener('click', () => {
+                if (!currentPeriod) {
+                    Utils.toast('Seleccione un período primero', 'warning');
+                    return;
+                }
+                document.getElementById('incomeForm').reset();
+                document.getElementById('incomeId').value = '';
+                document.getElementById('incomeDate').value = new Date().toISOString().split('T')[0];
+                document.getElementById('incomeModalTitle').textContent = 'Nuevo Ingreso';
+                new bootstrap.Modal(document.getElementById('incomeModal')).show();
+            });
+
+            document.getElementById('incomeForm').addEventListener('submit', handleIncomeSubmit);
+            document.getElementById('incomeEppType').addEventListener('change', loadSizesForIncome);
+
+            document.getElementById('searchInput').addEventListener('input', applyFilters);
+            document.getElementById('filterEppType').addEventListener('change', applyFilters);
+            document.getElementById('filterDateFrom').addEventListener('change', applyFilters);
+            document.getElementById('filterDateTo').addEventListener('change', applyFilters);
+            document.getElementById('btnExportExcel').addEventListener('click', exportToExcel);
+        }
+
+        async function loadPeriods() {
+            try {
+                const res = await Api.get('/api/periods');
+                const select = document.getElementById('periodSelect');
+                select.innerHTML = '<option value="">Seleccionar período...</option>';
+                if (res.data && res.data.length) {
+                    res.data.forEach(p => {
+                        select.innerHTML += `<option value="${p.id}" ${p.is_active ? 'selected' : ''}>${p.name} ${p.is_active ? '(Activo)' : ''}</option>`;
+                    });
+                    if (res.data.find(p => p.is_active)) {
+                        currentPeriod = res.data.find(p => p.is_active).id;
+                    }
+                }
+            } catch (e) {
+                Utils.toast('Error cargando períodos', 'error');
+            }
+        }
+
+        async function loadEppTypes() {
+            try {
+                const res = await Api.get('/api/epp-types');
+                const incomeSelect = document.getElementById('incomeEppType');
+                const filterSelect = document.getElementById('filterEppType');
+                if (res.data) {
+                    res.data.filter(t => t.is_active).forEach(t => {
+                        incomeSelect.innerHTML += `<option value="${t.id}">${t.name}</option>`;
+                        filterSelect.innerHTML += `<option value="${t.id}">${t.name}</option>`;
+                    });
+                }
+            } catch (e) {
+                console.error('Error loading EPP types:', e);
+            }
+        }
+
+        async function loadSizesForIncome() {
+            const eppTypeId = document.getElementById('incomeEppType').value;
+            const sizeSelect = document.getElementById('incomeSize');
+            sizeSelect.innerHTML = '<option value="">Seleccionar talla...</option>';
+            
+            if (!eppTypeId) return;
+            
+            try {
+                const res = await Api.get(`/api/epp-types/${eppTypeId}/sizes`);
+                if (res.data) {
+                    res.data.forEach(s => {
+                        sizeSelect.innerHTML += `<option value="${s.id}">${s.name}</option>`;
+                    });
+                }
+            } catch (e) {
+                console.error('Error loading sizes:', e);
+            }
+        }
+
+        async function loadIncomes() {
+            if (!currentPeriod) return;
+            try {
+                const res = await Api.get(`/api/incomes?period_id=${currentPeriod}`);
+                incomesData = res.data || [];
+                updateStats();
+                renderTable(incomesData);
+            } catch (e) {
+                Utils.toast('Error cargando ingresos', 'error');
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('totalIncomes').textContent = incomesData.length;
+            document.getElementById('totalUnits').textContent = incomesData.reduce((sum, i) => sum + (i.quantity || 0), 0);
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('todayIncomes').textContent = incomesData.filter(i => i.reception_date === today).length;
+            const suppliers = new Set(incomesData.map(i => i.supplier).filter(Boolean));
+            document.getElementById('totalSuppliers').textContent = suppliers.size;
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('incomesTable');
+            if (!data || data.length === 0) {
+                tbody.innerHTML = `<tr>                                        <td colspan="5" class="text-center py-4">
+                                            <div class="empty-state">
+                                                <i class="bi bi-inbox"></i><p>No hay ingresos registrados</p></div>
+                </td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = data.map(i => `
+                <tr>
+                    <td>${Utils.formatDate(i.reception_date)}</td>
+                    <td><span class="badge bg-secondary">${i.epp_type_name}</span></td>
+                    <td>${i.size_name}</td>
+                    <td><span class="badge bg-success">${i.quantity}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary me-1" onclick="editIncome(${i.id})" title="Editar">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteIncome(${i.id})" title="Eliminar">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function handleIncomeSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('incomeId').value;
+            const data = {
+                period_id: currentPeriod,
+                epp_type_id: document.getElementById('incomeEppType').value,
+                size_id: document.getElementById('incomeSize').value,
+                quantity: parseInt(document.getElementById('incomeQty').value),
+                reception_date: document.getElementById('incomeDate').value
+            };
+
+            try {
+                if (id) {
+                    await Api.put(`/api/incomes/${id}`, data);
+                    Utils.toast('Ingreso actualizado correctamente');
+                } else {
+                    await Api.post('/api/incomes', data);
+                    Utils.toast('Ingreso registrado correctamente');
+                }
+                bootstrap.Modal.getInstance(document.getElementById('incomeModal')).hide();
+                loadIncomes();
+            } catch (e) {
+                Utils.toast(e.message || 'Error al guardar ingreso', 'error');
+            }
+        }
+
+        async function editIncome(id) {
+            const income = incomesData.find(i => i.id === id);
+            if (!income) return;
+
+            document.getElementById('incomeId').value = income.id;
+            document.getElementById('incomeEppType').value = income.epp_type_id;
+            document.getElementById('incomeDate').value = income.reception_date;
+            document.getElementById('incomeModalTitle').textContent = 'Editar Ingreso';
+
+            await loadSizesForIncome();
+            document.getElementById('incomeSize').value = income.size_id;
+            document.getElementById('incomeQty').value = income.quantity;
+
+            new bootstrap.Modal(document.getElementById('incomeModal')).show();
+        }
+
+        async function deleteIncome(id) {
+            if (!await Utils.confirm('Eliminar ingreso', '¿Está seguro de eliminar este ingreso?')) return;
+            
+            try {
+                await Api.delete(`/api/incomes/${id}`);
+                Utils.toast('Ingreso eliminado correctamente');
+                loadIncomes();
+            } catch (e) {
+                Utils.toast(e.message || 'Error al eliminar ingreso', 'error');
+            }
+        }
+
+        function applyFilters() {
+            let filtered = [...incomesData];
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const eppType = document.getElementById('filterEppType').value;
+            const dateFrom = document.getElementById('filterDateFrom').value;
+            const dateTo = document.getElementById('filterDateTo').value;
+
+            if (search) {
+                filtered = filtered.filter(i => 
+                    (i.epp_type_name && i.epp_type_name.toLowerCase().includes(search))
+                );
+            }
+            if (eppType) filtered = filtered.filter(i => i.epp_type_id == eppType);
+            if (dateFrom) filtered = filtered.filter(i => i.reception_date >= dateFrom);
+            if (dateTo) filtered = filtered.filter(i => i.reception_date <= dateTo);
+
+            renderTable(filtered);
+        }
+
+        async function exportToExcel() {
+            Utils.toast('Exportando a Excel...', 'info');
+            try {
+                const res = await Api.get(`/api/incomes/export?period_id=${currentPeriod}`);
+                if (res.data) {
+                    const blob = Utils.base64ToBlob(res.data.content, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                    Utils.downloadBlob(blob, `ingresos-${currentPeriod}.xlsx`);
+                    Utils.toast('Exportación completada');
+                }
+            } catch (e) {
+                Utils.toast('Error al exportar', 'error');
+            }
+        }
+    </script>
+</body>
+</html>

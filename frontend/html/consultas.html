@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultas y Reportes - EPP Control</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="../css/variables.css" rel="stylesheet">
+    <link href="../css/layout.css" rel="stylesheet">
+    <link href="../css/components.css" rel="stylesheet">
+    <link href="../css/responsive.css" rel="stylesheet">
+</head>
+<body>
+    <div id="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo"><i class="bi bi-shield-check"></i></div>
+                <span>EPP Control</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-link"><i class="bi bi-speedometer2"></i><span>Dashboard</span></a>
+                <a href="periodos.html" class="nav-link"><i class="bi bi-calendar3"></i><span>Períodos</span></a>
+                <a href="inventario-limpio.html" class="nav-link"><i class="bi bi-check-circle"></i><span>EPP Limpio</span></a>
+                <a href="inventario-sucio.html" class="nav-link"><i class="bi bi-arrow-repeat"></i><span>EPP Sucio</span></a>
+                <a href="entregas.html" class="nav-link"><i class="bi bi-box-arrow-up"></i><span>Entregas</span></a>
+                <a href="ingresos.html" class="nav-link"><i class="bi bi-box-arrow-down"></i><span>Ingresos</span></a>
+                <a href="devoluciones.html" class="nav-link"><i class="bi bi-arrow-return-left"></i><span>Devoluciones</span></a>
+                <a href="trabajadores.html" class="nav-link"><i class="bi bi-people"></i><span>Trabajadores</span></a>
+                <a href="consultas.html" class="nav-link active"><i class="bi bi-search"></i><span>Consultas</span></a>
+                <a href="perfil.html" class="nav-link admin-only"><i class="bi bi-person-gear"></i><span>Perfil</span></a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <button class="btn-icon sidebar-toggle" id="sidebarToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+                <div class="header-title">
+                    <h1>Consultas y Reportes</h1>
+                    <p class="text-muted mb-0">Consultas integrales con filtros avanzados</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-icon theme-toggle" id="themeToggle">
+                        <i class="bi bi-moon"></i>
+                    </button>
+                    <div class="dropdown">
+                        <button class="btn-icon" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="perfil.html"><i class="bi bi-person me-2"></i>Perfil</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>Salir</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content-wrapper">
+                <!-- Advanced Filters -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="bi bi-funnel me-2"></i>Filtros Avanzados</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Período</label>
+                                <select class="form-select" id="filterPeriod">
+                                    <option value="">Todos</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Tipo de Movimiento</label>
+                                <select class="form-select" id="filterMovementType">
+                                    <option value="">Todos</option>
+                                    <option value="stock_inicial">Stock Inicial</option>
+                                    <option value="ingreso">Ingreso</option>
+                                    <option value="entrega">Entrega</option>
+                                    <option value="devolucion">Devolución</option>
+                                    <option value="para_lavar">Para Lavar</option>
+                                    <option value="mandado_lavar">Mandado a Lavar</option>
+                                    <option value="lavado">Lavado</option>
+                                    <option value="inventario_fisico">Inventario Físico</option>
+                                    <option value="perdida">Pérdida</option>
+                                    <option value="ajuste">Ajuste</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Tipo EPP</label>
+                                <select class="form-select" id="filterEppType">
+                                    <option value="">Todos</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Talla</label>
+                                <select class="form-select" id="filterSize">
+                                    <option value="">Todas</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Trabajador</label>
+                                <select class="form-select" id="filterWorker">
+                                    <option value="">Todos</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Usuario</label>
+                                <select class="form-select" id="filterUser">
+                                    <option value="">Todos</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Fecha Inicio</label>
+                                <input type="date" class="form-control" id="filterDateFrom">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Fecha Fin</label>
+                                <input type="date" class="form-control" id="filterDateTo">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Cantidad Mínima</label>
+                                <input type="number" class="form-control" id="filterQtyMin" min="0">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Cantidad Máxima</label>
+                                <input type="number" class="form-control" id="filterQtyMax" min="0">
+                            </div>
+                            <div class="col-md-6 text-end">
+                                <button class="btn btn-primary me-2" id="btnSearch">
+                                    <i class="bi bi-search me-2"></i>Buscar
+                                </button>
+                                <button class="btn btn-outline-secondary me-2" id="btnResetFilters">
+                                    <i class="bi bi-x-circle me-2"></i>Limpiar
+                                </button>
+                                <button class="btn btn-outline-success" id="btnExportExcel">
+                                    <i class="bi bi-file-earmark-excel me-2"></i>Exportar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Summary -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card stat-card">
+                            <div class="stat-icon bg-primary text-white">
+                                <i class="bi bi-list-ul"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h6>Total Registros</h6>
+                                <h3 id="totalRecords">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card">
+                            <div class="stat-icon bg-success text-white">
+                                <i class="bi bi-box-seam"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h6>Total Unidades</h6>
+                                <h3 id="totalUnits">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card">
+                            <div class="stat-icon bg-info text-white">
+                                <i class="bi bi-calendar3"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h6>Períodos Afectados</h6>
+                                <h3 id="totalPeriods">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card stat-card">
+                            <div class="stat-icon bg-warning text-dark">
+                                <i class="bi bi-people"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h6>Trabajadores</h6>
+                                <h3 id="totalWorkers">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Table -->
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Resultados</h5>
+                        <span class="badge bg-secondary" id="resultCount">0 registros</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Período</th>
+                                        <th>Tipo</th>
+                                        <th>EPP</th>
+                                        <th>Talla</th>
+                                        <th>Cantidad</th>
+                                        <th>Trabajador</th>
+                                        <th>Usuario</th>
+                                        <th>Observación</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="resultsTable">
+                                    <tr>
+                                        <td colspan="9" class="text-center py-4">
+                                            <div class="empty-state">
+                                                <i class="bi bi-search"></i>
+                                                <p>Use los filtros para buscar movimientos</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/layout.js"></script>
+    <script>
+        let resultsData = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            Layout.init();
+            loadFilters();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            document.getElementById('btnSearch').addEventListener('click', performSearch);
+            document.getElementById('btnResetFilters').addEventListener('click', resetFilters);
+            document.getElementById('btnExportExcel').addEventListener('click', exportToExcel);
+        }
+
+        async function loadFilters() {
+            try {
+                const [periods, eppTypes, sizes, workers, users] = await Promise.all([
+                    Api.get('/api/periods'),
+                    Api.get('/api/epp-types'),
+                    Api.get('/api/sizes'),
+                    Api.get('/api/workers'),
+                    Api.get('/api/users')
+                ]);
+
+                if (periods.data) {
+                    periods.data.forEach(p => {
+                        document.getElementById('filterPeriod').innerHTML += `<option value="${p.id}">${p.name}</option>`;
+                    });
+                }
+
+                if (eppTypes.data) {
+                    eppTypes.data.filter(t => t.is_active).forEach(t => {
+                        document.getElementById('filterEppType').innerHTML += `<option value="${t.id}">${t.name}</option>`;
+                    });
+                }
+
+                if (sizes.data) {
+                    sizes.data.filter(s => s.is_active).forEach(s => {
+                        document.getElementById('filterSize').innerHTML += `<option value="${s.id}">${s.name}</option>`;
+                    });
+                }
+
+                if (workers.data) {
+                    workers.data.forEach(w => {
+                        document.getElementById('filterWorker').innerHTML += `<option value="${w.id}">${w.full_name}</option>`;
+                    });
+                }
+
+                if (users.data) {
+                    users.data.forEach(u => {
+                        document.getElementById('filterUser').innerHTML += `<option value="${u.id}">${u.username}</option>`;
+                    });
+                }
+            } catch (e) {
+                Utils.toast('Error cargando filtros', 'error');
+            }
+        }
+
+        async function performSearch() {
+            const params = new URLSearchParams();
+            
+            const period = document.getElementById('filterPeriod').value;
+            const movementType = document.getElementById('filterMovementType').value;
+            const eppType = document.getElementById('filterEppType').value;
+            const size = document.getElementById('filterSize').value;
+            const worker = document.getElementById('filterWorker').value;
+            const user = document.getElementById('filterUser').value;
+            const dateFrom = document.getElementById('filterDateFrom').value;
+            const dateTo = document.getElementById('filterDateTo').value;
+            const qtyMin = document.getElementById('filterQtyMin').value;
+            const qtyMax = document.getElementById('filterQtyMax').value;
+
+            if (period) params.append('period_id', period);
+            if (movementType) params.append('movement_type', movementType);
+            if (eppType) params.append('epp_type_id', eppType);
+            if (size) params.append('size_id', size);
+            if (worker) params.append('worker_id', worker);
+            if (user) params.append('user_id', user);
+            if (dateFrom) params.append('date_from', dateFrom);
+            if (dateTo) params.append('date_to', dateTo);
+            if (qtyMin) params.append('qty_min', qtyMin);
+            if (qtyMax) params.append('qty_max', qtyMax);
+
+            try {
+                const res = await Api.get(`/api/movements?${params.toString()}`);
+                resultsData = res.data || [];
+                updateStats();
+                renderTable(resultsData);
+            } catch (e) {
+                Utils.toast('Error en la búsqueda', 'error');
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('totalRecords').textContent = resultsData.length;
+            document.getElementById('totalUnits').textContent = resultsData.reduce((sum, r) => sum + (r.quantity || 0), 0);
+            const periods = new Set(resultsData.map(r => r.period_id));
+            document.getElementById('totalPeriods').textContent = periods.size;
+            const workers = new Set(resultsData.map(r => r.worker_id).filter(Boolean));
+            document.getElementById('totalWorkers').textContent = workers.size;
+            document.getElementById('resultCount').textContent = `${resultsData.length} registros`;
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('resultsTable');
+            if (!data || data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="9" class="text-center py-4">
+                    <div class="empty-state"><i class="bi bi-inbox"></i><p>No se encontraron resultados</p></div>
+                </td></tr>`;
+                return;
+            }
+
+            const typeLabels = {
+                'stock_inicial': '<span class="badge bg-info">Stock Inicial</span>',
+                'ingreso': '<span class="badge bg-success">Ingreso</span>',
+                'entrega': '<span class="badge bg-primary">Entrega</span>',
+                'devolucion': '<span class="badge bg-warning text-dark">Devolución</span>',
+                'para_lavar': '<span class="badge bg-secondary">Para Lavar</span>',
+                'mandado_lavar': '<span class="badge bg-dark">Mandado a Lavar</span>',
+                'lavado': '<span class="badge bg-success">Lavado</span>',
+                'inventario_fisico': '<span class="badge bg-info">Inventario Físico</span>',
+                'perdida': '<span class="badge bg-danger">Pérdida</span>',
+                'ajuste': '<span class="badge bg-secondary">Ajuste</span>'
+            };
+
+            tbody.innerHTML = data.map(r => `
+                <tr>
+                    <td>${Utils.formatDate(r.created_at)}</td>
+                    <td>${r.period_name || '-'}</td>
+                    <td>${typeLabels[r.movement_type] || r.movement_type}</td>
+                    <td><span class="badge bg-secondary">${r.epp_type_name || '-'}</span></td>
+                    <td>${r.size_name || '-'}</td>
+                    <td><strong>${r.quantity}</strong></td>
+                    <td>${r.worker_name || '-'}</td>
+                    <td>${r.user_name || '-'}</td>
+                    <td>${r.observation || '-'}</td>
+                </tr>
+            `).join('');
+        }
+
+        function resetFilters() {
+            document.getElementById('filterPeriod').value = '';
+            document.getElementById('filterMovementType').value = '';
+            document.getElementById('filterEppType').value = '';
+            document.getElementById('filterSize').value = '';
+            document.getElementById('filterWorker').value = '';
+            document.getElementById('filterUser').value = '';
+            document.getElementById('filterDateFrom').value = '';
+            document.getElementById('filterDateTo').value = '';
+            document.getElementById('filterQtyMin').value = '';
+            document.getElementById('filterQtyMax').value = '';
+            resultsData = [];
+            renderTable([]);
+            updateStats();
+        }
+
+        async function exportToExcel() {
+            Utils.toast('Exportando a Excel...', 'info');
+            try {
+                const params = new URLSearchParams();
+                const period = document.getElementById('filterPeriod').value;
+                const movementType = document.getElementById('filterMovementType').value;
+                if (period) params.append('period_id', period);
+                if (movementType) params.append('movement_type', movementType);
+
+                const res = await Api.get(`/api/movements/export?${params.toString()}`);
+                if (res.data) {
+                    const blob = Utils.base64ToBlob(res.data.content, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                    Utils.downloadBlob(blob, `consultas-${new Date().toISOString().split('T')[0]}.xlsx`);
+                    Utils.toast('Exportación completada');
+                }
+            } catch (e) {
+                Utils.toast('Error al exportar', 'error');
+            }
+        }
+    </script>
+</body>
+</html>

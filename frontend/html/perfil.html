@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil y Configuración - EPP Control</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="../css/variables.css" rel="stylesheet">
+    <link href="../css/layout.css" rel="stylesheet">
+    <link href="../css/components.css" rel="stylesheet">
+    <link href="../css/responsive.css" rel="stylesheet">
+</head>
+<body>
+    <div id="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo"><i class="bi bi-shield-check"></i></div>
+                <span>EPP Control</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-link"><i class="bi bi-speedometer2"></i><span>Dashboard</span></a>
+                <a href="periodos.html" class="nav-link"><i class="bi bi-calendar3"></i><span>Períodos</span></a>
+                <a href="inventario-limpio.html" class="nav-link"><i class="bi bi-check-circle"></i><span>EPP Limpio</span></a>
+                <a href="inventario-sucio.html" class="nav-link"><i class="bi bi-arrow-repeat"></i><span>EPP Sucio</span></a>
+                <a href="entregas.html" class="nav-link"><i class="bi bi-box-arrow-up"></i><span>Entregas</span></a>
+                <a href="ingresos.html" class="nav-link"><i class="bi bi-box-arrow-down"></i><span>Ingresos</span></a>
+                <a href="devoluciones.html" class="nav-link"><i class="bi bi-arrow-return-left"></i><span>Devoluciones</span></a>
+                <a href="trabajadores.html" class="nav-link"><i class="bi bi-people"></i><span>Trabajadores</span></a>
+                <a href="consultas.html" class="nav-link"><i class="bi bi-search"></i><span>Consultas</span></a>
+                <a href="perfil.html" class="nav-link active admin-only"><i class="bi bi-person-gear"></i><span>Perfil</span></a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <button class="btn-icon sidebar-toggle" id="sidebarToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+                <div class="header-title">
+                    <h1>Perfil y Configuración</h1>
+                    <p class="text-muted mb-0">Administrar perfil, usuarios y apariencia</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-icon theme-toggle" id="themeToggle">
+                        <i class="bi bi-moon"></i>
+                    </button>
+                    <div class="dropdown">
+                        <button class="btn-icon" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="perfil.html"><i class="bi bi-person me-2"></i>Perfil</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>Salir</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content-wrapper">
+                <!-- Tabs Navigation -->
+                <ul class="nav nav-tabs mb-4" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profileTab">
+                            <i class="bi bi-person me-2"></i>Mi Perfil
+                        </button>
+                    </li>
+                    <li class="nav-item admin-only" role="presentation">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#usersTab">
+                            <i class="bi bi-people me-2"></i>Usuarios
+                        </button>
+                    </li>
+                    <li class="nav-item admin-only" role="presentation">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#eppTypesTab">
+                            <i class="bi bi-shield-check me-2"></i>Tipos EPP
+                        </button>
+                    </li>
+                    <li class="nav-item admin-only" role="presentation">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#sizesTab">
+                            <i class="bi bi-rulers me-2"></i>Tallas
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#appearanceTab">
+                            <i class="bi bi-palette me-2"></i>Apariencia
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- Profile Tab -->
+                    <div class="tab-pane fade show active" id="profileTab">
+                        <div class="card">
+                            <div class="card-body">
+                                <form id="profileForm">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Nombre de Usuario</label>
+                                            <input type="text" class="form-control" id="profileUsername" readonly>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Rol</label>
+                                            <input type="text" class="form-control" id="profileRole" readonly>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Nueva Contraseña</label>
+                                            <input type="password" class="form-control" id="profileNewPassword" placeholder="Dejar vacío para no cambiar">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Confirmar Contraseña</label>
+                                            <input type="password" class="form-control" id="profileConfirmPassword">
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-check-lg me-2"></i>Guardar Cambios
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Users Tab (Admin Only) -->
+                    <div class="tab-pane fade" id="usersTab">
+                        <div class="card mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Gestionar Usuarios</h5>
+                                <button class="btn btn-primary btn-sm" id="btnAddUser">
+                                    <i class="bi bi-plus-lg me-2"></i>Nuevo Usuario
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Usuario</th>
+                                                <th>Rol</th>
+                                                <th>Estado</th>
+                                                <th>Creado</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="usersTable">
+                                            <tr>
+                                                <td colspan="5" class="text-center py-4">
+                                                    <div class="spinner-border text-primary" role="status">
+                                                        <span class="visually-hidden">Cargando...</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- EPP Types Tab (Admin Only) -->
+                    <div class="tab-pane fade" id="eppTypesTab">
+                        <div class="card mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Gestionar Tipos de EPP</h5>
+                                <button class="btn btn-primary btn-sm" id="btnAddEppType">
+                                    <i class="bi bi-plus-lg me-2"></i>Nuevo Tipo
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Estado</th>
+                                                <th>Creado</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="eppTypesTable">
+                                            <tr>
+                                                <td colspan="4" class="text-center py-4">
+                                                    <div class="spinner-border text-primary" role="status">
+                                                        <span class="visually-hidden">Cargando...</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sizes Tab (Admin Only) -->
+                    <div class="tab-pane fade" id="sizesTab">
+                        <div class="card mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Gestionar Tallas</h5>
+                                <button class="btn btn-primary btn-sm" id="btnAddSize">
+                                    <i class="bi bi-plus-lg me-2"></i>Nueva Talla
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Nombre</th>
+                                                <th>Estado</th>
+                                                <th>Creado</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="sizesTable">
+                                            <tr>
+                                                <td colspan="4" class="text-center py-4">
+                                                    <div class="spinner-border text-primary" role="status">
+                                                        <span class="visually-hidden">Cargando...</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Appearance Tab -->
+                    <div class="tab-pane fade" id="appearanceTab">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="mb-0"><i class="bi bi-palette me-2"></i>Configuración de Apariencia</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="appearanceForm">
+                                    <div class="row g-4">
+                                        <!-- Theme Mode -->
+                                        <div class="col-md-4">
+                                            <label class="form-label">Modo</label>
+                                            <select class="form-select" id="prefTheme">
+                                                <option value="light">Claro</option>
+                                                <option value="dark">Oscuro</option>
+                                                <option value="auto">Automático</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Primary Color -->
+                                        <div class="col-md-4">
+                                            <label class="form-label">Color Principal</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" id="prefPrimaryColor" value="#e53935">
+                                                <input type="text" class="form-control" id="prefPrimaryColorText" value="#e53935">
+                                            </div>
+                                        </div>
+
+                                        <!-- Secondary Color -->
+                                        <div class="col-md-4">
+                                            <label class="form-label">Color Secundario</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" id="prefSecondaryColor" value="#ffffff">
+                                                <input type="text" class="form-control" id="prefSecondaryColorText" value="#ffffff">
+                                            </div>
+                                        </div>
+
+                                        <!-- Background Color -->
+                                        <div class="col-md-4">
+                                            <label class="form-label">Color de Fondo</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" id="prefBgColor" value="#f5f5f7">
+                                                <input type="text" class="form-control" id="prefBgColorText" value="#f5f5f7">
+                                            </div>
+                                        </div>
+
+                                        <!-- Card Color -->
+                                        <div class="col-md-4">
+                                            <label class="form-label">Color de Tarjetas</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" id="prefCardColor" value="#ffffff">
+                                                <input type="text" class="form-control" id="prefCardColorText" value="#ffffff">
+                                            </div>
+                                        </div>
+
+                                        <!-- Text Color -->
+                                        <div class="col-md-4">
+                                            <label class="form-label">Color de Texto</label>
+                                            <div class="input-group">
+                                                <input type="color" class="form-control form-control-color" id="prefTextColor" value="#1d1d1f">
+                                                <input type="text" class="form-control" id="prefTextColorText" value="#1d1d1f">
+                                            </div>
+                                        </div>
+
+                                        <!-- Sidebar Style -->
+                                        <div class="col-md-4">
+                                            <label class="form-label">Estilo de Sidebar</label>
+                                            <select class="form-select" id="prefSidebarStyle">
+                                                <option value="light">Claro</option>
+                                                <option value="dark">Oscuro</option>
+                                                <option value="custom">Personalizado</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Density -->
+                                        <div class="col-md-4">
+                                            <label class="form-label">Densidad de Interfaz</label>
+                                            <select class="form-select" id="prefDensity">
+                                                <option value="compact">Compacta</option>
+                                                <option value="normal" selected>Normal</option>
+                                                <option value="comfortable">Cómoda</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <hr class="my-4">
+
+                                    <button type="submit" class="btn btn-primary me-2">
+                                        <i class="bi bi-check-lg me-2"></i>Guardar Preferencias
+                                    </button>
+                                    <button type="button" class="btn btn-outline-secondary" id="btnResetAppearance">
+                                        <i class="bi bi-arrow-counterclockwise me-2"></i>Restablecer Predeterminado
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- User Modal -->
+    <div class="modal fade" id="userModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userModalTitle">Nuevo Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="userForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="userId">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre de Usuario *</label>
+                            <input type="text" class="form-control" id="userUsername" required>
+                        </div>
+                        <div class="mb-3" id="passwordGroup">
+                            <label class="form-label">Contraseña *</label>
+                            <input type="password" class="form-control" id="userPassword">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Rol *</label>
+                            <select class="form-select" id="userRole" required>
+                                <option value="lector">Lector</option>
+                                <option value="administrador">Administrador</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Estado</label>
+                            <select class="form-select" id="userStatus">
+                                <option value="1">Activo</option>
+                                <option value="0">Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- EPP Type Modal -->
+    <div class="modal fade" id="eppTypeModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eppTypeModalTitle">Nuevo Tipo de EPP</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="eppTypeForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="eppTypeId">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre *</label>
+                            <input type="text" class="form-control" id="eppTypeName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Estado</label>
+                            <select class="form-select" id="eppTypeStatus">
+                                <option value="1">Activo</option>
+                                <option value="0">Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Size Modal -->
+    <div class="modal fade" id="sizeModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sizeModalTitle">Nueva Talla</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="sizeForm">
+                    <div class="modal-body">
+                        <input type="hidden" id="sizeId">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre *</label>
+                            <input type="text" class="form-control" id="sizeName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Estado</label>
+                            <select class="form-select" id="sizeStatus">
+                                <option value="1">Activo</option>
+                                <option value="0">Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/layout.js"></script>
+    <script>
+        let usersData = [];
+        let eppTypesData = [];
+        let sizesData = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            Layout.init();
+            loadProfile();
+            loadUsers();
+            loadEppTypes();
+            loadSizes();
+            loadPreferences();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            // Profile form
+            document.getElementById('profileForm').addEventListener('submit', handleProfileSubmit);
+
+            // User management
+            document.getElementById('btnAddUser').addEventListener('click', () => {
+                document.getElementById('userForm').reset();
+                document.getElementById('userId').value = '';
+                document.getElementById('userModalTitle').textContent = 'Nuevo Usuario';
+                document.getElementById('passwordGroup').style.display = 'block';
+                document.getElementById('userPassword').required = true;
+                new bootstrap.Modal(document.getElementById('userModal')).show();
+            });
+            document.getElementById('userForm').addEventListener('submit', handleUserSubmit);
+
+            // EPP Types
+            document.getElementById('btnAddEppType').addEventListener('click', () => {
+                document.getElementById('eppTypeForm').reset();
+                document.getElementById('eppTypeId').value = '';
+                document.getElementById('eppTypeModalTitle').textContent = 'Nuevo Tipo de EPP';
+                new bootstrap.Modal(document.getElementById('eppTypeModal')).show();
+            });
+            document.getElementById('eppTypeForm').addEventListener('submit', handleEppTypeSubmit);
+
+            // Sizes
+            document.getElementById('btnAddSize').addEventListener('click', () => {
+                document.getElementById('sizeForm').reset();
+                document.getElementById('sizeId').value = '';
+                document.getElementById('sizeModalTitle').textContent = 'Nueva Talla';
+                new bootstrap.Modal(document.getElementById('sizeModal')).show();
+            });
+            document.getElementById('sizeForm').addEventListener('submit', handleSizeSubmit);
+
+            // Appearance color sync
+            ['Primary', 'Secondary', 'Bg', 'Card', 'Text'].forEach(name => {
+                const colorInput = document.getElementById(`pref${name}Color`);
+                const textInput = document.getElementById(`pref${name}ColorText`);
+                colorInput.addEventListener('input', () => textInput.value = colorInput.value);
+                textInput.addEventListener('input', () => colorInput.value = textInput.value);
+            });
+
+            document.getElementById('appearanceForm').addEventListener('submit', handleAppearanceSubmit);
+            document.getElementById('btnResetAppearance').addEventListener('click', resetAppearance);
+        }
+
+        async function loadProfile() {
+            try {
+                const res = await Api.get('/api/auth/profile');
+                if (res.data) {
+                    document.getElementById('profileUsername').value = res.data.username;
+                    document.getElementById('profileRole').value = res.data.role_name;
+                }
+            } catch (e) {
+                Utils.toast('Error cargando perfil', 'error');
+            }
+        }
+
+        async function handleProfileSubmit(e) {
+            e.preventDefault();
+            const newPassword = document.getElementById('profileNewPassword').value;
+            const confirmPassword = document.getElementById('profileConfirmPassword').value;
+
+            if (newPassword && newPassword !== confirmPassword) {
+                Utils.toast('Las contraseñas no coinciden', 'error');
+                return;
+            }
+
+            if (newPassword && newPassword.length < 6) {
+                Utils.toast('La contraseña debe tener al menos 6 caracteres', 'error');
+                return;
+            }
+
+            try {
+                const data = {};
+                if (newPassword) data.password = newPassword;
+                await Api.put('/api/auth/profile', data);
+                Utils.toast('Perfil actualizado correctamente');
+                document.getElementById('profileNewPassword').value = '';
+                document.getElementById('profileConfirmPassword').value = '';
+            } catch (e) {
+                Utils.toast(e.message || 'Error al actualizar perfil', 'error');
+            }
+        }
+
+        async function loadUsers() {
+            try {
+                const res = await Api.get('/api/users');
+                usersData = res.data || [];
+                renderUsersTable(usersData);
+            } catch (e) {
+                console.error('Error loading users:', e);
+            }
+        }
+
+        function renderUsersTable(data) {
+            const tbody = document.getElementById('usersTable');
+            if (!data || data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="text-center py-4">
+                    <div class="empty-state"><i class="bi bi-people"></i><p>No hay usuarios</p></div>
+                </td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = data.map(u => `
+                <tr>
+                    <td>${u.username}</td>
+                    <td><span class="badge bg-${u.role_name === 'administrador' ? 'danger' : 'secondary'}">${u.role_name}</span></td>
+                    <td><span class="badge bg-${u.is_active ? 'success' : 'warning'}">${u.is_active ? 'Activo' : 'Inactivo'}</span></td>
+                    <td>${Utils.formatDate(u.created_at)}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary me-1" onclick="editUser(${u.id})" title="Editar">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteUser(${u.id})" title="Eliminar">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function handleUserSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('userId').value;
+            const data = {
+                username: document.getElementById('userUsername').value,
+                role_name: document.getElementById('userRole').value,
+                is_active: parseInt(document.getElementById('userStatus').value)
+            };
+
+            const password = document.getElementById('userPassword').value;
+            if (password) data.password = password;
+
+            try {
+                if (id) {
+                    await Api.put(`/api/users/${id}`, data);
+                    Utils.toast('Usuario actualizado correctamente');
+                } else {
+                    if (!password) {
+                        Utils.toast('La contraseña es obligatoria para nuevos usuarios', 'error');
+                        return;
+                    }
+                    await Api.post('/api/users', data);
+                    Utils.toast('Usuario creado correctamente');
+                }
+                bootstrap.Modal.getInstance(document.getElementById('userModal')).hide();
+                loadUsers();
+            } catch (e) {
+                Utils.toast(e.message || 'Error al guardar usuario', 'error');
+            }
+        }
+
+        function editUser(id) {
+            const user = usersData.find(u => u.id === id);
+            if (!user) return;
+
+            document.getElementById('userId').value = user.id;
+            document.getElementById('userUsername').value = user.username;
+            document.getElementById('userRole').value = user.role_name;
+            document.getElementById('userStatus').value = user.is_active ? '1' : '0';
+            document.getElementById('userModalTitle').textContent = 'Editar Usuario';
+            document.getElementById('passwordGroup').style.display = 'block';
+            document.getElementById('userPassword').required = false;
+            document.getElementById('userPassword').placeholder = 'Dejar vacío para no cambiar';
+
+            new bootstrap.Modal(document.getElementById('userModal')).show();
+        }
+
+        async function deleteUser(id) {
+            if (!await Utils.confirm('Eliminar usuario', '¿Está seguro de eliminar este usuario?')) return;
+            
+            try {
+                await Api.delete(`/api/users/${id}`);
+                Utils.toast('Usuario eliminado correctamente');
+                loadUsers();
+            } catch (e) {
+                Utils.toast(e.message || 'Error al eliminar usuario', 'error');
+            }
+        }
+
+        async function loadEppTypes() {
+            try {
+                const res = await Api.get('/api/epp-types');
+                eppTypesData = res.data || [];
+                renderEppTypesTable(eppTypesData);
+            } catch (e) {
+                console.error('Error loading EPP types:', e);
+            }
+        }
+
+        function renderEppTypesTable(data) {
+            const tbody = document.getElementById('eppTypesTable');
+            if (!data || data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="text-center py-4">
+                    <div class="empty-state"><i class="bi bi-shield-check"></i><p>No hay tipos de EPP</p></div>
+                </td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = data.map(t => `
+                <tr>
+                    <td>${t.name}</td>
+                    <td><span class="badge bg-${t.is_active ? 'success' : 'warning'}">${t.is_active ? 'Activo' : 'Inactivo'}</span></td>
+                    <td>${Utils.formatDate(t.created_at)}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary me-1" onclick="editEppType(${t.id})" title="Editar">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteEppType(${t.id})" title="Eliminar">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function handleEppTypeSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('eppTypeId').value;
+            const data = {
+                name: document.getElementById('eppTypeName').value,
+                is_active: parseInt(document.getElementById('eppTypeStatus').value)
+            };
+
+            try {
+                if (id) {
+                    await Api.put(`/api/epp-types/${id}`, data);
+                    Utils.toast('Tipo de EPP actualizado correctamente');
+                } else {
+                    await Api.post('/api/epp-types', data);
+                    Utils.toast('Tipo de EPP creado correctamente');
+                }
+                bootstrap.Modal.getInstance(document.getElementById('eppTypeModal')).hide();
+                loadEppTypes();
+            } catch (e) {
+                Utils.toast(e.message || 'Error al guardar tipo de EPP', 'error');
+            }
+        }
+
+        function editEppType(id) {
+            const type = eppTypesData.find(t => t.id === id);
+            if (!type) return;
+
+            document.getElementById('eppTypeId').value = type.id;
+            document.getElementById('eppTypeName').value = type.name;
+            document.getElementById('eppTypeStatus').value = type.is_active ? '1' : '0';
+            document.getElementById('eppTypeModalTitle').textContent = 'Editar Tipo de EPP';
+
+            new bootstrap.Modal(document.getElementById('eppTypeModal')).show();
+        }
+
+        async function deleteEppType(id) {
+            if (!await Utils.confirm('Eliminar tipo EPP', '¿Está seguro de eliminar este tipo de EPP?')) return;
+            
+            try {
+                await Api.delete(`/api/epp-types/${id}`);
+                Utils.toast('Tipo de EPP eliminado correctamente');
+                loadEppTypes();
+            } catch (e) {
+                Utils.toast(e.message || 'Error al eliminar tipo de EPP', 'error');
+            }
+        }
+
+        async function loadSizes() {
+            try {
+                const res = await Api.get('/api/sizes');
+                sizesData = res.data || [];
+                renderSizesTable(sizesData);
+            } catch (e) {
+                console.error('Error loading sizes:', e);
+            }
+        }
+
+        function renderSizesTable(data) {
+            const tbody = document.getElementById('sizesTable');
+            if (!data || data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="text-center py-4">
+                    <div class="empty-state"><i class="bi bi-rulers"></i><p>No hay tallas</p></div>
+                </td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = data.map(s => `
+                <tr>
+                    <td>${s.name}</td>
+                    <td><span class="badge bg-${s.is_active ? 'success' : 'warning'}">${s.is_active ? 'Activo' : 'Inactivo'}</span></td>
+                    <td>${Utils.formatDate(s.created_at)}</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary me-1" onclick="editSize(${s.id})" title="Editar">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteSize(${s.id})" title="Eliminar">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function handleSizeSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('sizeId').value;
+            const data = {
+                name: document.getElementById('sizeName').value,
+                is_active: parseInt(document.getElementById('sizeStatus').value)
+            };
+
+            try {
+                if (id) {
+                    await Api.put(`/api/sizes/${id}`, data);
+                    Utils.toast('Talla actualizada correctamente');
+                } else {
+                    await Api.post('/api/sizes', data);
+                    Utils.toast('Talla creada correctamente');
+                }
+                bootstrap.Modal.getInstance(document.getElementById('sizeModal')).hide();
+                loadSizes();
+            } catch (e) {
+                Utils.toast(e.message || 'Error al guardar talla', 'error');
+            }
+        }
+
+        function editSize(id) {
+            const size = sizesData.find(s => s.id === id);
+            if (!size) return;
+
+            document.getElementById('sizeId').value = size.id;
+            document.getElementById('sizeName').value = size.name;
+            document.getElementById('sizeStatus').value = size.is_active ? '1' : '0';
+            document.getElementById('sizeModalTitle').textContent = 'Editar Talla';
+
+            new bootstrap.Modal(document.getElementById('sizeModal')).show();
+        }
+
+        async function deleteSize(id) {
+            if (!await Utils.confirm('Eliminar talla', '¿Está seguro de eliminar esta talla?')) return;
+            
+            try {
+                await Api.delete(`/api/sizes/${id}`);
+                Utils.toast('Talla eliminada correctamente');
+                loadSizes();
+            } catch (e) {
+                Utils.toast(e.message || 'Error al eliminar talla', 'error');
+            }
+        }
+
+        async function loadPreferences() {
+            try {
+                const res = await Api.get('/api/user-preferences');
+                if (res.data) {
+                    document.getElementById('prefTheme').value = res.data.theme_mode || 'light';
+                    document.getElementById('prefPrimaryColor').value = res.data.primary_color || '#e53935';
+                    document.getElementById('prefPrimaryColorText').value = res.data.primary_color || '#e53935';
+                    document.getElementById('prefSecondaryColor').value = res.data.secondary_color || '#ffffff';
+                    document.getElementById('prefSecondaryColorText').value = res.data.secondary_color || '#ffffff';
+                    document.getElementById('prefBgColor').value = res.data.background_color || '#f5f5f7';
+                    document.getElementById('prefBgColorText').value = res.data.background_color || '#f5f5f7';
+                    document.getElementById('prefCardColor').value = res.data.card_color || '#ffffff';
+                    document.getElementById('prefCardColorText').value = res.data.card_color || '#ffffff';
+                    document.getElementById('prefTextColor').value = res.data.text_color || '#1d1d1f';
+                    document.getElementById('prefTextColorText').value = res.data.text_color || '#1d1d1f';
+                    document.getElementById('prefSidebarStyle').value = res.data.sidebar_style || 'light';
+                    document.getElementById('prefDensity').value = res.data.density || 'normal';
+                }
+            } catch (e) {
+                console.error('Error loading preferences:', e);
+            }
+        }
+
+        async function handleAppearanceSubmit(e) {
+            e.preventDefault();
+            const data = {
+                theme_mode: document.getElementById('prefTheme').value,
+                primary_color: document.getElementById('prefPrimaryColor').value,
+                secondary_color: document.getElementById('prefSecondaryColor').value,
+                background_color: document.getElementById('prefBgColor').value,
+                card_color: document.getElementById('prefCardColor').value,
+                text_color: document.getElementById('prefTextColor').value,
+                sidebar_style: document.getElementById('prefSidebarStyle').value,
+                density: document.getElementById('prefDensity').value
+            };
+
+            try {
+                await Api.put('/api/user-preferences', data);
+                Utils.toast('Preferencias guardadas correctamente');
+                Utils.applyTheme(data);
+            } catch (e) {
+                Utils.toast(e.message || 'Error al guardar preferencias', 'error');
+            }
+        }
+
+        function resetAppearance() {
+            const defaults = {
+                theme_mode: 'light',
+                primary_color: '#e53935',
+                secondary_color: '#ffffff',
+                background_color: '#f5f5f7',
+                card_color: '#ffffff',
+                text_color: '#1d1d1f',
+                sidebar_style: 'light',
+                density: 'normal'
+            };
+
+            document.getElementById('prefTheme').value = defaults.theme_mode;
+            document.getElementById('prefPrimaryColor').value = defaults.primary_color;
+            document.getElementById('prefPrimaryColorText').value = defaults.primary_color;
+            document.getElementById('prefSecondaryColor').value = defaults.secondary_color;
+            document.getElementById('prefSecondaryColorText').value = defaults.secondary_color;document.getElementById('prefBgColor').value = defaults.background_color;
+                    document.getElementById('prefBgColorText').value = defaults.background_color;
+            document.getElementById('prefCardColor').value = defaults.card_color;
+            document.getElementById('prefCardColorText').value = defaults.card_color;
+            document.getElementById('prefTextColor').value = defaults.text_color;
+            document.getElementById('prefTextColorText').value = defaults.text_color;
+            document.getElementById('prefSidebarStyle').value = defaults.sidebar_style;
+            document.getElementById('prefDensity').value = defaults.density;
+
+            Utils.toast('Preferencias restablecidas', 'info');
+        }
+    </script>
+</body>
+</html>
