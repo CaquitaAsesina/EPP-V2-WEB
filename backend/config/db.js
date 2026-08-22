@@ -4,7 +4,7 @@ const env = require('./env');
 // Build pool config — add SSL when DB_SSL=true (Aiven, Render, cloud DBs)
 const poolConfig = { ...env.db };
 if (String(process.env.DB_SSL).toLowerCase() === 'true') {
-  poolConfig.ssl = { rejectUnauthorized: process.env.NODE_ENV === 'production' ? true : false };
+  poolConfig.ssl = { rejectUnauthorized: false };
 }
 
 const pool = mysql.createPool(poolConfig);
