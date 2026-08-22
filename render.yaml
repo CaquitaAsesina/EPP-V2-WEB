@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: epp-inventory
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node backend/server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        value: 3306
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        value: epp_inventory
+      - key: DB_SSL
+        value: "true"
+      - key: JWT_SECRET
+        generateValue: true
+      - key: DNI_ENCRYPTION_KEY
+        generateValue: true
+      - key: BCRYPT_ROUNDS
+        value: "10"
+      - key: JWT_EXPIRES_IN
+        value: 24h

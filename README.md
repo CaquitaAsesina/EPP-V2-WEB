@@ -198,6 +198,51 @@ O crearlo desde la interfaz después de registrar el primer usuario.
 - Intentar acceder a URLs de admin → Redirige a dashboard
 - Verificar que DNI aparece como "***" para lector
 
+## 🚀 Despliegue en Render
+
+### Opción 1: Blueprint (automático)
+
+1. Subir el código a GitHub
+2. En Render → New → Blueprint
+3. Seleccionar el repositorio
+4. Render detectará `render.yaml` automáticamente
+5. Configurar las variables de entorno en el dashboard
+
+### Opción 2: Manual
+
+1. En Render → New → Web Service
+2. Conectar repositorio de GitHub
+3. Configurar:
+   - **Build Command:** `npm install`
+   - **Start Command:** `node backend/server.js`
+   - **Plan:** Free
+4. Agregar variables de entorno:
+
+| Variable | Valor |
+|----------|-------|
+| `NODE_ENV` | `production` |
+| `DB_HOST` | `tu-host.aivencloud.com` |
+| `DB_PORT` | `12345` |
+| `DB_USER` | `defaultdb` |
+| `DB_PASSWORD` | `tu_password_aiven` |
+| `DB_NAME` | `epp_inventory` |
+| `DB_SSL` | `true` |
+| `JWT_SECRET` | (generar con `openssl rand -hex 32`) |
+| `DNI_ENCRYPTION_KEY` | (generar con `openssl rand -hex 32`) |
+| `BCRYPT_ROUNDS` | `10` |
+| `JWT_EXPIRES_IN` | `24h` |
+
+### Paso a paso completo:
+
+1. Crear cuenta en [Aiven](https://aiven.io/) → crear servicio MySQL → copiar credenciales
+2. Ejecutar `schema.sql` y `create-admin.sql` en Aiven (Query Editor)
+3. Crear cuenta en [Render](https://render.com/) → conectar GitHub
+4. Configurar variables de entorno con credenciales de Aiven
+5. Desplegar → Render instalará dependencias y arrancará el servidor
+6. Acceder a `https://tu-app.onrender.com/html/login.html`
+
+⚠️ **Nota:** En plan Free, Render duerme el servicio tras 15 min de inactividad. La primera petición tomará ~30s en despertar.
+
 ## 📝 Licencia
 
 ISC

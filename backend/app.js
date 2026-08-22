@@ -14,6 +14,11 @@ app.use(express.urlencoded({ extended: true }));
 // Serve frontend static files
 app.use(express.static(path.join(__dirname, '../frontend')));
 
+// Health check for Render
+app.get('/api/health', (req, res) => {
+  res.json({ success: true, message: 'EPP Inventory API running', timestamp: new Date().toISOString() });
+});
+
 // API Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
