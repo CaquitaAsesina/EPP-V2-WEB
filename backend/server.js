@@ -5,15 +5,20 @@ const PORT = env.port;
 
 // Catch uncaught errors so the server stays alive
 process.on('uncaughtException', (err) => {
-  console.error('❌ Excepción no capturada:', err.message);
-  console.error(err.stack);
+  console.error('❌ Excepción no capturada:', err.message || err);
+  console.error(err.stack || err);
 });
 process.on('unhandledRejection', (reason) => {
-  console.error('❌ Rechazo no manejado:', reason);
+  console.error('❌ Rechazo no manejado:', reason || 'unknown reason');
 });
 
-const server = app.listen(PORT, () => {
-  console.log(`🚀 Servidor EPP Inventory corriendo en http://localhost:${PORT}`);
+console.log('🚀 Iniciando Sistema de Inventario EPP...');
+console.log('📋 NODE_ENV:', process.env.NODE_ENV || 'not set');
+console.log('📋 DB_HOST:', process.env.DB_HOST || 'not set');
+console.log('📋 DB_SSL:', process.env.DB_SSL || 'not set');
+
+const server = app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Servidor EPP Inventory corriendo en http://0.0.0.0:${PORT}`);
   console.log(`📊 Frontend: http://localhost:${PORT}/html/login.html`);
   console.log(`🔗 API: http://localhost:${PORT}/api`);
 });

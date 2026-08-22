@@ -16,7 +16,12 @@ pool.getConnection()
     conn.release();
   })
   .catch(err => {
-    console.error('❌ Error al conectar con MySQL:', err.message);
+    console.error('❌ Error al conectar con MySQL:', err.message || err.code || String(err));
+    console.error('   Host:', process.env.DB_HOST);
+    console.error('   Port:', process.env.DB_PORT);
+    console.error('   User:', process.env.DB_USER);
+    console.error('   SSL:', process.env.DB_SSL);
+    console.error('   Stack:', err.stack || 'no stack');
   });
 
 module.exports = pool;

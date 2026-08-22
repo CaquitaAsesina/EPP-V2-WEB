@@ -1,9 +1,11 @@
 const dotenv = require('dotenv');
 const path = require('path');
 
-dotenv.config({ path: path.join(__dirname, '../../.env'), override: true });
+// Only load .env file for LOCAL development
+// Render, Vercel, etc. inject env vars directly into process.env
+dotenv.config({ path: path.join(__dirname, '../../.env') });
 
-module.exports = {
+const config = {
   port: parseInt(process.env.PORT, 10) || 3000,
   nodeEnv: process.env.NODE_ENV || 'development',
   db: {
@@ -23,3 +25,14 @@ module.exports = {
   bcryptRounds: parseInt(process.env.BCRYPT_ROUNDS, 10) || 10,
   dniEncryptionKey: process.env.DNI_ENCRYPTION_KEY
 };
+
+// Debug: log where config is coming from (only in production)
+if (process.env.NODE_ENV === 'production') {
+  console.log('📋 Config DB host:', config.db.host);
+  console.log('📋 Config DB port:', config.db.port);
+  console.log('📋 Config DB user:', config.db.user);
+  console.log('📋 Config DB ssl:', String(process.env.DB_SSL).toLowerCase() === 'true');
+  console.log('📋 Config DB name:', config.db.database);
+}
+
+module.exports = config;
