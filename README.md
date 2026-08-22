@@ -58,6 +58,21 @@ BCRYPT_ROUNDS=10
 
 **⚠️ Importante:** Cambiar `JWT_SECRET` y `DNI_ENCRYPTION_KEY` por valores seguros y únicos.
 
+#### Conexión a base de datos en la nube (Aiven, Render, etc.)
+
+Si usas una base de datos MySQL en la nube, configura:
+
+```env
+DB_HOST=tu-host-de-aiven.aivencloud.com
+DB_PORT=12345
+DB_USER=defaultdb
+DB_PASSWORD=tu_password_de_aiven
+db_NAME=epp_inventory
+DB_SSL=true
+```
+
+El valor `DB_SSL=true` habilita la conexión segura SSL requerida por Aiven y otros proveedores.
+
 ### 4. Crear la base de datos
 
 Opción A - Desde MySQL Workbench:

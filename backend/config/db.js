@@ -1,7 +1,13 @@
 const mysql = require('mysql2/promise');
 const env = require('./env');
 
-const pool = mysql.createPool(env.db);
+// Build pool config — add SSL when DB_SSL=true (Aiven, Render, cloud DBs)
+const poolConfig = { ...env.db };
+if (String(process.env.DB_SSL).toLowerCase() === 'true') {
+  poolConfig.ssl = { rejectUnauthorized: true };
+}
+
+const pool = mysql.createPool(poolConfig);
 
 // Test connection
 pool.getConnection()
