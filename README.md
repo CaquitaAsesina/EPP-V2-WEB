@@ -60,14 +60,37 @@ BCRYPT_ROUNDS=10
 
 #### Conexión a base de datos en la nube (Aiven, Render, etc.)
 
-Si usas una base de datos MySQL en la nube, configura:
+**Paso 1:** Crear servicio MySQL en [Aiven Console](https://console.aiven.io/)
+1. Click **Create Service** → Selecciona **MySQL**
+2. Elige plan **Free**
+3. Espera ~2 min a que esté **Running**
+4. Copia los datos de conexión desde **Overview**
 
+**Paso 2:** Crear base de datos y usuario admin en Aiven
+1. Ve a tu servicio MySQL → **Query Editor**
+2. Copia y pega el contenido de `database/setup-aiven.sql`
+3. Click **Run** (⚡)
+4. Verás los mensajes de confirmación
+
+**Paso 3:** Configurar la conexión
+
+Para **desarrollo local** (conecta a Aiven desde tu máquina):
 ```env
-DB_HOST=tu-host-de-aiven.aivencloud.com
+DB_HOST=mysql-xxx-yyy.aivencloud.com
 DB_PORT=12345
 DB_USER=defaultdb
 DB_PASSWORD=tu_password_de_aiven
-db_NAME=epp_inventory
+DB_NAME=epp_inventory
+DB_SSL=true
+```
+
+Para **producción en Render** (configurar en Variables de Entorno):
+```
+DB_HOST=mysql-xxx-yyy.aivencloud.com
+DB_PORT=12345
+DB_USER=defaultdb
+DB_PASSWORD=tu_password_de_aiven
+DB_NAME=epp_inventory
 DB_SSL=true
 ```
 
