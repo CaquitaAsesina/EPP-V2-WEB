@@ -6,9 +6,7 @@
   "scripts": {
     "start": "node backend/server.js",
     "dev": "node --watch backend/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "sync:cloud-a-local": "node scripts/sync-cloud-to-local.js",
-    "sync:local-a-cloud": "node scripts/sync-local-to-cloud.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": ["epp", "inventario", "proteccion-personal"],
   "author": "",
