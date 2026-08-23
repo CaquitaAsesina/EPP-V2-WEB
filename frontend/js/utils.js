@@ -10,17 +10,25 @@ const Utils = {
       document.body.appendChild(container);
     }
 
-    const icons = { success: 'bi-check-circle-fill', error: 'bi-exclamation-circle-fill', warning: 'bi-exclamation-triangle-fill', info: 'bi-info-circle-fill' };
+    const icons = { success: 'bi-check-circle-fill', error: 'bi-x-circle-fill', warning: 'bi-exclamation-triangle-fill', info: 'bi-info-circle-fill' };
 
     const toast = document.createElement('div');
     toast.className = `toast-apple toast-${type}`;
     toast.innerHTML = `
       <i class="bi ${icons[type] || icons.info}"></i>
       <span class="toast-msg">${message}</span>
-      <button class="toast-close" onclick="this.parentElement.remove()"><i class="bi bi-x"></i></button>
+      <button class="toast-close" aria-label="Cerrar"><i class="bi bi-x-lg"></i></button>
+      <span class="toast-progress" style="animation-duration:${duration}ms;"></span>
     `;
     container.appendChild(toast);
-    setTimeout(() => { if (toast.parentElement) toast.remove(); }, duration);
+
+    const remove = () => {
+      if (!toast.parentElement) return;
+      toast.classList.add('fp-toast-out');
+      setTimeout(() => toast.remove(), 340);
+    };
+    toast.querySelector('.toast-close').addEventListener('click', remove);
+    setTimeout(remove, duration);
   },
 
   // Legacy alert (kept for compatibility)

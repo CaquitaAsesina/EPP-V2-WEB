@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: epp-inventory
+    name: Inventario-Epp-Version-2
     runtime: node
     plan: free
     buildCommand: npm install

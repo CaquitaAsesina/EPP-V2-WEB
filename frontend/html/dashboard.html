@@ -95,7 +95,7 @@
           </div>
           <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
             <div class="card stat-card">
-              <div class="stat-icon" style="background:rgba(88,86,214,0.1);color:#5856D6;">
+              <div class="stat-icon" style="background:rgba(138,138,141,0.12);color:#6C6C70;">
                 <i class="bi bi-droplet"></i>
               </div>
               <div class="stat-info">
@@ -117,7 +117,7 @@
           </div>
           <div class="col-xl-2 col-md-4 col-sm-6 mb-3">
             <div class="card stat-card">
-              <div class="stat-icon" style="background:rgba(175,82,222,0.1);color:#AF52DE;">
+              <div class="stat-icon" style="background:rgba(227,6,19,0.10);color:#E30613;">
                 <i class="bi bi-box-arrow-up"></i>
               </div>
               <div class="stat-info">
@@ -154,7 +154,7 @@
           <div class="col-lg-6 mb-3">
             <div class="card">
               <div class="card-header">
-                <h5 class="mb-0"><i class="bi bi-pie-chart me-2" style="color:#5856D6;"></i>Stock por Talla</h5>
+                <h5 class="mb-0"><i class="bi bi-pie-chart me-2" style="color:#8A8A8D;"></i>Stock por Talla</h5>
               </div>
               <div class="card-body" style="height:280px;">
                 <canvas id="chartBySize"></canvas>
@@ -272,7 +272,8 @@
         document.getElementById('kpiWashing').textContent = kpis.washing || 0;
         document.getElementById('kpiIncomes').textContent = kpis.totalIncomes || 0;
         document.getElementById('kpiDeliveries').textContent = kpis.totalDeliveries || 0;
-        document.getElementById('kpiReturns').textContent = kpis.totalReturns || 0;
+        const kpiReturnsEl = document.getElementById('kpiReturns');
+        if (kpiReturnsEl) kpiReturnsEl.textContent = kpis.totalReturns || 0;
         document.getElementById('kpiLosses').textContent = kpis.totalLosses || 0;
 
         // Charts
@@ -300,7 +301,7 @@
       Object.values(chartInstances).forEach(c => c.destroy());
       chartInstances = {};
 
-      const colors = ['#007AFF','#FF9500','#34C759','#FF3B30','#5856D6','#AF52DE','#5AC8FA'];
+      const colors = ['#E30613', '#FF5A64', '#8A8A8D', '#FF9EA5', '#5A5A5E', '#FFC7CB', '#B30510'];
       const fontColor = getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim() || '#6E6E73';
 
       if (d.cleanByType && d.cleanByType.length) {
@@ -346,9 +347,9 @@
           type: 'line',
           data: {
             labels: d.movementsTimeline.map(i => i.date),
-            datasets: [
-              { label: 'Ingresos', data: d.movementsTimeline.map(i => i.incomes || 0), borderColor: '#34C759', backgroundColor: 'rgba(52,199,89,0.1)', fill: true, tension: 0.4, pointRadius: 3 },
-              { label: 'Entregas', data: d.movementsTimeline.map(i => i.deliveries || 0), borderColor: '#AF52DE', backgroundColor: 'rgba(175,82,222,0.1)', fill: true, tension: 0.4, pointRadius: 3 }
+              datasets: [
+              { label: 'Ingresos', data: d.movementsTimeline.map(i => i.incomes || 0), borderColor: '#E30613', backgroundColor: 'rgba(227,6,19,0.10)', fill: true, tension: 0.4, pointRadius: 3 },
+              { label: 'Entregas', data: d.movementsTimeline.map(i => i.deliveries || 0), borderColor: '#8A8A8D', backgroundColor: 'rgba(138,138,141,0.12)', fill: true, tension: 0.4, pointRadius: 3 }
             ]
           },
           options: {
@@ -368,7 +369,7 @@
           type: 'doughnut',
           data: {
             labels: ['Para Lavar', 'En Proceso', 'Lavado y Transferido'],
-            datasets: [{ data: [ds.toWash || 0, ds.washing || 0, ds.washed || 0], backgroundColor: ['#FF9500', '#5856D6', '#34C759'], borderWidth: 0, hoverOffset: 6 }]
+            datasets: [{ data: [ds.toWash || 0, ds.washing || 0, ds.washed || 0], backgroundColor: ['#F59E0B', '#E30613', '#22C55E'], borderWidth: 0, hoverOffset: 6 }]
           },
           options: {
             responsive: true, maintainAspectRatio: false, cutout: '65%',
