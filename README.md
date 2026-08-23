@@ -38,14 +38,14 @@ cp .env.example .env
 Editar `.env` con tus datos de Aiven:
 
 ```env
-DB_HOST=mysql-xxx.aivencloud.com
-DB_PORT=26056
-DB_USER=avnadmin
+DB_HOST=tu-host.aivencloud.com
+DB_PORT=tu_puerto
+DB_USER=tu_usuario
 DB_PASSWORD=tu_password
 DB_NAME=epp_inventory
 DB_SSL=true
-JWT_SECRET=tu_jwt_secret
-DNI_ENCRYPTION_KEY=tuencryptionkey1234567890abcdef12345678
+JWT_SECRET=generar_con_openssl_rand_hex_32
+DNI_ENCRYPTION_KEY=generar_con_openssl_rand_hex_32
 ```
 
 ### 3. Crear base de datos en Aiven
@@ -62,7 +62,7 @@ npm start
 
 Abrir: `http://localhost:3000/html/login.html`
 
-**Usuario:** `admin` | **Contraseña:** `Admin123!`
+> **⚠️ Importante:** El script `database/setup-aiven.sql` crea un usuario `admin` con una contraseña por defecto. **Cámbiala inmediatamente después del primer inicio de sesión** (módulo Perfil), y no compartas las credenciales en este repositorio.
 
 ## 🚀 Despliegue en Render
 

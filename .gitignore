@@ -10,6 +10,17 @@ pnpm-debug.log*
 .env.local
 .env.*.local
 
+# Internal tool data
+.freebuff/
+
+# Certificates / keys / secrets
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+
 # Database
 *.sql
 !database/schema.sql
