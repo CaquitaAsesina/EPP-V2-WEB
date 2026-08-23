@@ -4,11 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Iniciar Sesión — Farmacias Peruanas</title>
+  <link rel="icon" type="image/svg+xml" href="/img/logo.svg">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="../css/variables.css">
-  <link rel="stylesheet" href="../css/layout.css">
-  <link rel="stylesheet" href="../css/components.css">
-  <link rel="stylesheet" href="../css/responsive.css">
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/responsive.css">
 </head>
 <body>
   <div class="login-wrapper">
@@ -16,52 +17,102 @@
     <div class="login-blob b2"></div>
     <div class="login-blob b3"></div>
 
-    <div class="login-card">
-      <div class="logo-icon">
-        <i class="bi bi-capsule"></i>
-      </div>
-      <h1>EPP <em>Control</em></h1>
-      <p class="subtitle"><i class="bi bi-heart-pulse-fill" style="color:var(--primary);"></i> Farmacias Peruanas · Sistema de Control de Inventario EPP</p>
+    <div class="login-panels">
+      <!-- Panel de marca -->
+      <section class="login-brand-panel">
+        <div class="brand-icon"><img src="/img/logo.svg" alt="Farmacias Peruanas"></div>
+        <h2>Inventario <em>EPP</em></h2>
+        <p class="brand-tagline">Sistema de Protección Personal</p>
+        <ul class="brand-features">
+          <li>
+            <span class="feat-icon"><i class="bi bi-box-seam"></i></span>
+            <div><strong>Stock en tiempo real</strong><small>Disponible, sucio y en lavado</small></div>
+          </li>
+          <li>
+            <span class="feat-icon"><i class="bi bi-arrow-repeat"></i></span>
+            <div><strong>Movimientos trazables</strong><small>Ingresos, entregas y devoluciones</small></div>
+          </li>
+          <li>
+            <span class="feat-icon"><i class="bi bi-file-earmark-text"></i></span>
+            <div><strong>Reportes al instante</strong><small>PDF y Excel con un clic</small></div>
+          </li>
+        </ul>
+        <p class="brand-foot"><i class="bi bi-shield-lock"></i> Conexión cifrada · Acceso restringido por roles</p>
+      </section>
 
-      <form id="loginForm" onsubmit="return handleLogin(event)">
-        <div class="form-group">
-          <label class="form-label-apple" for="username">Usuario</label>
-          <div class="login-input-wrap">
-            <i class="bi bi-person"></i>
-            <input type="text" id="username" class="form-input" required
-              placeholder="Ingrese su usuario" autocomplete="username">
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="form-label-apple" for="password">Contraseña</label>
-          <div class="login-input-wrap">
-            <i class="bi bi-shield-lock"></i>
-            <input type="password" id="password" class="form-input" required
-              placeholder="Ingrese su contraseña" autocomplete="current-password">
-          </div>
-        </div>
-        <div id="loginError" class="toast-apple toast-error" style="display:none;margin-bottom:16px;min-width:auto;max-width:100%;">
-          <i class="bi bi-x-circle-fill"></i>
-          <span class="toast-msg" id="loginErrorMsg"></span>
-        </div>
-        <button type="submit" id="loginBtn" class="btn-apple btn-primary" style="width:100%;padding:14px;font-size:15px;">
-          <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
-        </button>
-      </form>
+      <!-- Panel de formulario -->
+      <section class="login-form-panel">
+        <div class="form-logo"><img src="/img/logo.svg" alt="Logo"></div>
+        <h1>Farmacias Peruanas <em>Inventario</em></h1>
+        <p class="form-sub">Sistema de Protección Personal</p>
 
-      <div class="login-brand-tag">
-        <i class="bi bi-capsule-pill"></i> Diseñado para el control total de tu inventario
-      </div>
+        <form id="loginForm" onsubmit="return handleLogin(event)">
+          <div class="form-group">
+            <label class="form-label" for="username">Usuario</label>
+            <div class="login-input-wrap">
+              <i class="bi bi-person"></i>
+              <input type="text" id="username" class="form-input" required
+                placeholder="Ingrese su usuario" autocomplete="username">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="password">Contraseña</label>
+            <div class="login-input-wrap">
+              <i class="bi bi-shield-lock"></i>
+              <input type="password" id="password" class="form-input has-toggle" required
+                placeholder="Ingrese su contraseña" autocomplete="current-password">
+              <button type="button" class="pw-toggle" id="pwToggle" aria-label="Mostrar contraseña">
+                <i class="bi bi-eye"></i>
+              </button>
+            </div>
+          </div>
+          <div id="loginError" class="toast-apple toast-error" style="display:none;margin-bottom:16px;min-width:auto;max-width:100%;">
+            <i class="bi bi-x-circle-fill"></i>
+            <span class="toast-msg" id="loginErrorMsg"></span>
+          </div>
+          <button type="submit" id="loginBtn" class="btn-apple btn-primary login-submit">
+            <i class="bi bi-box-arrow-in-right"></i> Iniciar sesión
+          </button>
+        </form>
+
+        <div class="form-foot">
+          <i class="bi bi-patch-check-fill"></i> Control y Auditorías
+        </div>
+      </section>
     </div>
   </div>
 
-  <script src="../js/api.js"></script>
-  <script src="../js/auth.js"></script>
-  <script src="../js/utils.js"></script>
-  <script src="../js/layout.js"></script>
+  <!-- Overlay de bienvenida -->
+  <div class="welcome-overlay" id="welcomeOverlay">
+    <img src="/img/logo.svg" class="welcome-logo" alt="">
+    <div class="welcome-title">¡Bienvenido!</div>
+    <div class="welcome-name" id="welcomeName"></div>
+    <div class="welcome-bar"><span></span></div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/layout.js"></script>
   <script>
     if (Auth.isLoggedIn()) {
       window.location.href = '/index.html#/dashboard';
+    }
+
+    // Mostrar/ocultar contraseña
+    document.getElementById('pwToggle').addEventListener('click', function () {
+      const input = document.getElementById('password');
+      const show = input.type === 'password';
+      input.type = show ? 'text' : 'password';
+      this.innerHTML = show ? '<i class="bi bi-eye-slash"></i>' : '<i class="bi bi-eye"></i>';
+      this.setAttribute('aria-label', show ? 'Ocultar contraseña' : 'Mostrar contraseña');
+      if (typeof FX !== 'undefined') FX.showPop(show ? 'Contraseña visible' : 'Contraseña oculta', show ? 'bi-eye-fill' : 'bi-eye-slash-fill');
+    });
+
+    function showWelcome(name) {
+      const overlay = document.getElementById('welcomeOverlay');
+      document.getElementById('welcomeName').textContent = name;
+      overlay.classList.add('show');
     }
 
     async function handleLogin(e) {
@@ -81,10 +132,15 @@
         });
 
         if (data.success) {
-          if (typeof FX !== 'undefined') FX.showPop('¡Bienvenido!', 'bi-stars');
           Auth.login(data.data.token, data.data.user);
-          if (typeof FX !== 'undefined') FX.wipeTo('/index.html#/dashboard', window.innerWidth / 2, window.innerHeight / 2);
-          else window.location.href = '/index.html#/dashboard';
+          const user = data.data.user || {};
+          const name = user.full_name || user.username || '';
+          const first = name.split(' ')[0];
+          showWelcome(first ? 'Bienvenido, ' + first : 'Bienvenido');
+          setTimeout(() => {
+            if (typeof FX !== 'undefined') FX.wipeTo('/index.html#/dashboard', window.innerWidth / 2, window.innerHeight / 2);
+            else window.location.href = '/index.html#/dashboard';
+          }, 1900);
           return false;
         }
       } catch (err) {
@@ -92,7 +148,7 @@
         errorDiv.style.display = 'flex';
       } finally {
         btn.disabled = false;
-        btn.innerHTML = '<i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión';
+        btn.innerHTML = '<i class="bi bi-box-arrow-in-right"></i> Iniciar sesión';
       }
       return false;
     }

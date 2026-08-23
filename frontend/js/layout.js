@@ -189,10 +189,18 @@ const FX = {
     }
     const splash = document.createElement('div');
     splash.id = 'fpSplash';
+    let hello = '';
+    try {
+      if (typeof Auth !== 'undefined' && Auth.isLoggedIn() && Auth.getUser()) {
+        const n = (Auth.getUser().full_name || Auth.getUser().username || '').split(' ')[0];
+        if (n) hello = `<div class="fp-splash-hello">Hola, ${n}</div>`;
+      }
+    } catch (err) { /* noop */ }
     splash.innerHTML = `
       <div class="fp-splash-logo"><i class="bi bi-capsule"></i></div>
       <div class="fp-splash-title">EPP <em>Control</em></div>
       <div class="fp-splash-sub">Farmacias Peruanas</div>
+      ${hello}
       <div class="fp-splash-bar"><span></span></div>
     `;
     document.body.prepend(splash);
@@ -215,8 +223,11 @@ const FX = {
     const header = document.querySelector('.sidebar-header');
     if (!header || header.dataset.fpBranded) return;
     header.dataset.fpBranded = '1';
-    const logo = header.querySelector('.sidebar-logo i');
-    if (logo) logo.className = 'bi bi-capsule';
+    // Logo de marca real
+    const logo = header.querySelector('.sidebar-logo');
+    if (logo && !logo.querySelector('img')) {
+      logo.innerHTML = '<img src="/img/logo.svg" alt="Farmacias Peruanas">';
+    }
     const span = header.querySelector('span:not(.fp-brand-name):not(.fp-brand-sub)');
     if (span && !header.querySelector('.fp-brand-text')) {
       const brand = document.createElement('div');
@@ -301,7 +312,7 @@ const FX = {
     const wrapper = root || document.querySelector('.content-wrapper, .page-content, .login-wrapper');
     if (!wrapper) return;
     const targets = wrapper.querySelectorAll(
-      '.card, .stat-card, .kpi-card, .active-period-bar, .section-header, .filter-bar, .login-card'
+      '.card, .stat-card, .kpi-card, .active-period-bar, .section-header, .filter-bar, .login-panels'
     );
     targets.forEach((el, i) => {
       if (el.closest('.modal')) return;

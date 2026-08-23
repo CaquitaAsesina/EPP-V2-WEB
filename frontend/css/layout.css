@@ -120,7 +120,7 @@
 }
 
 /* ============================================
-   LOGIN LAYOUT
+   LOGIN — dos paneles (marca + formulario)
    ============================================ */
 .login-wrapper {
   min-height: 100vh;
@@ -155,77 +155,184 @@
 .login-blob.b2 { width: 360px; height: 360px; background: rgba(227,6,19,0.13); bottom: -120px; right: -80px; animation-delay: -4s; }
 .login-blob.b3 { width: 240px; height: 240px; background: rgba(138,138,141,0.16); top: 55%; left: 62%; animation-delay: -8s; }
 
-.login-card {
+.login-panels {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
   width: 100%;
-  max-width: 440px;
-  background: var(--surface);
-  border: 1px solid var(--border-light);
+  max-width: 960px;
   border-radius: var(--radius-2xl);
+  overflow: hidden;
   box-shadow: var(--shadow-xl);
-  padding: 48px 42px;
-  text-align: center;
+  border: 1px solid var(--border-light);
   position: relative;
   z-index: 2;
   animation: fadeInUp 0.65s var(--ease-out);
 }
-.login-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 24px;
-  right: 24px;
-  height: 4px;
-  border-radius: 0 0 var(--radius-full) var(--radius-full);
-  background: var(--primary-gradient);
-}
-.login-card .logo-icon {
-  width: 84px;
-  height: 84px;
-  border-radius: 26px;
+
+/* --- Panel izquierdo: marca --- */
+.login-brand-panel {
+  position: relative;
+  overflow: hidden;
   background: var(--primary-gradient);
   background-size: 180% 180%;
+  animation: gradientShift 8s ease infinite;
+  color: #fff;
+  padding: 44px 38px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.login-brand-panel::before {
+  content: '';
+  position: absolute;
+  right: -90px;
+  top: -90px;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+}
+.login-brand-panel::after {
+  content: '';
+  position: absolute;
+  left: -70px;
+  bottom: -110px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+}
+.brand-icon {
+  width: 66px;
+  height: 66px;
+  border-radius: 19px;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 22px;
-  box-shadow: var(--shadow-red-lg);
-  animation: heartbeat 2.4s var(--ease-spring) infinite, gradientShift 4s ease infinite;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.20);
+  animation: floatY 4s ease-in-out infinite;
 }
-.login-card .logo-icon i {
-  font-size: 40px;
-  color: #fff;
-}
-.login-card h1 {
-  font-size: 30px;
+.brand-icon img { width: 42px; height: 42px; }
+.login-brand-panel h2 {
+  font-size: 31px;
   font-weight: 800;
-  letter-spacing: -0.8px;
-  margin: 0 0 6px;
+  letter-spacing: -0.7px;
+  margin: 0;
+  position: relative;
+}
+.brand-tagline {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+  opacity: 0.88;
+  margin: -18px 0 0;
+  position: relative;
+}
+.brand-features {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+}
+.brand-features li {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  animation: fadeInUp 0.6s var(--ease-out) both;
+}
+.brand-features li:nth-child(1) { animation-delay: 0.15s; }
+.brand-features li:nth-child(2) { animation-delay: 0.28s; }
+.brand-features li:nth-child(3) { animation-delay: 0.41s; }
+.feat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.16);
+  border: 1px solid rgba(255,255,255,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+  transition: transform var(--duration-normal) var(--ease-spring), background var(--duration-fast) var(--ease-out);
+}
+.brand-features li:hover .feat-icon {
+  transform: scale(1.12) rotate(-8deg);
+  background: rgba(255,255,255,0.28);
+}
+.brand-features strong { display: block; font-size: 14.5px; font-weight: 800; margin-bottom: 2px; }
+.brand-features small { font-size: 12.5px; opacity: 0.85; font-weight: 500; line-height: 1.4; }
+.brand-foot {
+  margin-top: auto;
+  padding-top: 22px;
+  font-size: 11.5px;
+  opacity: 0.88;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  position: relative;
+}
+
+/* --- Panel derecho: formulario --- */
+.login-form-panel {
+  background: var(--surface);
+  padding: 46px 44px 38px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.form-logo {
+  width: 66px;
+  height: 66px;
+  margin: 0 auto 18px;
+  animation: heartbeat 2.6s var(--ease-spring) infinite;
+}
+.form-logo img {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 12px 24px rgba(227,6,19,0.35));
+}
+.login-form-panel h1 {
+  font-size: 24px;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: -0.4px;
+  margin: 0 0 5px;
   color: var(--text-primary);
 }
-.login-card h1 em {
-  font-style: normal;
-  color: var(--primary);
+.login-form-panel h1 em { font-style: normal; color: var(--primary); }
+.form-sub {
+  text-align: center;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 2.6px;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin: 0 0 32px;
 }
-.login-card .subtitle {
-  font-size: 14px;
-  color: var(--text-secondary);
-  margin-bottom: 34px;
-  font-weight: 500;
-}
-.login-card .form-group {
+.login-form-panel .form-group {
   text-align: left;
   margin-bottom: 20px;
 }
-.login-card .form-label {
+.login-form-panel .form-label {
   display: block;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 800;
   color: var(--text-secondary);
   margin-bottom: 7px;
   text-transform: uppercase;
   letter-spacing: 1.2px;
 }
-.login-card .form-input {
+.login-form-panel .form-input {
   width: 100%;
   padding: 13px 16px 13px 44px;
   font-size: 15px;
@@ -238,18 +345,15 @@
   transition: all var(--duration-fast) var(--ease-out);
   outline: none;
 }
-.login-card .form-input:focus {
+.login-form-panel .form-input:focus {
   border-color: var(--primary);
   background: var(--surface);
   box-shadow: var(--glow-ring);
   transform: translateY(-1px);
 }
-.login-card .form-input::placeholder {
-  color: var(--text-tertiary);
-}
-.login-input-wrap {
-  position: relative;
-}
+.login-form-panel .form-input::placeholder { color: var(--text-tertiary); }
+.login-form-panel .form-input.has-toggle { padding-right: 50px; }
+.login-input-wrap { position: relative; }
 .login-input-wrap > i {
   position: absolute;
   left: 15px;
@@ -260,22 +364,134 @@
   transition: color var(--duration-fast) var(--ease-out);
   pointer-events: none;
 }
-.login-input-wrap:focus-within > i {
-  color: var(--primary);
+.login-input-wrap:focus-within > i { color: var(--primary); }
+.pw-toggle {
+  position: absolute;
+  right: 9px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 9px;
+  background: var(--surface-tertiary);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  transition: all var(--duration-fast) var(--ease-out);
 }
-.login-brand-tag {
+.pw-toggle:hover { background: var(--primary-light); color: var(--primary); }
+.login-submit {
+  width: 100%;
+  padding: 14px;
+  font-size: 15px;
+  margin-top: 6px;
+}
+.form-foot {
   margin-top: 26px;
-  padding-top: 20px;
+  padding-top: 18px;
   border-top: 1px dashed var(--border);
+  text-align: center;
   font-size: 12px;
   font-weight: 600;
   color: var(--text-tertiary);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 7px;
 }
-.login-brand-tag i { color: var(--primary); }
+.form-foot i { color: var(--primary); }
+
+@media (max-width: 900px) {
+  .login-panels { grid-template-columns: 1fr; max-width: 460px; }
+  .login-brand-panel { display: none; }
+  .login-form-panel { padding: 38px 28px 30px; }
+}
+
+/* ============================================
+   WELCOME OVERLAY — "¡Bienvenido!" al entrar
+   ============================================ */
+.welcome-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--primary-gradient);
+  background-size: 220% 220%;
+  animation: gradientShift 5s ease infinite;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s var(--ease-out);
+}
+.welcome-overlay.show { opacity: 1; pointer-events: auto; }
+.welcome-logo {
+  width: 100px;
+  height: 100px;
+  filter: drop-shadow(0 18px 36px rgba(0,0,0,0.30));
+}
+.welcome-overlay.show .welcome-logo { animation: heartbeat 1.1s var(--ease-spring) infinite; }
+.welcome-overlay.show .welcome-title { animation: popIn 0.55s 0.1s var(--ease-spring) both; }
+.welcome-overlay.show .welcome-name { animation: fadeInUp 0.5s 0.28s var(--ease-out) both; }
+.welcome-overlay.show .welcome-bar { animation: fadeIn 0.4s 0.4s both; }
+.welcome-title {
+  font-size: 36px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.8px;
+  margin-top: 14px;
+}
+.welcome-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.92);
+}
+.welcome-bar {
+  width: 190px;
+  height: 5px;
+  border-radius: var(--radius-full);
+  background: rgba(255,255,255,0.25);
+  overflow: hidden;
+  margin-top: 16px;
+}
+.welcome-bar span {
+  display: block;
+  height: 100%;
+  width: 40%;
+  border-radius: var(--radius-full);
+  background: #fff;
+  animation: fpSplashLoad 1s var(--ease-out) infinite;
+}
+
+/* ============================================
+   LOGO en sidebar (imagen de marca)
+   ============================================ */
+.sidebar-logo img {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  display: block;
+}
+.sidebar-logo:has(img) {
+  background: transparent;
+  box-shadow: none;
+  animation: none;
+}
+
+/* Saludo en el splash */
+.fp-splash-hello {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-top: -14px;
+  animation: fadeInUp 0.6s 0.16s var(--ease-out) both;
+}
 
 /* ============================================
    APP LAYOUT
@@ -925,33 +1141,20 @@
 }
 
 /* ============================================
-   SIDEBAR COLLAPSED (desktop)
+   SIDEBAR COLLAPSED (desktop) — oculto por completo
    ============================================ */
 @media (min-width: 1025px) {
-  .sidebar.collapsed { width: var(--sidebar-collapsed); }
-  .sidebar.collapsed .sidebar-header span,
-  .sidebar.collapsed .sidebar-logo + span,
-  .sidebar.collapsed .fp-brand-text,
-  .sidebar.collapsed .sidebar-nav .sidebar-section,
-  .sidebar.collapsed .sidebar-nav .nav-section,
-  .sidebar.collapsed .sidebar-nav .nav-link span,
-  .sidebar.collapsed .sidebar-footer .sidebar-user-info,
-  .sidebar.collapsed .sidebar-footer .sidebar-user > i,
-  .sidebar.collapsed .sidebar-footer .fp-sidebar-footer-brand {
-    display: none;
+  .sidebar.collapsed {
+    transform: translateX(-100%);
+    visibility: hidden;
+    box-shadow: none;
+    border-right-color: transparent;
+    transition: transform var(--duration-normal) var(--ease-out),
+                visibility 0s var(--duration-normal),
+                box-shadow var(--duration-normal) var(--ease-out);
   }
-  .sidebar.collapsed .sidebar-nav .nav-link {
-    justify-content: center;
-    padding: 12px;
-    margin: 0 auto 4px;
-    width: calc(100% - 16px);
+  .sidebar.collapsed ~ .main-content { margin-left: 0; }
+  .sidebar.collapsed ~ .main-content .sidebar-collapse i {
+    transform: rotate(180deg);
   }
-  .sidebar.collapsed .sidebar-nav .nav-link:hover { padding-left: 12px; }
-  .sidebar.collapsed .sidebar-nav .nav-link.active { padding-left: 12px; }
-  .sidebar.collapsed .sidebar-nav .nav-link.active::after { display: none; }
-  .sidebar.collapsed .sidebar-header { justify-content: center; padding: 22px 10px 18px; }
-  .sidebar.collapsed .sidebar-footer { padding: 14px 10px; }
-  .sidebar.collapsed .sidebar-user { justify-content: center; padding: 8px; }
-  .sidebar.collapsed .sidebar-user:hover > i { transform: none; }
-  .sidebar.collapsed ~ .main-content { margin-left: var(--sidebar-collapsed); }
 }
