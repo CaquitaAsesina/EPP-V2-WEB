@@ -279,8 +279,8 @@
   padding: var(--table-padding) !important;
   background-color: transparent !important;
   border-bottom: 1px solid var(--border-light) !important;
+  white-space: nowrap;
   transition: background var(--duration-fast) var(--ease-out),
-              transform var(--duration-fast) var(--ease-out),
               box-shadow var(--duration-fast) var(--ease-out);
 }
 .table > thead {
@@ -313,9 +313,11 @@
 }
 
 .table-responsive {
-  border-radius: inherit;
-  overflow: visible;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
+/* Aviso de que hay más datos hacia los lados */
+.table-responsive::-webkit-scrollbar { height: 8px; }
 
 /* ============================================
    FORM CONTROLS

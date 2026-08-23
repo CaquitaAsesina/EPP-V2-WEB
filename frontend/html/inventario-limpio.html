@@ -95,13 +95,13 @@
                   <tr>
                     <th>EPP</th>
                     <th>Talla</th>
-                    <th>Stock Inicial</th>
-                    <th>Ingresos</th>
-                    <th>Entregas</th>
-                    <th>Lavados Rec.</th>
-                    <th>Stock Sist.</th>
-                    <th>Cant. Física</th>
-                    <th>Diferencia</th>
+                    <th class="text-end">Stock Inicial</th>
+                    <th class="text-end">Ingresos</th>
+                    <th class="text-end">Entregas</th>
+                    <th class="text-end">Lavados Rec.</th>
+                    <th class="text-end">Stock Sist.</th>
+                    <th class="text-end">Cant. Física</th>
+                    <th class="text-end">Diferencia</th>
                     <th>Estado</th>
                   </tr>
                 </thead>
@@ -355,13 +355,13 @@
         return `<tr>
           <td><strong>${item.epp_type || ''}</strong></td>
           <td>${item.size || ''}</td>
-          <td>${item.initial_stock || 0}</td>
-          <td>${item.incomes || 0}</td>
-          <td>${item.deliveries || 0}</td>
-          <td>${item.laundry_received || 0}</td>
-          <td class="fw-bold">${systematic}</td>
-          <td>${physical != null ? physical : '<span class="text-muted">—</span>'}</td>
-          <td class="${diffClass}">${diff}</td>
+          <td class="text-end">${item.initial_stock || 0}</td>
+          <td class="text-end">${item.incomes || 0}</td>
+          <td class="text-end">${item.deliveries || 0}</td>
+          <td class="text-end">${item.laundry_received || 0}</td>
+          <td class="text-end fw-bold">${systematic}</td>
+          <td class="text-end">${physical != null ? physical : '<span class="text-muted">—</span>'}</td>
+          <td class="text-end ${diffClass}">${diff}</td>
           <td><span class="badge ${statusClass}">${statusText}</span></td>
         </tr>`;
       }).join('');

@@ -131,11 +131,40 @@ const FX = {
   init() {
     // Cada FX en guardía: si uno falla, el resto y el reveal siguen funcionando
     ['brandSidebar', 'organizeNav', 'injectSidebarFooter', 'injectPageFooter',
-     'injectActionPop', 'staggerReveal', 'initRipple', 'initSpotlight',
+     'injectActionPop', 'initSidebarCollapse', 'staggerReveal', 'initRipple', 'initSpotlight',
      'initActionPopups', 'initPageTransitions', 'initCountUp'
     ].forEach(fn => {
       try { this[fn](); } catch (err) { console.warn('FX:' + fn, err); }
     });
+  },
+
+  /* ---------- colapsar menú lateral (desktop) ---------- */
+  initSidebarCollapse() {
+    const sidebar = document.getElementById('sidebar');
+    if (!sidebar) return;
+
+    // Estado guardado
+    if (localStorage.getItem('epp-sidebar') === 'collapsed') {
+      sidebar.classList.add('collapsed');
+    }
+
+    const header = document.querySelector('.main-header');
+    if (header && !header.querySelector('.sidebar-collapse')) {
+      const btn = document.createElement('button');
+      btn.className = 'sidebar-collapse';
+      btn.type = 'button';
+      btn.title = 'Ocultar / mostrar menú';
+      btn.innerHTML = '<i class="bi bi-chevron-double-left"></i>';
+      header.insertBefore(btn, header.firstChild);
+      btn.addEventListener('click', () => {
+        const collapsed = sidebar.classList.toggle('collapsed');
+        localStorage.setItem('epp-sidebar', collapsed ? 'collapsed' : 'open');
+        this.showPop(
+          collapsed ? 'Menú ocultado · más espacio para datos' : 'Menú mostrado',
+          collapsed ? 'bi-layout-sidebar-inset' : 'bi-layout-sidebar'
+        );
+      });
+    }
   },
 
   /* ---------- helpers ---------- */
@@ -212,6 +241,8 @@ const FX = {
       const href = (link.getAttribute('href') || '').split('/').pop()
         .replace(/^#\/?/, '').replace(/\.html$/, '');
       const section = this.sections[href];
+      // Tooltip cuando el menú está colapsado
+      if (!link.title) link.title = this.textOf(link);
       if (section && !link.previousElementSibling?.classList?.contains('nav-section')) {
         const div = document.createElement('div');
         div.className = 'nav-section';
