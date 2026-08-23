@@ -203,3 +203,6 @@ const Utils = {
     });
   }
 };
+
+/* Exponer para otros módulos y vistas (SPA) */
+window.Utils = Utils;

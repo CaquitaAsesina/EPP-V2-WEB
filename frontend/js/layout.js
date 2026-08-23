@@ -90,16 +90,16 @@ const FX = {
   _dismissed: false,
 
   sections: {
-    'dashboard.html': 'Principal',
-    'periodos.html': 'Control',
-    'inventario-limpio.html': 'Inventario',
-    'inventario-sucio.html': null,
-    'entregas.html': 'Movimientos',
-    'ingresos.html': null,
-    'devoluciones.html': null,
-    'trabajadores.html': 'Personal',
-    'consultas.html': 'Análisis',
-    'perfil.html': 'Sistema'
+    'dashboard': 'Principal',
+    'periodos': 'Control',
+    'inventario-limpio': 'Inventario',
+    'inventario-sucio': null,
+    'entregas': 'Movimientos',
+    'ingresos': null,
+    'devoluciones': null,
+    'trabajadores': 'Personal',
+    'consultas': 'Análisis',
+    'perfil': 'Sistema'
   },
 
   iconActions: {
@@ -209,7 +209,8 @@ const FX = {
     const nav = document.querySelector('.sidebar-nav');
     if (!nav || nav.querySelector('.nav-section')) return;
     nav.querySelectorAll('a.nav-link').forEach(link => {
-      const href = (link.getAttribute('href') || '').split('/').pop();
+      const href = (link.getAttribute('href') || '').split('/').pop()
+        .replace(/^#\/?/, '').replace(/\.html$/, '');
       const section = this.sections[href];
       if (section && !link.previousElementSibling?.classList?.contains('nav-section')) {
         const div = document.createElement('div');
@@ -246,13 +247,14 @@ const FX = {
 
     footer.querySelector('.sidebar-user').addEventListener('click', () => {
       this.showPop('Abriendo tu perfil', 'bi-person-badge');
-      this.wipeTo('/html/perfil.html');
+      if (window.Router) window.Router.go('perfil');
+      else this.wipeTo('/html/perfil.html');
     });
   },
 
   /* ---------- footer de página ---------- */
-  injectPageFooter() {
-    const wrapper = document.querySelector('.content-wrapper, .page-content');
+  injectPageFooter(root) {
+    const wrapper = root || document.querySelector('.content-wrapper, .page-content');
     if (!wrapper || wrapper.querySelector('.fp-page-footer')) return;
     const footer = document.createElement('footer');
     footer.className = 'fp-page-footer';
@@ -264,8 +266,8 @@ const FX = {
   },
 
   /* ---------- reveal escalonado ---------- */
-  staggerReveal() {
-    const wrapper = document.querySelector('.content-wrapper, .page-content, .login-wrapper');
+  staggerReveal(root) {
+    const wrapper = root || document.querySelector('.content-wrapper, .page-content, .login-wrapper');
     if (!wrapper) return;
     const targets = wrapper.querySelectorAll(
       '.card, .stat-card, .kpi-card, .active-period-bar, .section-header, .filter-bar, .login-card'
@@ -418,6 +420,15 @@ const FX = {
     });
   },
 
+  /* ---------- refresco tras cambiar de vista (SPA) ---------- */
+  refreshView(root) {
+    try {
+      this.staggerReveal(root);
+      this.injectPageFooter(root);
+      this.initCountUp();
+    } catch (err) { console.warn('FX:refreshView', err); }
+  },
+
   animateCount(el, target) {
     el.__fpAnimating = true;
     const dur = 850;
@@ -440,3 +451,9 @@ document.addEventListener('DOMContentLoaded', () => {
   FX.injectSplash();
   FX.init();
 });
+
+/* Exponer para otros módulos (router, login) */
+window.FX = FX;
+
+/* Exponer para otros módulos y vistas (SPA) */
+window.Layout = Layout;

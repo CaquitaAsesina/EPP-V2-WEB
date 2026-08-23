@@ -743,6 +743,16 @@
   z-index: 1;
 }
 
+/* Transición de vistas (SPA) */
+#viewContainer {
+  transition: opacity 0.22s var(--ease-out), transform 0.22s var(--ease-out);
+}
+#viewContainer.fp-view-out {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+}
+
 /* Reveal escalonado (FX añade .fp-reveal) */
 .fp-reveal {
   opacity: 0;

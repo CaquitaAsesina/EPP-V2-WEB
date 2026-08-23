@@ -1,6 +1,5 @@
 // Auth Module
-const Auth = {
-  isLoggedIn() {
+const Auth = {  isLoggedIn() {
     return !!localStorage.getItem('token');
   },
 
@@ -43,7 +42,7 @@ const Auth = {
   requireAdmin() {
     if (!this.requireAuth()) return false;
     if (!this.isAdmin()) {
-      window.location.href = '/html/dashboard.html';
+      window.location.href = '/index.html#/dashboard';
       return false;
     }
     return true;
@@ -60,3 +59,6 @@ const Auth = {
     roleEls.forEach(el => el.textContent = user.role === 'admin' ? 'Administrador' : 'Lector');
   }
 };
+
+/* Exponer para otros módulos y vistas (SPA) */
+window.Auth = Auth;

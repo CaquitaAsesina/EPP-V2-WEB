@@ -61,7 +61,7 @@
   <script src="../js/layout.js"></script>
   <script>
     if (Auth.isLoggedIn()) {
-      window.location.href = '/html/dashboard.html';
+      window.location.href = '/index.html#/dashboard';
     }
 
     async function handleLogin(e) {
@@ -83,8 +83,8 @@
         if (data.success) {
           if (typeof FX !== 'undefined') FX.showPop('¡Bienvenido!', 'bi-stars');
           Auth.login(data.data.token, data.data.user);
-          if (typeof FX !== 'undefined') FX.wipeTo('/html/dashboard.html', window.innerWidth / 2, window.innerHeight / 2);
-          else window.location.href = '/html/dashboard.html';
+          if (typeof FX !== 'undefined') FX.wipeTo('/index.html#/dashboard', window.innerWidth / 2, window.innerHeight / 2);
+          else window.location.href = '/index.html#/dashboard';
           return false;
         }
       } catch (err) {
