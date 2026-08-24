@@ -14,10 +14,27 @@ class UserModel {
 
   static async findById(id) {
     const [rows] = await db.query(
-      'SELECT u.id, u.username, u.full_name, u.email, u.role_id, r.name as role_name, u.is_active, u.created_at FROM users u JOIN roles r ON u.role_id = r.id WHERE u.id = ?',
+      'SELECT u.id, u.username, u.full_name, u.email, u.role_id, r.name as role_name, u.is_active, u.photo_url, u.created_at FROM users u JOIN roles r ON u.role_id = r.id WHERE u.id = ?',
       [id]
     );
     return rows[0] || null;
+  }
+
+  static async findByIdWithHash(id) {
+    const [rows] = await db.query(
+      'SELECT u.*, r.name as role_name FROM users u JOIN roles r ON u.role_id = r.id WHERE u.id = ?',
+      [id]
+    );
+    return rows[0] || null;
+  }
+
+  static async updateUsername(id, username) {
+    await db.query('UPDATE users SET username = ? WHERE id = ?', [username, id]);
+  }
+
+  static async usernameExists(username, excludeId) {
+    const [rows] = await db.query('SELECT id FROM users WHERE username = ? AND id != ?', [username, excludeId]);
+    return rows.length > 0;
   }
 
   static async findAll() {
@@ -54,6 +71,10 @@ class UserModel {
     const rounds = env.bcryptRounds || 10;
     const password_hash = await bcrypt.hash(newPassword, rounds);
     await db.query('UPDATE users SET password_hash = ? WHERE id = ?', [password_hash, id]);
+  }
+
+  static async updatePhoto(id, photoUrl) {
+    await db.query('UPDATE users SET photo_url = ? WHERE id = ?', [photoUrl, id]);
   }
 
   static async delete(id) {

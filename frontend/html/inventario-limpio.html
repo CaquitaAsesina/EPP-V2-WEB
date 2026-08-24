@@ -13,12 +13,12 @@
 </head>
 <body>
   <div id="layout">
-    <aside class="sidebar" id="sidebar">
+    <aside class="sidebar" id="sidebar" role="navigation" aria-label="Navegación">
       <div class="sidebar-header">
         <div class="sidebar-logo"><i class="bi bi-shield-check"></i></div>
         <span>EPP Control</span>
       </div>
-      <nav class="sidebar-nav">
+      <nav class="sidebar-nav" aria-label="Navegación">
         <a href="dashboard.html" class="nav-link"><i class="bi bi-speedometer2"></i><span>Dashboard</span></a>
         <a href="periodos.html" class="nav-link"><i class="bi bi-calendar3"></i><span>Períodos</span></a>
         <a href="inventario-limpio.html" class="nav-link active"><i class="bi bi-check-circle"></i><span>EPP Limpio</span></a>
@@ -28,13 +28,13 @@
         <a href="devoluciones.html" class="nav-link"><i class="bi bi-arrow-return-left"></i><span>Devoluciones</span></a>
         <a href="trabajadores.html" class="nav-link"><i class="bi bi-people"></i><span>Trabajadores</span></a>
         <a href="consultas.html" class="nav-link"><i class="bi bi-search"></i><span>Consultas</span></a>
+        <a href="mi-perfil.html" class="nav-link"><i class="bi bi-person-circle"></i><span>Mi Perfil</span></a>
         <a href="perfil.html" class="nav-link admin-only"><i class="bi bi-person-gear"></i><span>Perfil</span></a>
       </nav>
     </aside>
 
-    <main class="main-content">
+    <main class="main-content" role="main">
       <header class="main-header">
-        <button class="btn-icon sidebar-toggle" id="sidebarToggle"><i class="bi bi-list"></i></button>
         <div class="header-title">
           <h1>Inventario EPP Limpio</h1>
           <p class="text-muted mb-0">Stock sistemático por tipo de EPP y talla</p>
@@ -45,9 +45,10 @@
           <button class="btn btn-sm btn-outline-success me-2" onclick="exportExcel()"><i class="bi bi-file-earmark-excel me-1"></i>Exportar</button>
           <button class="btn-icon theme-toggle" id="themeToggle"><i class="bi bi-moon"></i></button>
           <div class="dropdown">
-            <button class="btn-icon" data-bs-toggle="dropdown"><i class="bi bi-person-circle"></i></button>
+            <button class="btn-icon" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="bi bi-person-circle"></i></button>
             <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="perfil.html"><i class="bi bi-person me-2"></i>Perfil</a></li>
+              <li><a class="dropdown-item" href="mi-perfil.html"><i class="bi bi-person-circle me-2"></i>Mi Perfil</a></li>
+              <li><a class="dropdown-item admin-only" href="perfil.html"><i class="bi bi-people me-2"></i>Usuarios</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>Salir</a></li>
             </ul>
@@ -64,17 +65,17 @@
           <div class="card-body py-2">
             <div class="row g-2 align-items-center">
               <div class="col-md-3">
-                <select class="form-select form-select-sm" id="filterEpp" onchange="applyFilters()">
+                <select class="form-select form-select-sm" id="filterEpp" onchange="applyFilters()" aria-label="Filtrar por tipo EPP">
                   <option value="">Todos los EPP</option>
                 </select>
               </div>
               <div class="col-md-3">
-                <select class="form-select form-select-sm" id="filterSize" onchange="applyFilters()">
+                <select class="form-select form-select-sm" id="filterSize" onchange="applyFilters()" aria-label="Filtrar por talla">
                   <option value="">Todas las tallas</option>
                 </select>
               </div>
               <div class="col-md-3">
-                <select class="form-select form-select-sm" id="filterConciliation" onchange="applyFilters()">
+                <select class="form-select form-select-sm" id="filterConciliation" onchange="applyFilters()" aria-label="Filtrar por estado de conciliación">
                   <option value="">Todos los estados</option>
                   <option value="coincide">Coincide</option>
                   <option value="surplus">Sobrante</option>
@@ -90,19 +91,19 @@
         <div class="card">
           <div class="card-body p-0">
             <div class="table-responsive">
-              <table class="table table-hover">
+              <table class="table table-hover" aria-label="Inventario EPP limpio">
                 <thead>
                   <tr>
-                    <th>EPP</th>
-                    <th>Talla</th>
-                    <th class="text-end">Stock Inicial</th>
-                    <th class="text-end">Ingresos</th>
-                    <th class="text-end">Entregas</th>
-                    <th class="text-end">Lavados Rec.</th>
-                    <th class="text-end">Stock Sist.</th>
-                    <th class="text-end">Cant. Física</th>
-                    <th class="text-end">Diferencia</th>
-                    <th>Estado</th>
+                    <th scope="col">EPP</th>
+                    <th scope="col">Talla</th>
+                    <th scope="col" class="text-end">Stock Inicial</th>
+                    <th scope="col" class="text-end">Ingresos</th>
+                    <th scope="col" class="text-end">Entregas</th>
+                    <th scope="col" class="text-end">Lavados Rec.</th>
+                    <th scope="col" class="text-end">Stock Sist.</th>
+                    <th scope="col" class="text-end">Cant. Física</th>
+                    <th scope="col" class="text-end">Diferencia</th>
+                    <th scope="col">Estado</th>
                   </tr>
                 </thead>
                 <tbody id="tableBody">
@@ -112,6 +113,8 @@
                 </tbody>
               </table>
             </div>
+            <!-- Mobile card view -->
+            <div class="mobile-card-view" id="cleanInventoryCards"></div>
             <div id="pagination" class="d-flex justify-content-between align-items-center px-3 py-2 text-muted" style="font-size:13px;"></div>
           </div>
         </div>
@@ -130,24 +133,24 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <form id="stockForm" class="mb-4">
+          <form id="stockForm" class="mb-4" aria-label="Formulario de registrar stock inicial">
             <p class="text-muted mb-3">Ingresa el stock inicial de cada EPP por separado.</p>
             <div class="row g-3 align-items-end">
               <div class="col-md-4">
                 <label class="form-label">Tipo de EPP *</label>
-                <select class="form-select" id="stockEppType" required>
+                <select class="form-select" id="stockEppType" required aria-label="Tipo de EPP para stock inicial">
                   <option value="">Seleccionar...</option>
                 </select>
               </div>
               <div class="col-md-3">
                 <label class="form-label">Talla *</label>
-                <select class="form-select" id="stockSize" required>
+                <select class="form-select" id="stockSize" required aria-label="Talla para stock inicial">
                   <option value="">Seleccionar...</option>
                 </select>
               </div>
               <div class="col-md-3">
                 <label class="form-label">Cantidad *</label>
-                <input type="number" class="form-control" id="stockQty" min="0" required placeholder="0">
+                <input type="number" class="form-control" id="stockQty" min="0" required placeholder="0" aria-label="Cantidad de stock inicial">
               </div>
               <div class="col-md-2">
                 <button type="submit" class="btn btn-primary w-100">
@@ -159,13 +162,13 @@
           <hr>
           <h6 class="mb-3"><i class="bi bi-list-check me-2"></i>Stock Inicial Registrado</h6>
           <div class="table-responsive" style="max-height:300px;overflow-y:auto;">
-            <table class="table table-sm table-hover">
+            <table class="table table-sm table-hover" aria-label="Stock inicial registrado">
               <thead>
                 <tr>
-                  <th>EPP</th>
-                  <th>Talla</th>
-                  <th>Cantidad</th>
-                  <th class="text-end">Acciones</th>
+                  <th scope="col">EPP</th>
+                  <th scope="col">Talla</th>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col" class="text-end">Acciones</th>
                 </tr>
               </thead>
               <tbody id="stockRegisteredBody">
@@ -190,24 +193,24 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <form id="physicalForm" class="mb-4">
+          <form id="physicalForm" class="mb-4" aria-label="Formulario de inventario físico">
             <p class="text-muted mb-3">Ingresa la cantidad física contada, uno por uno.</p>
             <div class="row g-3 align-items-end">
               <div class="col-md-4">
                 <label class="form-label">Tipo de EPP *</label>
-                <select class="form-select" id="physEppType" required>
+                <select class="form-select" id="physEppType" required aria-label="Tipo de EPP para inventario físico">
                   <option value="">Seleccionar...</option>
                 </select>
               </div>
               <div class="col-md-3">
                 <label class="form-label">Talla *</label>
-                <select class="form-select" id="physSize" required>
+                <select class="form-select" id="physSize" required aria-label="Talla para inventario físico">
                   <option value="">Seleccionar...</option>
                 </select>
               </div>
               <div class="col-md-3">
                 <label class="form-label">Cantidad Física *</label>
-                <input type="number" class="form-control" id="physQty" min="0" required placeholder="0">
+                <input type="number" class="form-control" id="physQty" min="0" required placeholder="0" aria-label="Cantidad física contada">
               </div>
               <div class="col-md-2">
                 <button type="submit" class="btn btn-primary w-100">
@@ -219,15 +222,15 @@
           <hr>
           <h6 class="mb-3"><i class="bi bi-clipboard-check me-2"></i>Registros Físicos</h6>
           <div class="table-responsive" style="max-height:300px;overflow-y:auto;">
-            <table class="table table-sm table-hover">
+            <table class="table table-sm table-hover" aria-label="Registros de inventario físico">
               <thead>
                 <tr>
-                  <th>EPP</th>
-                  <th>Talla</th>
-                  <th>Cantidad Física</th>
-                  <th>Sistemático</th>
-                  <th>Diferencia</th>
-                  <th class="text-end">Acciones</th>
+                  <th scope="col">EPP</th>
+                  <th scope="col">Talla</th>
+                  <th scope="col">Cantidad Física</th>
+                  <th scope="col">Sistemático</th>
+                  <th scope="col">Diferencia</th>
+                  <th scope="col" class="text-end">Acciones</th>
                 </tr>
               </thead>
               <tbody id="physicalRegisteredBody">
@@ -364,6 +367,13 @@
           <td class="text-end ${diffClass}">${diff}</td>
           <td><span class="badge ${statusClass}">${statusText}</span></td>
         </tr>`;
+      }).join('');
+
+      const cardsEl = document.getElementById('cleanInventoryCards');
+      if (cardsEl) cardsEl.innerHTML = pageData.map(item => {
+        const diff = Number(item.difference || 0);
+        const diffClass = diff > 0 ? 'diff-positive' : diff < 0 ? 'diff-negative' : 'diff-zero';
+        return `<div class="mobile-card"><div class="mobile-card-header"><h6>${item.epp_type_name || ''} — ${item.size_name || ''}</h6><span class="badge bg-success">Limpio</span></div><div class="mobile-card-row"><span class="mobile-card-label">Stock Sist.</span><span class="mobile-card-value">${item.systematic_stock || 0}</span></div><div class="mobile-card-row"><span class="mobile-card-label">Cant. Física</span><span class="mobile-card-value">${item.physical_quantity || 0}</span></div><div class="mobile-card-row"><span class="mobile-card-label">Diferencia</span><span class="mobile-card-value ${diffClass}">${diff}</span></div></div>`;
       }).join('');
 
       const pag = document.getElementById('pagination');

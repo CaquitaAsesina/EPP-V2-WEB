@@ -18,6 +18,13 @@ const loginValidation = [
   validate
 ];
 
+const profileUpdateValidation = [
+  body('username').optional({ checkFalsy: true }).matches(/^[a-zA-Z0-9._-]{3,100}$/).withMessage('Usuario inválido: mínimo 3 caracteres (letras, números, . _ -)'),
+  body('new_password').optional({ checkFalsy: true }).isLength({ min: 6 }).withMessage('La nueva contraseña debe tener al menos 6 caracteres'),
+  body('current_password').optional({ checkFalsy: true }),
+  validate
+];
+
 const periodValidation = [
   body('name').notEmpty().withMessage('El nombre del período es obligatorio'),
   body('start_date').isISO8601().withMessage('La fecha de inicio es obligatoria'),
@@ -103,6 +110,7 @@ const userValidation = [
 module.exports = {
   validate,
   loginValidation,
+  profileUpdateValidation,
   periodValidation,
   eppTypeValidation,
   sizeValidation,

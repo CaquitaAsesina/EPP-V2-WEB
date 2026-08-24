@@ -69,6 +69,8 @@
   color: var(--text-primary);
 }
 
+.card-body { flex-grow: 1; }
+
 /* ============================================
    BUTTONS — gradiente rojo + shine + ripple
    ============================================ */
@@ -265,6 +267,12 @@
 }
 .btn-icon:active { transform: scale(0.92); }
 
+@media (max-width: 767.98px) {
+  .btn { min-height: 44px; padding: 10px 16px !important; }
+  .btn-sm { min-height: 38px; }
+  .btn-icon { width: 44px; height: 44px; }
+}
+
 /* ============================================
    TABLES — filas vivas
    ============================================ */
@@ -318,6 +326,12 @@
 }
 /* Aviso de que hay más datos hacia los lados */
 .table-responsive::-webkit-scrollbar { height: 8px; }
+
+@media (max-width: 767.98px) {
+  .table { font-size: 12px; }
+  .table > :not(caption) > * > * { padding: 10px 12px !important; }
+  .table-responsive { border-radius: var(--radius-lg); border: 1px solid var(--border-light); }
+}
 
 /* ============================================
    FORM CONTROLS
@@ -380,6 +394,11 @@
   opacity: 0.7;
 }
 
+@media (max-width: 767.98px) {
+  .form-control, .form-select { min-height: 44px; padding: 12px 14px !important; font-size: 16px !important; }
+  .form-label { font-size: 10px !important; }
+}
+
 /* ============================================
    NAV TABS
    ============================================ */
@@ -420,8 +439,6 @@
   border-radius: 16px !important;
   box-shadow: var(--shadow-lg) !important;
   padding: 8px !important;
-  animation: fadeInUp 0.25s var(--ease-out);
-  overflow: hidden;
 }
 .dropdown-item {
   position: relative;
@@ -526,6 +543,13 @@
   gap: 8px;
 }
 
+@media (max-width: 575.98px) {
+  .modal-dialog { margin: 8px; max-width: calc(100vw - 16px); }
+  .modal-header { padding: 16px 18px 14px !important; }
+  .modal-body { padding: 18px !important; }
+  .modal-footer { padding: 12px 18px 16px !important; }
+}
+
 /* ============================================
    STAT CARDS / KPI
    ============================================ */
@@ -612,6 +636,12 @@
   letter-spacing: -1px !important;
   margin: 4px 0 0 !important;
   font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 767.98px) {
+  .stat-icon, .kpi-icon { width: 42px; height: 42px; font-size: 18px; border-radius: 12px; }
+  .stat-info h3, .kpi-value { font-size: 22px !important; }
+  .stat-info h6, .kpi-label { font-size: 10px !important; }
 }
 
 .kpi-content { flex: 1; min-width: 0; position: relative; z-index: 1; }
@@ -737,6 +767,11 @@
 .toast-info i:first-child { color: var(--primary); }
 .toast-info .toast-progress { background: var(--primary); }
 
+@media (max-width: 575.98px) {
+  .toast-container { left: 12px; right: 12px; top: 12px; }
+  .toast-apple { min-width: auto; max-width: 100%; width: 100%; }
+}
+
 /* ============================================
    BOTONES APPLE (login / confirm)
    ============================================ */
@@ -835,13 +870,25 @@
    ============================================ */
 .grid-kpi {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-  gap: 18px;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+@media (min-width: 576px) {
+  .grid-kpi { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 992px) {
+  .grid-kpi { grid-template-columns: repeat(4, 1fr); gap: 18px; }
+}
+@media (min-width: 1400px) {
+  .grid-kpi { grid-template-columns: repeat(4, 1fr); }
 }
 .grid-charts {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  grid-template-columns: 1fr;
   gap: 18px;
+}
+@media (min-width: 768px) {
+  .grid-charts { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* ============================================
@@ -1018,3 +1065,68 @@
 .text-end { text-align: right; }
 .text-nowrap { white-space: nowrap; }
 .fw-medium { font-weight: 500; }
+
+/* Elementos solo-admin (tabs de gestión, botones de creación) */
+[data-role="lector"] .admin-only { display: none !important; }
+
+/* ============================================
+   MOBILE CARD VIEW — Tables → Cards on mobile
+   ============================================ */
+.mobile-card-view { display: none; }
+
+@media (max-width: 767.98px) {
+  .table-responsive { display: none !important; }
+  .mobile-card-view { display: block !important; }
+  
+  .mobile-card {
+    background: var(--surface);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow-sm);
+  }
+  .mobile-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-light);
+  }
+  .mobile-card-header h6 {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0;
+  }
+  .mobile-card-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+  }
+  .mobile-card-row:not(:last-child) {
+    border-bottom: 1px solid var(--border-light);
+  }
+  .mobile-card-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-tertiary);
+  }
+  .mobile-card-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .mobile-card-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-light);
+  }
+  .mobile-card-actions .btn { flex: 1; font-size: 12px !important; min-height: 38px; }
+}

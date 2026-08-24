@@ -14,12 +14,12 @@
 <body>
     <div id="layout">
         <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar">
+        <aside class="sidebar" id="sidebar" role="navigation" aria-label="Navegación">
             <div class="sidebar-header">
                 <div class="sidebar-logo"><i class="bi bi-shield-check"></i></div>
                 <span>EPP Control</span>
             </div>
-            <nav class="sidebar-nav">
+            <nav class="sidebar-nav" aria-label="Navegación">
                 <a href="dashboard.html" class="nav-link"><i class="bi bi-speedometer2"></i><span>Dashboard</span></a>
                 <a href="periodos.html" class="nav-link"><i class="bi bi-calendar3"></i><span>Períodos</span></a>
                 <a href="inventario-limpio.html" class="nav-link"><i class="bi bi-check-circle"></i><span>EPP Limpio</span></a>
@@ -29,31 +29,30 @@
                 <a href="devoluciones.html" class="nav-link"><i class="bi bi-arrow-return-left"></i><span>Devoluciones</span></a>
                 <a href="trabajadores.html" class="nav-link"><i class="bi bi-people"></i><span>Trabajadores</span></a>
                 <a href="consultas.html" class="nav-link"><i class="bi bi-search"></i><span>Consultas</span></a>
+                <a href="mi-perfil.html" class="nav-link"><i class="bi bi-person-circle"></i><span>Mi Perfil</span></a>
                 <a href="perfil.html" class="nav-link active admin-only"><i class="bi bi-person-gear"></i><span>Perfil</span></a>
             </nav>
         </aside>
 
         <!-- Main Content -->
-        <main class="main-content">
+        <main class="main-content" role="main">
             <!-- Header -->
             <header class="main-header">
-                <button class="btn-icon sidebar-toggle" id="sidebarToggle">
-                    <i class="bi bi-list"></i>
-                </button>
                 <div class="header-title">
-                    <h1>Perfil y Configuración</h1>
-                    <p class="text-muted mb-0">Administrar perfil, usuarios y apariencia</p>
+                    <h1>Configuración del Sistema</h1>
+                    <p class="text-muted mb-0">Administrar perfil y usuarios</p>
                 </div>
                 <div class="header-actions">
                     <button class="btn-icon theme-toggle" id="themeToggle">
                         <i class="bi bi-moon"></i>
                     </button>
                     <div class="dropdown">
-                        <button class="btn-icon" data-bs-toggle="dropdown">
+                        <button class="btn-icon" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="bi bi-person-circle"></i>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="perfil.html"><i class="bi bi-person me-2"></i>Perfil</a></li>
+                            <li><a class="dropdown-item" href="mi-perfil.html"><i class="bi bi-person-circle me-2"></i>Mi Perfil</a></li>
+                            <li><a class="dropdown-item admin-only" href="perfil.html"><i class="bi bi-people me-2"></i>Usuarios</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>Salir</a></li>
                         </ul>
@@ -65,13 +64,8 @@
             <div class="content-wrapper">
                 <!-- Tabs Navigation -->
                 <ul class="nav nav-tabs mb-4" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profileTab">
-                            <i class="bi bi-person me-2"></i>Mi Perfil
-                        </button>
-                    </li>
                     <li class="nav-item admin-only" role="presentation">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#usersTab">
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#usersTab">
                             <i class="bi bi-people me-2"></i>Usuarios
                         </button>
                     </li>
@@ -85,48 +79,12 @@
                             <i class="bi bi-rulers me-2"></i>Tallas
                         </button>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#appearanceTab">
-                            <i class="bi bi-palette me-2"></i>Apariencia
-                        </button>
-                    </li>
                 </ul>
 
                 <!-- Tab Content -->
                 <div class="tab-content">
-                    <!-- Profile Tab -->
-                    <div class="tab-pane fade show active" id="profileTab">
-                        <div class="card">
-                            <div class="card-body">
-                                <form id="profileForm">
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Nombre de Usuario</label>
-                                            <input type="text" class="form-control" id="profileUsername" readonly>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Rol</label>
-                                            <input type="text" class="form-control" id="profileRole" readonly>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Nueva Contraseña</label>
-                                            <input type="password" class="form-control" id="profileNewPassword" placeholder="Dejar vacío para no cambiar">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label class="form-label">Confirmar Contraseña</label>
-                                            <input type="password" class="form-control" id="profileConfirmPassword">
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="bi bi-check-lg me-2"></i>Guardar Cambios
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Users Tab (Admin Only) -->
-                    <div class="tab-pane fade" id="usersTab">
+                    <div class="tab-pane fade show active" id="usersTab">
                         <div class="card mb-4">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <h5 class="mb-0">Gestionar Usuarios</h5>
@@ -136,14 +94,14 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-hover">
+                                    <table class="table table-hover" aria-label="Lista de usuarios">
                                         <thead>
                                             <tr>
-                                                <th>Usuario</th>
-                                                <th>Rol</th>
-                                                <th>Estado</th>
-                                                <th>Creado</th>
-                                                <th>Acciones</th>
+                                                <th scope="col">Usuario</th>
+                                                <th scope="col">Rol</th>
+                                                <th scope="col">Estado</th>
+                                                <th scope="col">Creado</th>
+                                                <th scope="col">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody id="usersTable">
@@ -172,13 +130,13 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-hover">
+                                    <table class="table table-hover" aria-label="Lista de tipos de EPP">
                                         <thead>
                                             <tr>
-                                                <th>Nombre</th>
-                                                <th>Estado</th>
-                                                <th>Creado</th>
-                                                <th>Acciones</th>
+                                                <th scope="col">Nombre</th>
+                                                <th scope="col">Estado</th>
+                                                <th scope="col">Creado</th>
+                                                <th scope="col">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody id="eppTypesTable">
@@ -207,13 +165,13 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-hover">
+                                    <table class="table table-hover" aria-label="Lista de tallas">
                                         <thead>
                                             <tr>
-                                                <th>Nombre</th>
-                                                <th>Estado</th>
-                                                <th>Creado</th>
-                                                <th>Acciones</th>
+                                                <th scope="col">Nombre</th>
+                                                <th scope="col">Estado</th>
+                                                <th scope="col">Creado</th>
+                                                <th scope="col">Acciones</th>
                                             </tr>
                                         </thead>
                                         <tbody id="sizesTable">
@@ -230,104 +188,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Appearance Tab -->
-                    <div class="tab-pane fade" id="appearanceTab">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <h5 class="mb-0"><i class="bi bi-palette me-2"></i>Configuración de Apariencia</h5>
-                            </div>
-                            <div class="card-body">
-                                <form id="appearanceForm">
-                                    <div class="row g-4">
-                                        <!-- Theme Mode -->
-                                        <div class="col-md-4">
-                                            <label class="form-label">Modo</label>
-                                            <select class="form-select" id="prefTheme">
-                                                <option value="light">Claro</option>
-                                                <option value="dark">Oscuro</option>
-                                                <option value="auto">Automático</option>
-                                            </select>
-                                        </div>
-
-                                        <!-- Primary Color -->
-                                        <div class="col-md-4">
-                                            <label class="form-label">Color Principal</label>
-                                            <div class="input-group">
-                                                <input type="color" class="form-control form-control-color" id="prefPrimaryColor" value="#e53935">
-                                                <input type="text" class="form-control" id="prefPrimaryColorText" value="#e53935">
-                                            </div>
-                                        </div>
-
-                                        <!-- Secondary Color -->
-                                        <div class="col-md-4">
-                                            <label class="form-label">Color Secundario</label>
-                                            <div class="input-group">
-                                                <input type="color" class="form-control form-control-color" id="prefSecondaryColor" value="#ffffff">
-                                                <input type="text" class="form-control" id="prefSecondaryColorText" value="#ffffff">
-                                            </div>
-                                        </div>
-
-                                        <!-- Background Color -->
-                                        <div class="col-md-4">
-                                            <label class="form-label">Color de Fondo</label>
-                                            <div class="input-group">
-                                                <input type="color" class="form-control form-control-color" id="prefBgColor" value="#f5f5f7">
-                                                <input type="text" class="form-control" id="prefBgColorText" value="#f5f5f7">
-                                            </div>
-                                        </div>
-
-                                        <!-- Card Color -->
-                                        <div class="col-md-4">
-                                            <label class="form-label">Color de Tarjetas</label>
-                                            <div class="input-group">
-                                                <input type="color" class="form-control form-control-color" id="prefCardColor" value="#ffffff">
-                                                <input type="text" class="form-control" id="prefCardColorText" value="#ffffff">
-                                            </div>
-                                        </div>
-
-                                        <!-- Text Color -->
-                                        <div class="col-md-4">
-                                            <label class="form-label">Color de Texto</label>
-                                            <div class="input-group">
-                                                <input type="color" class="form-control form-control-color" id="prefTextColor" value="#1d1d1f">
-                                                <input type="text" class="form-control" id="prefTextColorText" value="#1d1d1f">
-                                            </div>
-                                        </div>
-
-                                        <!-- Sidebar Style -->
-                                        <div class="col-md-4">
-                                            <label class="form-label">Estilo de Sidebar</label>
-                                            <select class="form-select" id="prefSidebarStyle">
-                                                <option value="light">Claro</option>
-                                                <option value="dark">Oscuro</option>
-                                                <option value="custom">Personalizado</option>
-                                            </select>
-                                        </div>
-
-                                        <!-- Density -->
-                                        <div class="col-md-4">
-                                            <label class="form-label">Densidad de Interfaz</label>
-                                            <select class="form-select" id="prefDensity">
-                                                <option value="compact">Compacta</option>
-                                                <option value="normal" selected>Normal</option>
-                                                <option value="comfortable">Cómoda</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <hr class="my-4">
-
-                                    <button type="submit" class="btn btn-primary me-2">
-                                        <i class="bi bi-check-lg me-2"></i>Guardar Preferencias
-                                    </button>
-                                    <button type="button" class="btn btn-outline-secondary" id="btnResetAppearance">
-                                        <i class="bi bi-arrow-counterclockwise me-2"></i>Restablecer Predeterminado
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </main>
@@ -341,27 +201,27 @@
                     <h5 class="modal-title" id="userModalTitle">Nuevo Usuario</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <form id="userForm">
+                <form id="userForm" aria-label="Formulario de usuario">
                     <div class="modal-body">
                         <input type="hidden" id="userId">
                         <div class="mb-3">
                             <label class="form-label">Nombre de Usuario *</label>
-                            <input type="text" class="form-control" id="userUsername" required>
+                            <input type="text" class="form-control" id="userUsername" required aria-label="Nombre de usuario">
                         </div>
                         <div class="mb-3" id="passwordGroup">
                             <label class="form-label">Contraseña *</label>
-                            <input type="password" class="form-control" id="userPassword">
+                            <input type="password" class="form-control" id="userPassword" aria-label="Contraseña del usuario">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Rol *</label>
-                            <select class="form-select" id="userRole" required>
-                                <option value="lector">Lector</option>
-                                <option value="administrador">Administrador</option>
+                            <select class="form-select" id="userRole" required aria-label="Rol del usuario">
+                                <option value="2">Lector</option>
+                                <option value="1">Administrador</option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Estado</label>
-                            <select class="form-select" id="userStatus">
+                            <select class="form-select" id="userStatus" aria-label="Estado del usuario">
                                 <option value="1">Activo</option>
                                 <option value="0">Inactivo</option>
                             </select>
@@ -384,16 +244,16 @@
                     <h5 class="modal-title" id="eppTypeModalTitle">Nuevo Tipo de EPP</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <form id="eppTypeForm">
+                <form id="eppTypeForm" aria-label="Formulario de tipo de EPP">
                     <div class="modal-body">
                         <input type="hidden" id="eppTypeId">
                         <div class="mb-3">
                             <label class="form-label">Nombre *</label>
-                            <input type="text" class="form-control" id="eppTypeName" required>
+                            <input type="text" class="form-control" id="eppTypeName" required aria-label="Nombre del tipo de EPP">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Estado</label>
-                            <select class="form-select" id="eppTypeStatus">
+                            <select class="form-select" id="eppTypeStatus" aria-label="Estado del tipo de EPP">
                                 <option value="1">Activo</option>
                                 <option value="0">Inactivo</option>
                             </select>
@@ -416,16 +276,16 @@
                     <h5 class="modal-title" id="sizeModalTitle">Nueva Talla</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <form id="sizeForm">
+                <form id="sizeForm" aria-label="Formulario de talla">
                     <div class="modal-body">
                         <input type="hidden" id="sizeId">
                         <div class="mb-3">
                             <label class="form-label">Nombre *</label>
-                            <input type="text" class="form-control" id="sizeName" required>
+                            <input type="text" class="form-control" id="sizeName" required aria-label="Nombre de la talla">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Estado</label>
-                            <select class="form-select" id="sizeStatus">
+                            <select class="form-select" id="sizeStatus" aria-label="Estado de la talla">
                                 <option value="1">Activo</option>
                                 <option value="0">Inactivo</option>
                             </select>
@@ -446,24 +306,21 @@
     <script src="../js/utils.js"></script>
     <script src="../js/layout.js"></script>
     <script>
+        if (!Auth.requireAuth() || !Auth.requireAdmin()) throw new Error('No auth');
+
         let usersData = [];
         let eppTypesData = [];
         let sizesData = [];
 
         document.addEventListener('DOMContentLoaded', () => {
             Layout.init();
-            loadProfile();
             loadUsers();
             loadEppTypes();
             loadSizes();
-            loadPreferences();
             setupEventListeners();
         });
 
         function setupEventListeners() {
-            // Profile form
-            document.getElementById('profileForm').addEventListener('submit', handleProfileSubmit);
-
             // User management
             document.getElementById('btnAddUser').addEventListener('click', () => {
                 document.getElementById('userForm').reset();
@@ -492,56 +349,6 @@
                 new bootstrap.Modal(document.getElementById('sizeModal')).show();
             });
             document.getElementById('sizeForm').addEventListener('submit', handleSizeSubmit);
-
-            // Appearance color sync
-            ['Primary', 'Secondary', 'Bg', 'Card', 'Text'].forEach(name => {
-                const colorInput = document.getElementById(`pref${name}Color`);
-                const textInput = document.getElementById(`pref${name}ColorText`);
-                colorInput.addEventListener('input', () => textInput.value = colorInput.value);
-                textInput.addEventListener('input', () => colorInput.value = textInput.value);
-            });
-
-            document.getElementById('appearanceForm').addEventListener('submit', handleAppearanceSubmit);
-            document.getElementById('btnResetAppearance').addEventListener('click', resetAppearance);
-        }
-
-        async function loadProfile() {
-            try {
-                const res = await Api.get('/api/auth/profile');
-                if (res.data) {
-                    document.getElementById('profileUsername').value = res.data.username;
-                    document.getElementById('profileRole').value = res.data.role_name;
-                }
-            } catch (e) {
-                Utils.toast('Error cargando perfil', 'error');
-            }
-        }
-
-        async function handleProfileSubmit(e) {
-            e.preventDefault();
-            const newPassword = document.getElementById('profileNewPassword').value;
-            const confirmPassword = document.getElementById('profileConfirmPassword').value;
-
-            if (newPassword && newPassword !== confirmPassword) {
-                Utils.toast('Las contraseñas no coinciden', 'error');
-                return;
-            }
-
-            if (newPassword && newPassword.length < 6) {
-                Utils.toast('La contraseña debe tener al menos 6 caracteres', 'error');
-                return;
-            }
-
-            try {
-                const data = {};
-                if (newPassword) data.password = newPassword;
-                await Api.put('/api/auth/profile', data);
-                Utils.toast('Perfil actualizado correctamente');
-                document.getElementById('profileNewPassword').value = '';
-                document.getElementById('profileConfirmPassword').value = '';
-            } catch (e) {
-                Utils.toast(e.message || 'Error al actualizar perfil', 'error');
-            }
         }
 
         async function loadUsers() {
@@ -586,16 +393,18 @@
             const id = document.getElementById('userId').value;
             const data = {
                 username: document.getElementById('userUsername').value,
-                role_name: document.getElementById('userRole').value,
+                role_id: parseInt(document.getElementById('userRole').value),
                 is_active: parseInt(document.getElementById('userStatus').value)
             };
 
             const password = document.getElementById('userPassword').value;
-            if (password) data.password = password;
 
             try {
                 if (id) {
                     await Api.put(`/api/users/${id}`, data);
+                    if (password) {
+                        await Api.put(`/api/users/${id}/password`, { password });
+                    }
                     Utils.toast('Usuario actualizado correctamente');
                 } else {
                     if (!password) {
@@ -618,7 +427,7 @@
 
             document.getElementById('userId').value = user.id;
             document.getElementById('userUsername').value = user.username;
-            document.getElementById('userRole').value = user.role_name;
+            document.getElementById('userRole').value = user.role_id;
             document.getElementById('userStatus').value = user.is_active ? '1' : '0';
             document.getElementById('userModalTitle').textContent = 'Editar Usuario';
             document.getElementById('passwordGroup').style.display = 'block';
@@ -804,79 +613,6 @@
             } catch (e) {
                 Utils.toast(e.message || 'Error al eliminar talla', 'error');
             }
-        }
-
-        async function loadPreferences() {
-            try {
-                const res = await Api.get('/api/user-preferences');
-                if (res.data) {
-                    document.getElementById('prefTheme').value = res.data.theme_mode || 'light';
-                    document.getElementById('prefPrimaryColor').value = res.data.primary_color || '#e53935';
-                    document.getElementById('prefPrimaryColorText').value = res.data.primary_color || '#e53935';
-                    document.getElementById('prefSecondaryColor').value = res.data.secondary_color || '#ffffff';
-                    document.getElementById('prefSecondaryColorText').value = res.data.secondary_color || '#ffffff';
-                    document.getElementById('prefBgColor').value = res.data.background_color || '#f5f5f7';
-                    document.getElementById('prefBgColorText').value = res.data.background_color || '#f5f5f7';
-                    document.getElementById('prefCardColor').value = res.data.card_color || '#ffffff';
-                    document.getElementById('prefCardColorText').value = res.data.card_color || '#ffffff';
-                    document.getElementById('prefTextColor').value = res.data.text_color || '#1d1d1f';
-                    document.getElementById('prefTextColorText').value = res.data.text_color || '#1d1d1f';
-                    document.getElementById('prefSidebarStyle').value = res.data.sidebar_style || 'light';
-                    document.getElementById('prefDensity').value = res.data.density || 'normal';
-                }
-            } catch (e) {
-                console.error('Error loading preferences:', e);
-            }
-        }
-
-        async function handleAppearanceSubmit(e) {
-            e.preventDefault();
-            const data = {
-                theme_mode: document.getElementById('prefTheme').value,
-                primary_color: document.getElementById('prefPrimaryColor').value,
-                secondary_color: document.getElementById('prefSecondaryColor').value,
-                background_color: document.getElementById('prefBgColor').value,
-                card_color: document.getElementById('prefCardColor').value,
-                text_color: document.getElementById('prefTextColor').value,
-                sidebar_style: document.getElementById('prefSidebarStyle').value,
-                density: document.getElementById('prefDensity').value
-            };
-
-            try {
-                await Api.put('/api/user-preferences', data);
-                Utils.toast('Preferencias guardadas correctamente');
-                Utils.applyTheme(data);
-            } catch (e) {
-                Utils.toast(e.message || 'Error al guardar preferencias', 'error');
-            }
-        }
-
-        function resetAppearance() {
-            const defaults = {
-                theme_mode: 'light',
-                primary_color: '#e53935',
-                secondary_color: '#ffffff',
-                background_color: '#f5f5f7',
-                card_color: '#ffffff',
-                text_color: '#1d1d1f',
-                sidebar_style: 'light',
-                density: 'normal'
-            };
-
-            document.getElementById('prefTheme').value = defaults.theme_mode;
-            document.getElementById('prefPrimaryColor').value = defaults.primary_color;
-            document.getElementById('prefPrimaryColorText').value = defaults.primary_color;
-            document.getElementById('prefSecondaryColor').value = defaults.secondary_color;
-            document.getElementById('prefSecondaryColorText').value = defaults.secondary_color;document.getElementById('prefBgColor').value = defaults.background_color;
-                    document.getElementById('prefBgColorText').value = defaults.background_color;
-            document.getElementById('prefCardColor').value = defaults.card_color;
-            document.getElementById('prefCardColorText').value = defaults.card_color;
-            document.getElementById('prefTextColor').value = defaults.text_color;
-            document.getElementById('prefTextColorText').value = defaults.text_color;
-            document.getElementById('prefSidebarStyle').value = defaults.sidebar_style;
-            document.getElementById('prefDensity').value = defaults.density;
-
-            Utils.toast('Preferencias restablecidas', 'info');
         }
     </script>
 </body>

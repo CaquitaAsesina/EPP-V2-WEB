@@ -57,7 +57,7 @@ class LaundryModel {
 
   static async getAvailableForWashing(periodId, eppTypeId, sizeId) {
     const [[row]] = await db.query(
-      `SELECT COALESCE(SUM(quantity), 0) as available 
+      `SELECT COALESCE(SUM(quantity), 0) as available
        FROM laundry_movements 
        WHERE period_id = ? AND epp_type_id = ? AND size_id = ? AND status = 'para_lavar'`,
       [periodId, eppTypeId, sizeId]
@@ -67,7 +67,7 @@ class LaundryModel {
 
   static async getAvailableForMarkingWashed(periodId, eppTypeId, sizeId) {
     const [[row]] = await db.query(
-      `SELECT COALESCE(SUM(quantity), 0) as available 
+      `SELECT COALESCE(SUM(quantity), 0) as available
        FROM laundry_movements 
        WHERE period_id = ? AND epp_type_id = ? AND size_id = ? AND status = 'mandado_lavar'`,
       [periodId, eppTypeId, sizeId]
@@ -80,35 +80,73 @@ class LaundryModel {
     try {
       await conn.beginTransaction();
 
-      // Validate stock for status changes
       if (data.status === 'mandado_lavar') {
+        // Transition para_lavar → mandado_lavar
         const available = await this.getAvailableForWashing(data.period_id, data.epp_type_id, data.size_id);
         if (available < data.quantity) {
           throw new Error(`Stock para lavar insuficiente. Disponible: ${available}, Solicitado: ${data.quantity}`);
         }
-      }
+        await this._transitionRecords(conn, data.period_id, data.epp_type_id, data.size_id, 'para_lavar', 'mandado_lavar', data.quantity, data.created_by);
 
-      const [result] = await conn.query(
-        `INSERT INTO laundry_movements (period_id, epp_type_id, size_id, quantity, status, movement_date, observation, created_by)
-         VALUES (?, ?, ?, ?, ?, CURDATE(), ?, ?)`,
-        [data.period_id, data.epp_type_id, data.size_id, data.quantity, data.status, data.observation || null, data.created_by]
-      );
+      } else if (data.status === 'lavado') {
+        // Transition mandado_lavar → lavado
+        const available = await this.getAvailableForMarkingWashed(data.period_id, data.epp_type_id, data.size_id);
+        if (available < data.quantity) {
+          throw new Error(`Stock en proceso insuficiente. Disponible: ${available}, Solicitado: ${data.quantity}`);
+        }
+        await this._transitionRecords(conn, data.period_id, data.epp_type_id, data.size_id, 'mandado_lavar', 'lavado', data.quantity, data.created_by);
+
+      } else {
+        // para_lavar: direct insert (from returns classification)
+        await conn.query(
+          `INSERT INTO laundry_movements (period_id, epp_type_id, size_id, quantity, status, movement_date, observation, created_by)
+           VALUES (?, ?, ?, ?, ?, CURDATE(), ?, ?)`,
+          [data.period_id, data.epp_type_id, data.size_id, data.quantity, data.status, data.observation || null, data.created_by]
+        );
+      }
 
       // Register kardex movement
       await conn.query(
         `INSERT INTO inventory_movements (period_id, movement_type, epp_type_id, size_id, quantity, direction, reference_id, reference_type, observation, created_by)
-         VALUES (?, ?, ?, ?, ?, ?, ?, 'laundry', ?, ?)`,
+         VALUES (?, ?, ?, ?, ?, ?, NULL, 'laundry', ?, ?)`,
         [data.period_id, `lavado_${data.status}`, data.epp_type_id, data.size_id, data.quantity,
-         data.status === 'lavado' ? 'in' : 'out', result.insertId, data.observation || null, data.created_by]
+         data.status === 'lavado' ? 'in' : 'out', data.observation || null, data.created_by]
       );
 
       await conn.commit();
-      return result.insertId;
+      return true;
     } catch (err) {
       await conn.rollback();
       throw err;
     } finally {
       conn.release();
+    }
+  }
+
+  static async _transitionRecords(conn, periodId, eppTypeId, sizeId, fromStatus, toStatus, quantity, userId) {
+    const [records] = await conn.query(
+      `SELECT id, quantity FROM laundry_movements 
+       WHERE period_id = ? AND epp_type_id = ? AND size_id = ? AND status = ? 
+       ORDER BY movement_date ASC, id ASC`,
+      [periodId, eppTypeId, sizeId, fromStatus]
+    );
+
+    let remaining = quantity;
+    for (const rec of records) {
+      if (remaining <= 0) break;
+      const take = Math.min(rec.quantity, remaining);
+      if (take === rec.quantity) {
+        await conn.query('UPDATE laundry_movements SET status = ?, observation = ? WHERE id = ?',
+          [toStatus, `Transición ${fromStatus} → ${toStatus}`, rec.id]);
+      } else {
+        await conn.query('UPDATE laundry_movements SET quantity = quantity - ? WHERE id = ?', [take, rec.id]);
+        await conn.query(
+          `INSERT INTO laundry_movements (period_id, epp_type_id, size_id, quantity, status, movement_date, observation, created_by)
+           VALUES (?, ?, ?, ?, ?, CURDATE(), ?, ?)`,
+          [periodId, eppTypeId, sizeId, take, toStatus, `Transición ${fromStatus} → ${toStatus}`, userId]
+        );
+      }
+      remaining -= take;
     }
   }
 

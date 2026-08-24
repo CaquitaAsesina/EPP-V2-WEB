@@ -15,6 +15,7 @@ const Router = {
     'devoluciones':      { file: 'devoluciones.html',     label: 'Devoluciones',    admin: true },
     'trabajadores':      { file: 'trabajadores.html',     label: 'Trabajadores' },
     'consultas':         { file: 'consultas.html',        label: 'Consultas y Reportes' },
+    'mi-perfil':         { file: 'mi-perfil.html',        label: 'Mi Perfil' },
     'perfil':            { file: 'perfil.html',           label: 'Administración',  admin: true }
   },
 

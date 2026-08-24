@@ -14,12 +14,12 @@
 <body>
     <div id="layout">
         <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar">
+        <aside class="sidebar" id="sidebar" role="navigation" aria-label="Navegación">
             <div class="sidebar-header">
                 <div class="sidebar-logo"><i class="bi bi-shield-check"></i></div>
                 <span>EPP Control</span>
             </div>
-            <nav class="sidebar-nav">
+            <nav class="sidebar-nav" aria-label="Navegación">
                 <a href="dashboard.html" class="nav-link"><i class="bi bi-speedometer2"></i><span>Dashboard</span></a>
                 <a href="periodos.html" class="nav-link"><i class="bi bi-calendar3"></i><span>Períodos</span></a>
                 <a href="inventario-limpio.html" class="nav-link"><i class="bi bi-check-circle"></i><span>EPP Limpio</span></a>
@@ -29,17 +29,15 @@
                 <a href="devoluciones.html" class="nav-link"><i class="bi bi-arrow-return-left"></i><span>Devoluciones</span></a>
                 <a href="trabajadores.html" class="nav-link"><i class="bi bi-people"></i><span>Trabajadores</span></a>
                 <a href="consultas.html" class="nav-link active"><i class="bi bi-search"></i><span>Consultas</span></a>
+                <a href="mi-perfil.html" class="nav-link"><i class="bi bi-person-circle"></i><span>Mi Perfil</span></a>
                 <a href="perfil.html" class="nav-link admin-only"><i class="bi bi-person-gear"></i><span>Perfil</span></a>
             </nav>
         </aside>
 
         <!-- Main Content -->
-        <main class="main-content">
+        <main class="main-content" role="main">
             <!-- Header -->
             <header class="main-header">
-                <button class="btn-icon sidebar-toggle" id="sidebarToggle">
-                    <i class="bi bi-list"></i>
-                </button>
                 <div class="header-title">
                     <h1>Consultas y Reportes</h1>
                     <p class="text-muted mb-0">Consultas integrales con filtros avanzados</p>
@@ -49,11 +47,12 @@
                         <i class="bi bi-moon"></i>
                     </button>
                     <div class="dropdown">
-                        <button class="btn-icon" data-bs-toggle="dropdown">
+                        <button class="btn-icon" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="bi bi-person-circle"></i>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="perfil.html"><i class="bi bi-person me-2"></i>Perfil</a></li>
+                            <li><a class="dropdown-item" href="mi-perfil.html"><i class="bi bi-person-circle me-2"></i>Mi Perfil</a></li>
+                            <li><a class="dropdown-item admin-only" href="perfil.html"><i class="bi bi-people me-2"></i>Usuarios</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>Salir</a></li>
                         </ul>
@@ -72,13 +71,13 @@
                         <div class="row g-3">
                             <div class="col-md-3">
                                 <label class="form-label">Período</label>
-                                <select class="form-select" id="filterPeriod">
+                                <select class="form-select" id="filterPeriod" aria-label="Filtrar por período">
                                     <option value="">Todos</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">Tipo de Movimiento</label>
-                                <select class="form-select" id="filterMovementType">
+                                <select class="form-select" id="filterMovementType" aria-label="Filtrar por tipo de movimiento">
                                     <option value="">Todos</option>
                                     <option value="stock_inicial">Stock Inicial</option>
                                     <option value="ingreso">Ingreso</option>
@@ -94,43 +93,43 @@
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">Tipo EPP</label>
-                                <select class="form-select" id="filterEppType">
+                                <select class="form-select" id="filterEppType" aria-label="Filtrar por tipo EPP">
                                     <option value="">Todos</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">Talla</label>
-                                <select class="form-select" id="filterSize">
+                                <select class="form-select" id="filterSize" aria-label="Filtrar por talla">
                                     <option value="">Todas</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">Trabajador</label>
-                                <select class="form-select" id="filterWorker">
+                                <select class="form-select" id="filterWorker" aria-label="Filtrar por trabajador">
                                     <option value="">Todos</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">Usuario</label>
-                                <select class="form-select" id="filterUser">
+                                <select class="form-select" id="filterUser" aria-label="Filtrar por usuario">
                                     <option value="">Todos</option>
                                 </select>
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">Fecha Inicio</label>
-                                <input type="date" class="form-control" id="filterDateFrom">
+                                <input type="date" class="form-control" id="filterDateFrom" aria-label="Fecha inicio del filtro">
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">Fecha Fin</label>
-                                <input type="date" class="form-control" id="filterDateTo">
+                                <input type="date" class="form-control" id="filterDateTo" aria-label="Fecha fin del filtro">
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">Cantidad Mínima</label>
-                                <input type="number" class="form-control" id="filterQtyMin" min="0">
+                                <input type="number" class="form-control" id="filterQtyMin" min="0" aria-label="Cantidad mínima">
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">Cantidad Máxima</label>
-                                <input type="number" class="form-control" id="filterQtyMax" min="0">
+                                <input type="number" class="form-control" id="filterQtyMax" min="0" aria-label="Cantidad máxima">
                             </div>
                             <div class="col-md-6 text-end">
                                 <button class="btn btn-primary me-2" id="btnSearch">
@@ -203,18 +202,18 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-hover table-sm">
+                            <table class="table table-hover table-sm" aria-label="Resultados de consultas y reportes">
                                 <thead>
                                     <tr>
-                                        <th>Fecha</th>
-                                        <th>Período</th>
-                                        <th>Tipo</th>
-                                        <th>EPP</th>
-                                        <th>Talla</th>
-                                        <th>Cantidad</th>
-                                        <th>Trabajador</th>
-                                        <th>Usuario</th>
-                                        <th>Observación</th>
+                                        <th scope="col">Fecha</th>
+                                        <th scope="col">Período</th>
+                                        <th scope="col">Tipo</th>
+                                        <th scope="col">EPP</th>
+                                        <th scope="col">Talla</th>
+                                        <th scope="col">Cantidad</th>
+                                        <th scope="col">Trabajador</th>
+                                        <th scope="col">Usuario</th>
+                                        <th scope="col">Observación</th>
                                     </tr>
                                 </thead>
                                 <tbody id="resultsTable">

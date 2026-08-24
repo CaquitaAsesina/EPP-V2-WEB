@@ -13,12 +13,12 @@
 </head>
 <body>
     <div id="layout">
-        <aside class="sidebar" id="sidebar">
+        <aside class="sidebar" id="sidebar" role="navigation" aria-label="Navegación">
             <div class="sidebar-header">
                 <div class="sidebar-logo"><i class="bi bi-shield-check"></i></div>
                 <span>EPP Control</span>
             </div>
-            <nav class="sidebar-nav">
+            <nav class="sidebar-nav" aria-label="Navegación">
                 <a href="dashboard.html" class="nav-link"><i class="bi bi-speedometer2"></i><span>Dashboard</span></a>
                 <a href="periodos.html" class="nav-link"><i class="bi bi-calendar3"></i><span>Períodos</span></a>
                 <a href="inventario-limpio.html" class="nav-link"><i class="bi bi-check-circle"></i><span>EPP Limpio</span></a>
@@ -28,15 +28,13 @@
                 <a href="devoluciones.html" class="nav-link"><i class="bi bi-arrow-return-left"></i><span>Devoluciones</span></a>
                 <a href="trabajadores.html" class="nav-link active"><i class="bi bi-people"></i><span>Trabajadores</span></a>
                 <a href="consultas.html" class="nav-link"><i class="bi bi-search"></i><span>Consultas</span></a>
+                <a href="mi-perfil.html" class="nav-link"><i class="bi bi-person-circle"></i><span>Mi Perfil</span></a>
                 <a href="perfil.html" class="nav-link admin-only"><i class="bi bi-person-gear"></i><span>Perfil</span></a>
             </nav>
         </aside>
 
-        <main class="main-content">
+        <main class="main-content" role="main">
             <header class="main-header">
-                <button class="btn-icon sidebar-toggle" id="sidebarToggle">
-                    <i class="bi bi-list"></i>
-                </button>
                 <div class="header-title">
                     <h1>Gestión de Trabajadores</h1>
                     <p class="text-muted mb-0">Administrar trabajadores registrados en el sistema</p>
@@ -46,11 +44,12 @@
                         <i class="bi bi-moon"></i>
                     </button>
                     <div class="dropdown">
-                        <button class="btn-icon" data-bs-toggle="dropdown">
+                        <button class="btn-icon" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="bi bi-person-circle"></i>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="perfil.html"><i class="bi bi-person me-2"></i>Perfil</a></li>
+                            <li><a class="dropdown-item" href="mi-perfil.html"><i class="bi bi-person-circle me-2"></i>Mi Perfil</a></li>
+                            <li><a class="dropdown-item admin-only" href="perfil.html"><i class="bi bi-people me-2"></i>Usuarios</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>Salir</a></li>
                         </ul>
@@ -71,7 +70,7 @@
                     <div class="card-body py-2">
                         <div class="row g-2 align-items-center">
                             <div class="col-md-6">
-                                <input type="text" class="form-control form-control-sm" id="searchInput" placeholder="Buscar por nombre...">
+                                <input type="text" class="form-control form-control-sm" id="searchInput" placeholder="Buscar por nombre..." aria-label="Buscar trabajador por nombre">
                             </div>
                         </div>
                     </div>
@@ -81,15 +80,15 @@
                 <div class="card">
                     <div class="card-body p-0">
                         <div class="table-responsive">
-                            <table class="table table-hover">
+                            <table class="table table-hover" aria-label="Lista de trabajadores">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Nombre Completo</th>
-                                        <th>DNI</th>
-                                        <th>Estado</th>
-                                        <th>Creado</th>
-                                        <th class="text-end">Acciones</th>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Nombre Completo</th>
+                                        <th scope="col">DNI</th>
+                                        <th scope="col">Estado</th>
+                                        <th scope="col">Creado</th>
+                                        <th scope="col" class="text-end">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody id="workersTable">
@@ -99,6 +98,8 @@
                                 </tbody>
                             </table>
                         </div>
+                        <!-- Mobile card view -->
+                        <div class="mobile-card-view" id="workersCards"></div>
                     </div>
                 </div>
             </div>
@@ -115,20 +116,20 @@
                     <h5 class="modal-title" id="workerModalTitle">Nuevo Trabajador</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <form id="workerForm">
+                <form id="workerForm" aria-label="Formulario de trabajador">
                     <div class="modal-body">
                         <input type="hidden" id="workerId">
                         <div class="mb-3">
                             <label class="form-label">Nombre Completo *</label>
-                            <input type="text" class="form-control" id="workerFullName" required placeholder="Nombre y apellido">
+                            <input type="text" class="form-control" id="workerFullName" required placeholder="Nombre y apellido" aria-label="Nombre completo del trabajador">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">DNI *</label>
-                            <input type="text" class="form-control" id="workerDni" required placeholder="Número de documento" maxlength="15">
+                            <input type="text" class="form-control" id="workerDni" required placeholder="Número de documento" maxlength="15" aria-label="Número de DNI">
                         </div>
                         <div class="mb-3" id="workerStatusGroup" style="display:none;">
                             <label class="form-label">Estado</label>
-                            <select class="form-select" id="workerStatus">
+                            <select class="form-select" id="workerStatus" aria-label="Estado del trabajador">
                                 <option value="1">Activo</option>
                                 <option value="0">Inactivo</option>
                             </select>
@@ -222,6 +223,11 @@
                     </td>
                 </tr>
             `).join('');
+
+            const cardsEl = document.getElementById('workersCards');
+            if (cardsEl) cardsEl.innerHTML = data.map(item => {
+              return `<div class="mobile-card"><div class="mobile-card-header"><h6>${item.full_name || '—'}</h6><span class="badge ${item.is_active?'bg-success':'bg-secondary'}">${item.is_active?'Activo':'Inactivo'}</span></div><div class="mobile-card-row"><span class="mobile-card-label">DNI</span><span class="mobile-card-value">${item.dni || '—'}</span></div><div class="mobile-card-row"><span class="mobile-card-label">Estado</span><span class="mobile-card-value">${item.is_active?'Activo':'Inactivo'}</span></div></div>`;
+            }).join('');
         }
 
         document.getElementById('searchInput').addEventListener('input', function() {

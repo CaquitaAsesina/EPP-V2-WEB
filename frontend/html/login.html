@@ -46,13 +46,13 @@
         <h1>Farmacias Peruanas <em>Inventario</em></h1>
         <p class="form-sub">Sistema de Protección Personal</p>
 
-        <form id="loginForm" onsubmit="return handleLogin(event)">
+        <form id="loginForm" onsubmit="return handleLogin(event)" aria-label="Formulario de inicio de sesión">
           <div class="form-group">
             <label class="form-label" for="username">Usuario</label>
             <div class="login-input-wrap">
               <i class="bi bi-person"></i>
               <input type="text" id="username" class="form-input" required
-                placeholder="Ingrese su usuario" autocomplete="username">
+                placeholder="Ingrese su usuario" autocomplete="username" aria-label="Usuario">
             </div>
           </div>
           <div class="form-group">
@@ -60,15 +60,15 @@
             <div class="login-input-wrap">
               <i class="bi bi-shield-lock"></i>
               <input type="password" id="password" class="form-input has-toggle" required
-                placeholder="Ingrese su contraseña" autocomplete="current-password">
+                placeholder="Ingrese su contraseña" autocomplete="current-password" aria-label="Contraseña">
               <button type="button" class="pw-toggle" id="pwToggle" aria-label="Mostrar contraseña">
                 <i class="bi bi-eye"></i>
               </button>
             </div>
           </div>
-          <div id="loginError" class="toast-apple toast-error" style="display:none;margin-bottom:16px;min-width:auto;max-width:100%;">
-            <i class="bi bi-x-circle-fill"></i>
-            <span class="toast-msg" id="loginErrorMsg"></span>
+          <div id="loginError" class="alert alert-danger d-flex align-items-center" role="alert" style="display:none;margin-bottom:16px;">
+            <i class="bi bi-x-circle-fill me-2"></i>
+            <span id="loginErrorMsg"></span>
           </div>
           <button type="submit" id="loginBtn" class="btn-apple btn-primary login-submit">
             <i class="bi bi-box-arrow-in-right"></i> Iniciar sesión
@@ -82,12 +82,17 @@
     </div>
   </div>
 
-  <!-- Overlay de bienvenida -->
-  <div class="welcome-overlay" id="welcomeOverlay">
-    <img src="/img/logo.svg" class="welcome-logo" alt="">
-    <div class="welcome-title">¡Bienvenido!</div>
-    <div class="welcome-name" id="welcomeName"></div>
-    <div class="welcome-bar"><span></span></div>
+  <!-- Loading overlay -->
+  <div class="loading-overlay" id="welcomeOverlay" role="status" aria-live="polite">
+    <div class="loading-ring-wrap">
+      <svg class="loading-ring-svg" viewBox="0 0 160 160">
+        <circle class="loading-ring-bg" cx="80" cy="80" r="70"/>
+        <circle class="loading-ring-progress" id="loadingRing" cx="80" cy="80" r="70"/>
+      </svg>
+      <img src="/img/logo.svg" class="loading-logo-inner" alt="">
+    </div>
+    <div class="loading-percent"><span id="loadingPercent">0</span><span class="pct">%</span></div>
+    <div class="loading-status" id="loadingStatus"></div>
   </div>
 
   <script src="/js/api.js"></script>
@@ -109,10 +114,50 @@
       if (typeof FX !== 'undefined') FX.showPop(show ? 'Contraseña visible' : 'Contraseña oculta', show ? 'bi-eye-fill' : 'bi-eye-slash-fill');
     });
 
-    function showWelcome(name) {
+    function showWelcome() {
       const overlay = document.getElementById('welcomeOverlay');
-      document.getElementById('welcomeName').textContent = name;
       overlay.classList.add('show');
+
+      const percentEl = document.getElementById('loadingPercent');
+      const ringEl = document.getElementById('loadingRing');
+      const statusEl = document.getElementById('loadingStatus');
+      const circumference = 2 * Math.PI * 70;
+
+      ringEl.style.strokeDasharray = circumference;
+      ringEl.style.strokeDashoffset = circumference;
+
+      const stages = [
+        { at: 10, text: 'Cargando sistema' },
+        { at: 30, text: 'Iniciando sesión' },
+        { at: 55, text: 'Preparando módulos' },
+        { at: 80, text: 'Configurando inventario' }
+      ];
+
+      let current = 0;
+      let stageIdx = 0;
+      const duration = 1800;
+      const step = 16;
+      const total = duration / step;
+
+      function tick() {
+        current++;
+        const progress = current / total;
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const value = Math.round(eased * 100);
+
+        percentEl.textContent = value;
+        ringEl.style.strokeDashoffset = circumference - (eased * circumference);
+
+        if (stageIdx < stages.length && value >= stages[stageIdx].at) {
+          statusEl.textContent = stages[stageIdx].text;
+          stageIdx++;
+        }
+
+        if (current < total) {
+          requestAnimationFrame(tick);
+        }
+      }
+      requestAnimationFrame(tick);
     }
 
     async function handleLogin(e) {
@@ -133,14 +178,10 @@
 
         if (data.success) {
           Auth.login(data.data.token, data.data.user);
-          const user = data.data.user || {};
-          const name = user.full_name || user.username || '';
-          const first = name.split(' ')[0];
-          showWelcome(first ? 'Bienvenido, ' + first : 'Bienvenido');
+          showWelcome();
           setTimeout(() => {
-            if (typeof FX !== 'undefined') FX.wipeTo('/index.html#/dashboard', window.innerWidth / 2, window.innerHeight / 2);
-            else window.location.href = '/index.html#/dashboard';
-          }, 1900);
+            window.location.href = '/index.html#/dashboard';
+          }, 1850);
           return false;
         }
       } catch (err) {

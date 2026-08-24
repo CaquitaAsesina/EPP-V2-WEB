@@ -131,40 +131,11 @@ const FX = {
   init() {
     // Cada FX en guardía: si uno falla, el resto y el reveal siguen funcionando
     ['brandSidebar', 'organizeNav', 'injectSidebarFooter', 'injectPageFooter',
-     'injectActionPop', 'initSidebarCollapse', 'staggerReveal', 'initRipple', 'initSpotlight',
+     'injectActionPop', 'staggerReveal', 'initRipple', 'initSpotlight',
      'initActionPopups', 'initPageTransitions', 'initCountUp'
     ].forEach(fn => {
       try { this[fn](); } catch (err) { console.warn('FX:' + fn, err); }
     });
-  },
-
-  /* ---------- colapsar menú lateral (desktop) ---------- */
-  initSidebarCollapse() {
-    const sidebar = document.getElementById('sidebar');
-    if (!sidebar) return;
-
-    // Estado guardado
-    if (localStorage.getItem('epp-sidebar') === 'collapsed') {
-      sidebar.classList.add('collapsed');
-    }
-
-    const header = document.querySelector('.main-header');
-    if (header && !header.querySelector('.sidebar-collapse')) {
-      const btn = document.createElement('button');
-      btn.className = 'sidebar-collapse';
-      btn.type = 'button';
-      btn.title = 'Ocultar / mostrar menú';
-      btn.innerHTML = '<i class="bi bi-chevron-double-left"></i>';
-      header.insertBefore(btn, header.firstChild);
-      btn.addEventListener('click', () => {
-        const collapsed = sidebar.classList.toggle('collapsed');
-        localStorage.setItem('epp-sidebar', collapsed ? 'collapsed' : 'open');
-        this.showPop(
-          collapsed ? 'Menú ocultado · más espacio para datos' : 'Menú mostrado',
-          collapsed ? 'bi-layout-sidebar-inset' : 'bi-layout-sidebar'
-        );
-      });
-    }
   },
 
   /* ---------- helpers ---------- */
@@ -182,40 +153,6 @@ const FX = {
 
   /* ---------- splash / preloader ---------- */
   injectSplash() {
-    if (this._dismissed) return;
-    if (sessionStorage.getItem('fp-navigated')) {
-      sessionStorage.removeItem('fp-navigated');
-      return;
-    }
-    const splash = document.createElement('div');
-    splash.id = 'fpSplash';
-    let hello = '';
-    try {
-      if (typeof Auth !== 'undefined' && Auth.isLoggedIn() && Auth.getUser()) {
-        const n = (Auth.getUser().full_name || Auth.getUser().username || '').split(' ')[0];
-        if (n) hello = `<div class="fp-splash-hello">Hola, ${n}</div>`;
-      }
-    } catch (err) { /* noop */ }
-    splash.innerHTML = `
-      <div class="fp-splash-logo"><i class="bi bi-capsule"></i></div>
-      <div class="fp-splash-title">EPP <em>Control</em></div>
-      <div class="fp-splash-sub">Farmacias Peruanas</div>
-      ${hello}
-      <div class="fp-splash-bar"><span></span></div>
-    `;
-    document.body.prepend(splash);
-
-    let done = false;
-    const dismiss = () => {
-      if (done) return;
-      done = true;
-      this._dismissed = true;
-      splash.classList.add('fp-splash-done');
-      setTimeout(() => splash.remove(), 520);
-    };
-    if (document.readyState === 'complete') setTimeout(dismiss, 700);
-    else window.addEventListener('load', () => setTimeout(dismiss, 700));
-    setTimeout(dismiss, 3200);
   },
 
   /* ---------- branding del sidebar ---------- */
