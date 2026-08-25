@@ -8,6 +8,7 @@ const { stockInitialValidation } = require('../middleware/validation');
 router.use(authenticate);
 router.get('/', CleanInventoryController.getMatrix);
 router.get('/matrix', CleanInventoryController.getMatrix);
+router.get('/export', CleanInventoryController.export);
 router.put('/:id', authorize('admin'), CleanInventoryController.updateInitialStock);
 router.post('/initial-stock', authorize('admin'), stockInitialValidation, CleanInventoryController.setInitialStock);
 
