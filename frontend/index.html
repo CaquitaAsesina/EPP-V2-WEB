@@ -77,9 +77,30 @@
   <script src="/js/layout.js"></script>
   <script src="/js/router.js"></script>
   <script>
+    /* Reload splash — simple spinner while SPA boots */
+    (function() {
+      var splash = document.createElement('div');
+      splash.id = 'splashReload';
+      splash.innerHTML =
+        '<img src="/img/logo.svg" class="splash-reload-logo" alt="Farmacias Peruanas">' +
+        '<div class="splash-reload-spinner"></div>' +
+        '<div class="splash-reload-text">Cargando...</div>';
+      document.body.appendChild(splash);
+      requestAnimationFrame(function() { splash.classList.add('fp-visible'); });
+      window.__dismissSplash = function() {
+        splash.classList.add('fp-done');
+        setTimeout(function() { splash.remove(); }, 400);
+      };
+    })();
+
     if (!Auth.requireAuth()) throw new Error('No auth');
     Layout.init();
     Router.init();
+
+    /* Dismiss splash after SPA content loads */
+    setTimeout(function() {
+      if (window.__dismissSplash) window.__dismissSplash();
+    }, 800);
   </script>
 </body>
 </html>

@@ -260,16 +260,6 @@
   justify-content: center;
 }
 
-/* --- Splash logo --- */
-.fp-splash-logo {
-  width: 74px;
-  height: 74px;
-  border-radius: 22px;
-}
-.fp-splash-logo i {
-  font-size: 34px;
-}
-
 /* --- Page footer --- */
 .fp-page-footer {
   justify-content: center;
@@ -721,15 +711,10 @@
 }
 
 /* ============================================
-   @media (min-width: 1200px) — Large Desktop
+   @media (min-width: 1400px) — Ultra-Wide
    ============================================ */
-@media (min-width: 1200px) {
-  /* Sidebar: wider */
-  :root {
-    --sidebar-width: 290px;
-  }
-
-  /* Content: more padding */
+@media (min-width: 1400px) {
+  /* Max-width container centered */
   .content-wrapper,
   .page-content {
     padding: 28px;
@@ -1004,19 +989,6 @@
     padding: 32px 6px 14px;
   }
 
-  /* Splash logo */
-  .fp-splash-logo {
-    width: 100px;
-    height: 100px;
-    border-radius: 30px;
-  }
-  .fp-splash-logo i {
-    font-size: 50px;
-  }
-  .fp-splash-title {
-    font-size: 26px;
-  }
-
   /* Loading overlay */
   .loading-ring-wrap {
     width: 180px;
@@ -1041,45 +1013,28 @@
 
 /* ============================================
    ACCESSIBILITY — prefers-reduced-motion
+   Only kill entry/exit animations, keep hover/focus
    ============================================ */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-  .sidebar {
-    transition: none !important;
-  }
-  .sidebar-overlay {
-    transition: none !important;
-  }
-  .modal.show .modal-content {
-    animation: none !important;
-  }
-  .toast-apple {
-    animation: none !important;
-  }
-  .toast-apple.fp-toast-out {
-    animation: none !important;
-    opacity: 0;
-  }
-  .fp-reveal {
-    transition: none !important;
-    opacity: 1;
-    transform: none;
-  }
-  .card:hover {
-    transform: none !important;
-  }
-  .stat-card:hover,
-  .kpi-card:hover {
-    transform: none !important;
-  }
-  .btn:hover {
-    transform: none !important;
-  }
+  /* Kill infinite and entry animations */
+  .sidebar-logo { animation: none !important; }
+  .login-brand-panel::before { animation: none !important; }
+  .brand-icon { animation: none !important; }
+  .stat-icon { animation: none !important; }
+  .empty-state i { animation: none !important; }
+  .loading-logo-inner { animation: none !important; }
+  .splash-reload-logo { animation: none !important; }
+  .splash-reload-spinner { animation-duration: 1.5s !important; }
+  .splash-reload-text { animation: none !important; }
+  .fp-reveal { transition-duration: 0.01ms !important; }
+  .modal.show .modal-content { animation-duration: 0.01ms !important; }
+  .toast-apple { animation-duration: 0.01ms !important; }
+  .toast-apple.fp-toast-out { animation-duration: 0.01ms !important; opacity: 0; }
+  .period-dot { animation: none !important; }
+  .fp-page-footer .fp-footer-dot::before { animation: none !important; }
+  .sidebar-nav .nav-link.active::after { animation: none !important; }
+
+  /* Keep interactive transitions (hover, focus) — these are short and useful */
+  .sidebar { transition: none !important; }
+  .sidebar-overlay { transition: none !important; }
 }

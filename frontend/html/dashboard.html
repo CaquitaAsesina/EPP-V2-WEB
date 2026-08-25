@@ -11,6 +11,12 @@
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/responsive.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    .chart-card-body {
+      height: clamp(220px, 40vh, 320px);
+      min-height: 200px;
+    }
+  </style>
 </head>
 <body>
   <div id="layout">
@@ -145,7 +151,7 @@
               <div class="card-header">
                 <h5 class="mb-0"><i class="bi bi-bar-chart me-2" style="color:var(--primary);"></i>Stock Limpio por Tipo</h5>
               </div>
-              <div class="card-body" style="height:280px;">
+              <div class="card-body" class="card-body chart-card-body">
                 <canvas id="chartCleanByType"></canvas>
               </div>
             </div>
@@ -155,7 +161,7 @@
               <div class="card-header">
                 <h5 class="mb-0"><i class="bi bi-pie-chart me-2" style="color:#8A8A8D;"></i>Stock por Talla</h5>
               </div>
-              <div class="card-body" style="height:280px;">
+              <div class="card-body" class="card-body chart-card-body">
                 <canvas id="chartBySize"></canvas>
               </div>
             </div>
@@ -165,7 +171,7 @@
               <div class="card-header">
                 <h5 class="mb-0"><i class="bi bi-graph-up me-2" style="color:var(--success);"></i>Ingresos vs Entregas</h5>
               </div>
-              <div class="card-body" style="height:280px;">
+              <div class="card-body" class="card-body chart-card-body">
                 <canvas id="chartMovements"></canvas>
               </div>
             </div>
@@ -175,7 +181,7 @@
               <div class="card-header">
                 <h5 class="mb-0"><i class="bi bi-droplet-half me-2" style="color:var(--warning);"></i>Estado EPP Sucio</h5>
               </div>
-              <div class="card-body" style="height:280px;">
+              <div class="card-body" class="card-body chart-card-body">
                 <canvas id="chartDirtyStatus"></canvas>
               </div>
             </div>

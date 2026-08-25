@@ -353,7 +353,7 @@
 
         async function loadUsers() {
             try {
-                const res = await Api.get('/api/users');
+                const res = await API.get('/api/users');
                 usersData = res.data || [];
                 renderUsersTable(usersData);
             } catch (e) {
@@ -401,9 +401,9 @@
 
             try {
                 if (id) {
-                    await Api.put(`/api/users/${id}`, data);
+                    await API.put(`/api/users/${id}`, data);
                     if (password) {
-                        await Api.put(`/api/users/${id}/password`, { password });
+                        await API.put(`/api/users/${id}/password`, { password });
                     }
                     Utils.toast('Usuario actualizado correctamente');
                 } else {
@@ -411,7 +411,7 @@
                         Utils.toast('La contraseña es obligatoria para nuevos usuarios', 'error');
                         return;
                     }
-                    await Api.post('/api/users', data);
+                    await API.post('/api/users', data);
                     Utils.toast('Usuario creado correctamente');
                 }
                 bootstrap.Modal.getInstance(document.getElementById('userModal')).hide();
@@ -441,7 +441,7 @@
             if (!await Utils.confirm('Eliminar usuario', '¿Está seguro de eliminar este usuario?')) return;
             
             try {
-                await Api.delete(`/api/users/${id}`);
+                await API.delete(`/api/users/${id}`);
                 Utils.toast('Usuario eliminado correctamente');
                 loadUsers();
             } catch (e) {
@@ -451,7 +451,7 @@
 
         async function loadEppTypes() {
             try {
-                const res = await Api.get('/api/epp-types');
+                const res = await API.get('/api/epp-types');
                 eppTypesData = res.data || [];
                 renderEppTypesTable(eppTypesData);
             } catch (e) {
@@ -495,10 +495,10 @@
 
             try {
                 if (id) {
-                    await Api.put(`/api/epp-types/${id}`, data);
+                    await API.put(`/api/epp-types/${id}`, data);
                     Utils.toast('Tipo de EPP actualizado correctamente');
                 } else {
-                    await Api.post('/api/epp-types', data);
+                    await API.post('/api/epp-types', data);
                     Utils.toast('Tipo de EPP creado correctamente');
                 }
                 bootstrap.Modal.getInstance(document.getElementById('eppTypeModal')).hide();
@@ -524,7 +524,7 @@
             if (!await Utils.confirm('Eliminar tipo EPP', '¿Está seguro de eliminar este tipo de EPP?')) return;
             
             try {
-                await Api.delete(`/api/epp-types/${id}`);
+                await API.delete(`/api/epp-types/${id}`);
                 Utils.toast('Tipo de EPP eliminado correctamente');
                 loadEppTypes();
             } catch (e) {
@@ -534,7 +534,7 @@
 
         async function loadSizes() {
             try {
-                const res = await Api.get('/api/sizes');
+                const res = await API.get('/api/sizes');
                 sizesData = res.data || [];
                 renderSizesTable(sizesData);
             } catch (e) {
@@ -578,10 +578,10 @@
 
             try {
                 if (id) {
-                    await Api.put(`/api/sizes/${id}`, data);
+                    await API.put(`/api/sizes/${id}`, data);
                     Utils.toast('Talla actualizada correctamente');
                 } else {
-                    await Api.post('/api/sizes', data);
+                    await API.post('/api/sizes', data);
                     Utils.toast('Talla creada correctamente');
                 }
                 bootstrap.Modal.getInstance(document.getElementById('sizeModal')).hide();
@@ -607,7 +607,7 @@
             if (!await Utils.confirm('Eliminar talla', '¿Está seguro de eliminar esta talla?')) return;
             
             try {
-                await Api.delete(`/api/sizes/${id}`);
+                await API.delete(`/api/sizes/${id}`);
                 Utils.toast('Talla eliminada correctamente');
                 loadSizes();
             } catch (e) {

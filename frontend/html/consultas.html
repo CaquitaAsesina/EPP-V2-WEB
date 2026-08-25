@@ -257,11 +257,11 @@
         async function loadFilters() {
             try {
                 const [periods, eppTypes, sizes, workers, users] = await Promise.all([
-                    Api.get('/api/periods'),
-                    Api.get('/api/epp-types'),
-                    Api.get('/api/sizes'),
-                    Api.get('/api/workers'),
-                    Api.get('/api/users')
+                    API.get('/api/periods'),
+                    API.get('/api/epp-types'),
+                    API.get('/api/sizes'),
+                    API.get('/api/workers'),
+                    API.get('/api/users')
                 ]);
 
                 if (periods.data) {
@@ -324,7 +324,7 @@
             if (qtyMax) params.append('qty_max', qtyMax);
 
             try {
-                const res = await Api.get(`/api/movements?${params.toString()}`);
+                const res = await API.get(`/api/movements?${params.toString()}`);
                 resultsData = res.data || [];
                 updateStats();
                 renderTable(resultsData);
@@ -405,7 +405,7 @@
                 if (period) params.append('period_id', period);
                 if (movementType) params.append('movement_type', movementType);
 
-                const res = await Api.get(`/api/movements/export?${params.toString()}`);
+                const res = await API.get(`/api/movements/export?${params.toString()}`);
                 if (res.data) {
                     const blob = Utils.base64ToBlob(res.data.content, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
                     Utils.downloadBlob(blob, `consultas-${new Date().toISOString().split('T')[0]}.xlsx`);

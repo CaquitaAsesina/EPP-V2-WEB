@@ -328,7 +328,7 @@
 
         async function loadPeriods() {
             try {
-                const res = await Api.get('/api/periods');
+                const res = await API.get('/api/periods');
                 const select = document.getElementById('periodSelect');
                 select.innerHTML = '<option value="">Seleccionar período...</option>';
                 if (res.data && res.data.length) {
@@ -346,7 +346,7 @@
 
         async function loadWorkers() {
             try {
-                const res = await Api.get('/api/workers');
+                const res = await API.get('/api/workers');
                 const select = document.getElementById('deliveryWorker');
                 if (res.data) {
                     res.data.forEach(w => {
@@ -360,7 +360,7 @@
 
         async function loadEppTypes() {
             try {
-                const res = await Api.get('/api/epp-types');
+                const res = await API.get('/api/epp-types');
                 const deliverySelect = document.getElementById('deliveryEppType');
                 const filterSelect = document.getElementById('filterEppType');
                 if (res.data) {
@@ -382,7 +382,7 @@
             if (!eppTypeId) return;
             
             try {
-                const res = await Api.get(`/api/epp-types/${eppTypeId}/sizes`);
+                const res = await API.get(`/api/epp-types/${eppTypeId}/sizes`);
                 if (res.data) {
                     res.data.forEach(s => {
                         sizeSelect.innerHTML += `<option value="${s.id}">${s.name}</option>`;
@@ -403,7 +403,7 @@
             }
             
             try {
-                const res = await Api.get(`/api/clean-inventory/stock?period_id=${currentPeriod}&epp_type_id=${eppTypeId}&size_id=${sizeId}`);
+                const res = await API.get(`/api/clean-inventory/stock?period_id=${currentPeriod}&epp_type_id=${eppTypeId}&size_id=${sizeId}`);
                 document.getElementById('availableStock').textContent = res.data?.stock || 0;
                 document.getElementById('deliveryQty').max = res.data?.stock || 0;
             } catch (e) {
@@ -414,7 +414,7 @@
         async function loadDeliveries() {
             if (!currentPeriod) return;
             try {
-                const res = await Api.get(`/api/deliveries?period_id=${currentPeriod}`);
+                const res = await API.get(`/api/deliveries?period_id=${currentPeriod}`);
                 deliveriesData = res.data || [];
                 updateStats();
                 renderTable(deliveriesData);
@@ -480,10 +480,10 @@
 
             try {
                 if (id) {
-                    await Api.put(`/api/deliveries/${id}`, data);
+                    await API.put(`/api/deliveries/${id}`, data);
                     Utils.toast('Entrega actualizada correctamente');
                 } else {
-                    await Api.post('/api/deliveries', data);
+                    await API.post('/api/deliveries', data);
                     Utils.toast('Entrega registrada correctamente');
                 }
                 bootstrap.Modal.getInstance(document.getElementById('deliveryModal')).hide();
@@ -501,7 +501,7 @@
             };
 
             try {
-                const res = await Api.post('/api/workers', data);
+                const res = await API.post('/api/workers', data);
                 if (res.data) {
                     const select = document.getElementById('deliveryWorker');
                     select.innerHTML += `<option value="${res.data.id}" selected>${res.data.full_name}</option>`;
@@ -534,7 +534,7 @@
             if (!await Utils.confirm('Eliminar entrega', '¿Está seguro de eliminar esta entrega?')) return;
             
             try {
-                await Api.delete(`/api/deliveries/${id}`);
+                await API.delete(`/api/deliveries/${id}`);
                 Utils.toast('Entrega eliminada correctamente');
                 loadDeliveries();
             } catch (e) {
@@ -565,7 +565,7 @@
         async function exportToExcel() {
             Utils.toast('Exportando a Excel...', 'info');
             try {
-                const res = await Api.get(`/api/deliveries/export?period_id=${currentPeriod}`);
+                const res = await API.get(`/api/deliveries/export?period_id=${currentPeriod}`);
                 if (res.data) {
                     const blob = Utils.base64ToBlob(res.data.content, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
                     Utils.downloadBlob(blob, `entregas-${currentPeriod}.xlsx`);

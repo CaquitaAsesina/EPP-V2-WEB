@@ -152,29 +152,20 @@ const Router = {
     /* Layout.init lo maneja el shell (evita listeners duplicados) */
     code = code.replace(/Layout\.init\s*\([^)]*\)\s*;?/g, ';');
 
-    const origAdd = document.addEventListener.bind(document);
-    document.addEventListener = function (type, fn, opts) {
-      if (type === 'DOMContentLoaded') {
-        setTimeout(() => {
-          try { fn.call(document, new Event('DOMContentLoaded')); }
-          catch (e) { console.error('View init:', e); }
-        }, 0);
-        return;
+    /* Ejecutar vía blob script (sin eval, sin monkey-patch) */
+    const blob = new Blob([code], { type: 'application/javascript' });
+    const url = URL.createObjectURL(blob);
+    const script = document.createElement('script');
+    script.src = url;
+    script.onload = () => URL.revokeObjectURL(url);
+    script.onerror = (err) => {
+      URL.revokeObjectURL(url);
+      console.error('Router script:', err);
+      if (typeof Utils !== 'undefined') {
+        Utils.toast('Error al inicializar el módulo', 'error');
       }
-      return origAdd(type, fn, opts);
     };
-
-    try {
-      (0, eval)(code);
-    } catch (e) {
-      console.error('Router script:', e);
-      const msg = String(e && e.message || e);
-      if (!/No auth/i.test(msg) && typeof Utils !== 'undefined') {
-        Utils.toast('Error al inicializar el módulo: ' + msg, 'error');
-      }
-    } finally {
-      document.addEventListener = origAdd;
-    }
+    document.head.appendChild(script);
   }
 };
 

@@ -839,6 +839,7 @@
   width: 100%;
   animation: springIn 0.45s var(--ease-spring);
   overflow: hidden;
+  outline: none;
 }
 .modal-apple-body { padding: 30px 28px 10px; }
 .modal-apple-footer {

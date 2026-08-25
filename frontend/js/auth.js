@@ -30,6 +30,7 @@ const Auth = {  isLoggedIn() {
   },
 
   logout() {
+    /* Si ya hay un overlay activo, limpiar directo */
     if (document.getElementById('loadingOverlay')) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
@@ -63,14 +64,20 @@ const Auth = {  isLoggedIn() {
       ringEl.style.strokeDasharray = circumference;
       ringEl.style.strokeDashoffset = circumference;
 
+      /* Palabras clave de despedida con fade */
       const stages = [
-        { at: 20, text: 'Cerrando sesión' },
-        { at: 50, text: 'Guardando datos' }
+        { at: 8,  text: 'Cerrando sesión...' },
+        { at: 22, text: 'Guardando cambios...' },
+        { at: 38, text: 'Limpiando datos...' },
+        { at: 55, text: 'Protegiendo tu información...' },
+        { at: 75, text: '¡Hasta pronto!' },
+        { at: 90, text: 'Vuelve cuando quieras' }
       ];
 
       let current = 0;
       let stageIdx = 0;
-      const duration = 1400;
+      let lastStage = -1;
+      const duration = 1800; /* 1.8 segundos */
       const step = 16;
       const total = duration / step;
 
@@ -83,8 +90,14 @@ const Auth = {  isLoggedIn() {
         percentEl.textContent = value;
         ringEl.style.strokeDashoffset = circumference - (eased * circumference);
 
-        if (stageIdx < stages.length && value >= stages[stageIdx].at) {
-          statusEl.textContent = stages[stageIdx].text;
+        /* Cambiar texto con fade */
+        if (stageIdx < stages.length && value >= stages[stageIdx].at && stageIdx !== lastStage) {
+          lastStage = stageIdx;
+          statusEl.classList.add('fade-out');
+          setTimeout(() => {
+            statusEl.textContent = stages[stageIdx].text;
+            statusEl.classList.remove('fade-out');
+          }, 200);
           stageIdx++;
         }
 

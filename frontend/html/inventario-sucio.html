@@ -370,7 +370,7 @@
 
         async function loadPeriods() {
             try {
-                const res = await Api.get('/api/periods');
+                const res = await API.get('/api/periods');
                 const select = document.getElementById('periodSelect');
                 select.innerHTML = '<option value="">Seleccionar período...</option>';
                 if (res.data && res.data.length) {
@@ -388,7 +388,7 @@
 
         async function loadEppTypes() {
             try {
-                const res = await Api.get('/api/epp-types');
+                const res = await API.get('/api/epp-types');
                 const select = document.getElementById('filterEppType');
                 const laundrySelect = document.getElementById('laundryEppType');
                 if (res.data) {
@@ -404,7 +404,7 @@
 
         async function loadSizes() {
             try {
-                const res = await Api.get('/api/sizes');
+                const res = await API.get('/api/sizes');
                 const filterSelect = document.getElementById('filterSize');
                 const laundrySelect = document.getElementById('laundrySize');
                 if (res.data) {
@@ -421,7 +421,7 @@
         async function loadDirtyInventory() {
             if (!currentPeriod) return;
             try {
-                const res = await Api.get(`/api/dirty-inventory?period_id=${currentPeriod}`);
+                const res = await API.get(`/api/dirty-inventory?period_id=${currentPeriod}`);
                 laundryData = res.data || [];
                 updateStats();
                 renderTable(laundryData);
@@ -537,19 +537,6 @@
             }
         }
 
-        function markAsWashed(eppTypeId, eppTypeName, sizeId, sizeName, inProcess) {
-            document.getElementById('washedId').value = '';
-            document.getElementById('washedEppType').value = eppTypeName;
-            document.getElementById('washedSize').value = sizeName;
-            document.getElementById('washedQty').max = inProcess;
-            document.getElementById('washedQty').value = inProcess;
-            document.getElementById('inProcessQty').textContent = inProcess;
-            document.getElementById('washedNotes').value = '';
-            document.getElementById('washedEppTypeId').value = eppTypeId;
-            document.getElementById('washedSizeId').value = sizeId;
-            new bootstrap.Modal(document.getElementById('washedModal')).show();
-        }
-
         async function handleLaundrySubmit(e) {
             e.preventDefault();
             const data = {
@@ -567,7 +554,7 @@
             }
 
             try {
-                await Api.post('/api/laundry', data);
+                await API.post('/api/laundry', data);
                 Utils.toast('Envío a lavado registrado correctamente');
                 bootstrap.Modal.getInstance(document.getElementById('laundryModal')).hide();
                 loadDirtyInventory();
@@ -595,7 +582,7 @@
             }
 
             try {
-                await Api.post('/api/laundry', data);
+                await API.post('/api/laundry', data);
                 Utils.toast('Lavado registrado y transferido a EPP Limpio');
                 bootstrap.Modal.getInstance(document.getElementById('washedModal')).hide();
                 loadDirtyInventory();
@@ -625,7 +612,7 @@
         async function exportToExcel() {
             Utils.toast('Exportando a Excel...', 'info');
             try {
-                const res = await Api.get(`/api/dirty-inventory/export?period_id=${currentPeriod}`);
+                const res = await API.get(`/api/dirty-inventory/export?period_id=${currentPeriod}`);
                 if (res.data) {
                     const blob = Utils.base64ToBlob(res.data.content, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
                     Utils.downloadBlob(blob, `inventario-sucio-${currentPeriod}.xlsx`);

@@ -55,9 +55,5 @@ const API = {
   }
 };
 
-// Alias for backward compatibility
-const Api = API;
-
 /* Exponer para otros módulos y vistas (SPA) */
 window.API = API;
-window.Api = API;

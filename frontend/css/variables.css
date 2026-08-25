@@ -262,7 +262,6 @@ a:hover { color: var(--primary-hover); }
   80% { transform: scale(0.98); }
   100% { transform: scale(1); }
 }
-@keyframes spin { to { transform: rotate(360deg); } }
 @keyframes pulse {
   0%, 100% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.35); opacity: 0.55; }

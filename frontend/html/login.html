@@ -100,20 +100,55 @@
   <script src="/js/utils.js"></script>
   <script src="/js/layout.js"></script>
   <script>
+    /* ============================================
+       1. SPLASH ON RELOAD — simple spinner, 1.5s max
+       ============================================ */
+    (function initReloadSplash() {
+      if (Auth.isLoggedIn()) {
+        /* Si ya tiene sesión y recarga, mostrar splash ligero */
+        const splash = document.createElement('div');
+        splash.id = 'splashReload';
+        splash.innerHTML = `
+          <img src="/img/logo.svg" class="splash-reload-logo" alt="Farmacias Peruanas">
+          <div class="splash-reload-spinner"></div>
+          <div class="splash-reload-text">Cargando...</div>
+        `;
+        document.body.appendChild(splash);
+        requestAnimationFrame(() => {
+          splash.classList.add('fp-visible');
+          /* Quitar después de 1.2s (máx 1.5s) */
+          setTimeout(() => {
+            splash.classList.add('fp-done');
+            setTimeout(() => splash.remove(), 400);
+          }, 1200);
+        });
+      }
+    })();
+
+    /* Redirect si ya tiene sesión */
     if (Auth.isLoggedIn()) {
       window.location.href = '/index.html#/dashboard';
     }
 
-    // Mostrar/ocultar contraseña
+    /* Mostrar formulario con fade-in al cargar */
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        document.querySelector('.login-form-panel').classList.add('form-visible');
+      }, 80);
+    });
+
+    /* Mostrar/ocultar contraseña */
     document.getElementById('pwToggle').addEventListener('click', function () {
       const input = document.getElementById('password');
       const show = input.type === 'password';
       input.type = show ? 'text' : 'password';
       this.innerHTML = show ? '<i class="bi bi-eye-slash"></i>' : '<i class="bi bi-eye"></i>';
       this.setAttribute('aria-label', show ? 'Ocultar contraseña' : 'Mostrar contraseña');
-      if (typeof FX !== 'undefined') FX.showPop(show ? 'Contraseña visible' : 'Contraseña oculta', show ? 'bi-eye-fill' : 'bi-eye-slash-fill');
     });
 
+    /* ============================================
+       2. LOGIN LOADING — 2.5s, enhanced keywords
+       ============================================ */
     function showWelcome() {
       const overlay = document.getElementById('welcomeOverlay');
       overlay.classList.add('show');
@@ -126,30 +161,41 @@
       ringEl.style.strokeDasharray = circumference;
       ringEl.style.strokeDashoffset = circumference;
 
+      /* Palabras clave con fade in/out */
       const stages = [
-        { at: 10, text: 'Cargando sistema' },
-        { at: 30, text: 'Iniciando sesión' },
-        { at: 55, text: 'Preparando módulos' },
-        { at: 80, text: 'Configurando inventario' }
+        { at: 5,  text: 'Cargando recursos...' },
+        { at: 18, text: 'Preparando tu experiencia...' },
+        { at: 35, text: 'Conectando servicios...' },
+        { at: 52, text: 'Optimizando interfaz...' },
+        { at: 72, text: 'Casi listo...' },
+        { at: 90, text: '¡Bienvenido de vuelta!' }
       ];
 
       let current = 0;
       let stageIdx = 0;
-      const duration = 1800;
+      let lastStage = -1;
+      const duration = 2500; /* 2.5 segundos */
       const step = 16;
       const total = duration / step;
 
       function tick() {
         current++;
         const progress = current / total;
+        /* Cubic ease-out: rápido al inicio, suave al final */
         const eased = 1 - Math.pow(1 - progress, 3);
         const value = Math.round(eased * 100);
 
         percentEl.textContent = value;
         ringEl.style.strokeDashoffset = circumference - (eased * circumference);
 
-        if (stageIdx < stages.length && value >= stages[stageIdx].at) {
-          statusEl.textContent = stages[stageIdx].text;
+        /* Cambiar texto con fade */
+        if (stageIdx < stages.length && value >= stages[stageIdx].at && stageIdx !== lastStage) {
+          lastStage = stageIdx;
+          statusEl.classList.add('fade-out');
+          setTimeout(() => {
+            statusEl.textContent = stages[stageIdx].text;
+            statusEl.classList.remove('fade-out');
+          }, 200);
           stageIdx++;
         }
 
@@ -160,6 +206,9 @@
       requestAnimationFrame(tick);
     }
 
+    /* ============================================
+       3. LOGIN HANDLER
+       ============================================ */
     async function handleLogin(e) {
       e.preventDefault();
       const btn = document.getElementById('loginBtn');
@@ -181,12 +230,16 @@
           showWelcome();
           setTimeout(() => {
             window.location.href = '/index.html#/dashboard';
-          }, 1850);
+          }, 2600);
           return false;
         }
       } catch (err) {
+        /* Shake animation en error */
         errorMsg.textContent = err.message;
         errorDiv.style.display = 'flex';
+        errorDiv.classList.remove('shake');
+        void errorDiv.offsetWidth; /* reflow para reiniciar animación */
+        errorDiv.classList.add('shake');
       } finally {
         btn.disabled = false;
         btn.innerHTML = '<i class="bi bi-box-arrow-in-right"></i> Iniciar sesión';

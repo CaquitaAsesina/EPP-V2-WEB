@@ -42,6 +42,9 @@ const Utils = {
     return new Promise((resolve) => {
       const modal = document.createElement('div');
       modal.className = 'modal-backdrop-apple';
+      modal.setAttribute('role', 'dialog');
+      modal.setAttribute('aria-modal', 'true');
+      modal.setAttribute('aria-labelledby', 'confirmDialogTitle');
       modal.innerHTML = `
         <div class="modal-apple" style="max-width:400px;">
           <div class="modal-apple-body">
@@ -49,7 +52,7 @@ const Utils = {
               <div class="confirm-icon" style="background:var(--warning-light);color:var(--warning);">
                 <i class="bi bi-question-circle"></i>
               </div>
-              <h4>${title}</h4>
+              <h4 id="confirmDialogTitle">${title}</h4>
               <p>${message}</p>
             </div>
           </div>

@@ -294,7 +294,7 @@
 
         async function loadPeriods() {
             try {
-                const res = await Api.get('/api/periods');
+                const res = await API.get('/api/periods');
                 const select = document.getElementById('periodSelect');
                 select.innerHTML = '<option value="">Seleccionar período...</option>';
                 if (res.data && res.data.length) {
@@ -312,7 +312,7 @@
 
         async function loadWorkers() {
             try {
-                const res = await Api.get('/api/workers');
+                const res = await API.get('/api/workers');
                 const select = document.getElementById('returnWorker');
                 if (res.data) {
                     res.data.forEach(w => {
@@ -326,7 +326,7 @@
 
         async function loadEppTypes() {
             try {
-                const res = await Api.get('/api/epp-types');
+                const res = await API.get('/api/epp-types');
                 const returnSelect = document.getElementById('returnEppType');
                 const filterSelect = document.getElementById('filterEppType');
                 if (res.data) {
@@ -348,7 +348,7 @@
             if (!eppTypeId) return;
             
             try {
-                const res = await Api.get(`/api/epp-types/${eppTypeId}/sizes`);
+                const res = await API.get(`/api/epp-types/${eppTypeId}/sizes`);
                 if (res.data) {
                     res.data.forEach(s => {
                         sizeSelect.innerHTML += `<option value="${s.id}">${s.name}</option>`;
@@ -362,7 +362,7 @@
         async function loadReturns() {
             if (!currentPeriod) return;
             try {
-                const res = await Api.get(`/api/returns?period_id=${currentPeriod}`);
+                const res = await API.get(`/api/returns?period_id=${currentPeriod}`);
                 returnsData = res.data || [];
                 updateStats();
                 renderTable(returnsData);
@@ -430,10 +430,10 @@
 
             try {
                 if (id) {
-                    await Api.put(`/api/returns/${id}`, data);
+                    await API.put(`/api/returns/${id}`, data);
                     Utils.toast('Devolución actualizada correctamente');
                 } else {
-                    await Api.post('/api/returns', data);
+                    await API.post('/api/returns', data);
                     Utils.toast('Devolución registrada correctamente');
                 }
                 bootstrap.Modal.getInstance(document.getElementById('returnModal')).hide();
@@ -465,7 +465,7 @@
             if (!await Utils.confirm('Eliminar devolución', '¿Está seguro de eliminar esta devolución?')) return;
             
             try {
-                await Api.delete(`/api/returns/${id}`);
+                await API.delete(`/api/returns/${id}`);
                 Utils.toast('Devolución eliminada correctamente');
                 loadReturns();
             } catch (e) {
@@ -495,7 +495,7 @@
         async function exportToExcel() {
             Utils.toast('Exportando a Excel...', 'info');
             try {
-                const res = await Api.get(`/api/returns/export?period_id=${currentPeriod}`);
+                const res = await API.get(`/api/returns/export?period_id=${currentPeriod}`);
                 if (res.data) {
                     const blob = Utils.base64ToBlob(res.data.content, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
                     Utils.downloadBlob(blob, `devoluciones-${currentPeriod}.xlsx`);

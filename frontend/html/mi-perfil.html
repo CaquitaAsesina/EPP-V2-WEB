@@ -503,7 +503,7 @@
 
         async function loadProfile() {
             try {
-                const res = await Api.get('/api/auth/profile');
+                const res = await API.get('/api/auth/profile');
                 currentUser = res.data;
                 renderProfile(currentUser);
             } catch (e) {
@@ -641,7 +641,7 @@
                     avatarEl.style.pointerEvents = 'none';
                     avatarEl.innerHTML = '<div class="spinner-border text-light" role="status" style="width:2rem;height:2rem;margin:auto;"></div>';
                 }
-                const res = await Api.put('/api/auth/photo', { photo_url: dataUrl });
+                const res = await API.put('/api/auth/photo', { photo_url: dataUrl });
                 currentUser.photo_url = dataUrl;
                 renderProfile(currentUser);
                 const user = Auth.getUser();
@@ -664,7 +664,7 @@
 
         async function removePhoto() {
             try {
-                await Api.put('/api/auth/photo', { photo_url: null });
+                await API.put('/api/auth/photo', { photo_url: null });
                 currentUser.photo_url = null;
                 renderProfile(currentUser);
                 const user = Auth.getUser();
@@ -698,7 +698,7 @@
             try {
                 const data = { username };
                 if (newPassword) { data.new_password = newPassword; data.current_password = currentPassword; }
-                const res = await Api.put('/api/auth/profile', data);
+                const res = await API.put('/api/auth/profile', data);
                 if (res.data && res.data.token && res.data.user) {
                     Auth.login(res.data.token, res.data.user);
                     currentUser = { ...currentUser, ...res.data.user };
